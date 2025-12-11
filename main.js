@@ -1663,7 +1663,7 @@ function increaseProbeTrust() {
 		probeTrustCost = Math.floor(Math.pow(probeTrust + 1, 1.47) * 500);
 		probeTrustDisplayElement.innerHTML = probeTrust;
 		probeTrustCostDisplayElement.innerHTML = formatWithCommas(Math.floor(probeTrustCost));
-		displayMessage("WARNING: Risk of value drift increased");
+		displayMessage("WARNING: Risk of alignment drift increased");
 	}
 }
 

@@ -1,5 +1,4 @@
 import { withElement } from "./view.mjs";
-import { formatWithCommas, spellf } from './formatting.mjs';
 
 const unusedClipsSpy = spy(10, () => unusedClips);
 

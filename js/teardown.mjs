@@ -1,4 +1,3 @@
-import {formatWithCommas} from './formatting.mjs';
 import {getElement, unlockElement} from './view.mjs';
 import {terminal} from './Terminal.mjs';
 
