@@ -1,0 +1,801 @@
+:root {
+	--standard-inline-padding: 0.75rem;
+	--btn-hue: 220deg;
+	--btn-saturation: 30%;
+	--btn-lightness: 60%;
+	--btn-text-color: white;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scrollbar-color: hsl(0, 0%, 67%) transparent;
+	transition: scrollbar-color 1s ease-in;
+}
+
+html:has(#hypnoDroneEventDiv.release:not(.released)) {
+	transition: scrollbar-color 5s ease-in;
+	scrollbar-color: black black;
+}
+
+body {
+	font-family: sans-serif;
+	margin: 0;
+	min-width: 300px;
+	background-color: #F0F2EF;
+}
+
+h2:has(~ hr) {
+	margin-bottom: 0;
+	
+	& ~ hr {
+		margin: 8px 0;
+	}
+}
+
+.toUnlock {
+	display: none !important;
+}
+
+.number {
+	font-family: monospace;
+	font-size: larger;
+}
+
+.smallerNumber {
+	font-family: monospace;
+	font-size: medium;
+}
+
+.fullHeight {
+	min-height: 100dvh;
+}
+
+main {
+	padding-inline: var(--standard-inline-padding);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+	column-gap: var(--standard-inline-padding);
+	
+	& > * {
+		flex: 1;
+	}
+}
+
+#consoleDiv {
+  display: flex;
+  justify-content: space-between;
+  background: black;
+  width: 100%;
+  font-family: monospace;
+  padding: .75rem;
+  
+  ul {
+    font-size: 0.8rem;
+    color: grey;
+    margin: 0;
+    padding: 0;
+    list-style-position: outside;
+    
+	li {
+		margin-left: 2ch;
+	}
+	
+    ::marker {
+      content: '. ';
+    }
+    
+    li:last-child {
+      color: white;
+      
+      &::marker {
+        content: '> '
+      }
+      
+      &::after {
+        content: '|';
+        animation: cursor 1s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes cursor {
+    0% {content: '|'}
+  50% {content: '\00a0'}
+}
+
+details {
+	& summary {
+		border: none;
+		border-bottom: gray 1px solid;
+		margin-bottom: 8px;
+		padding-bottom: 8px;
+		margin-top: 16px;
+		cursor: pointer;
+		& h2 {
+			display: inline;
+		}
+		& .spreader {
+			display: flex
+		}
+		&:hover {
+			border-bottom-style: dotted;
+		}
+	}
+}
+
+.settingButton {
+	aspect-ratio: 1;
+	height: 3rem
+}
+
+#topDiv {
+	width: 100%;
+}
+
+#prestigeDiv {
+	background-color: lightgrey;
+	padding-inline: var(--standard-inline-padding);
+}
+
+#totalCounter {
+	padding-inline: var(--standard-inline-padding);
+}
+
+:has(> .toolTip) {
+	display: inline-block;
+	position: relative;
+	
+	& .toolTip {
+		width: max-content;
+		visibility: hidden;
+		background-color: #c8c8c8;
+		color: #000;
+		text-align: center;
+		padding: 5px 12px;
+		border-radius: 3px;
+		
+		position: absolute;
+		z-index: 1;
+		bottom: 75%;
+		left: 50%;
+		transform: translateX(-50%);
+		
+		opacity: 0;
+		transition: opacity 1s;
+	}
+	
+	&:hover .toolTip {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+.buttonBar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--standard-inline-padding);
+	width: 100%;
+	padding: 4px;
+	
+	> div {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	& button {
+		width: 100%;
+		flex: 1;
+	}
+	
+	&.vertical {
+		flex-direction: column;
+	}
+}
+
+.satisfying {
+	position: relative;
+	border: none;
+	background: transparent;
+	padding: 0;
+	cursor: pointer;
+	outline-offset: 4px;
+	transition: filter 250ms;
+	& .shadow {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 12px;
+		background: hsl(0deg 0% 0% / 0.25);
+		filter: blur(4px);
+		will-change: transform;
+		transform: translateY(2px);
+		transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+	}
+	& .edge {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 12px;
+		background: linear-gradient(
+			to left,
+			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 0%,
+			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 8%,
+			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 92%,
+			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 100%
+		);
+	}
+	& .front {
+		height: -webkit-fill-available;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		position: relative;
+		padding: 12px 42px;
+		border-radius: 12px;
+		font-size: 1rem;
+		color: var(--btn-text-color);
+		background: hsl(var(--btn-hue) var(--btn-saturation) var(--btn-lightness));
+		will-change: transform;
+		transform: translateY(-4px);
+		transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+		& > * {
+			margin: 0;
+		}
+		.cost {
+			margin-top: 1rem;
+		}
+	}
+	&.small .front {
+		padding: 12px;
+	}
+	&:not(:disabled) {
+		&:hover, &:focus-visible {
+			filter: brightness(110%);
+			& .front {
+				transform: translateY(-6px);
+				transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+			}
+			& .shadow {
+				transform: translateY(4px);
+				filter: blur(0px);
+				transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+			}
+		}
+		&:active, &.enter {
+			& .front {
+				transform: translateY(-2px);
+				transition: transform 34ms;
+			}
+			& .shadow {
+				transform: translateY(1px);
+				transition: transform 34ms;
+			}
+		}
+	}
+	&:disabled {
+		filter: brightness(80%);
+		cursor: default;
+		& .front {
+			transform: translateY(-2px);
+			transition: transform 34ms;
+		}
+		& .shadow {
+			transform: translateY(1px);
+			transition: transform 34ms;
+		}
+	}
+}
+
+.hasAmountPicker {
+	display: flex;
+	gap: var(--standard-inline-padding);
+	& > button {
+		flex: 1;
+	}
+	
+	& .amountPicker {
+		flex: 0;
+		display: grid;
+		grid-template-columns: min-content min-content;
+		gap: 0.5rem;
+		& button {
+			width: 5ch;
+			aspect-ratio: 1 / 1;
+		}
+	}
+}
+
+main > div {
+	container-type: inline-size;
+}
+
+.alternateSplit {
+	display: grid;
+	grid-template-columns: auto auto;
+}
+
+@container (max-width: 500px) {
+	.alternateSplit {
+		grid-template-columns: auto;
+	}
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+#priceInput {
+	font-size: 1rem;
+	border: none;
+	padding: 0;
+	text-decoration: underline dotted;
+	text-underline-offset: 3px;
+	background: transparent;
+	
+	&:focus-visible, &:focus {
+		outline: none;
+	}
+}
+
+.qchips {
+	display: flex;
+	margin-bottom: 1rem;
+	transition: filter 1s ease;
+	& > div {
+		transition: opacity 0.5s ease;
+	}
+	&.blur {
+		filter: blur(1px);
+		& > div {
+			opacity: 0.5 !important;
+			transition: opacity 1s ease;
+		}
+	}
+}
+
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+    gap: var(--standard-inline-padding);
+	
+	> * {
+		flex: 1;
+	}
+}
+
+.fitContent {
+	min-width: fit-content;
+}
+
+fieldset {
+	padding: 0;
+	border: none;
+	& div {
+		display: flex;
+		align-items: baseline;
+		& label {
+			flex: 1;
+		}
+	}
+}
+
+.buySelector {
+	width: 100%;
+	min-width: max-content;
+}
+
+.mb-standard {
+	margin-bottom: var(--standard-inline-padding);
+}
+
+#btnMakeProbe {
+	margin-bottom: 2px;
+}
+
+#btnEntertainSwarm {
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+#btnSynchSwarm {
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+
+#qCompDisplay {
+	margin-left: 3px;
+	opacity: 0%;
+	transition: opacity 8s cubic-bezier(0.70, 0, 0.9, 0);
+	&.show {
+		opacity: 100%;
+		transition: opacity 0s;
+	}
+}
+
+#swarmSliderDiv {
+	position: relative;
+	margin-bottom: 10px;
+}
+
+#sliderLabelWork {
+	position: relative;
+	display: inline-block;
+}
+
+#swarmSlider {
+	position: absolute;
+	display: inline-block;
+	width: 180px;
+	top: 0px;
+	margin-left: 2px;
+	margin-right: 4px;
+	
+}
+
+#sliderLabelThink {
+	position: relative;
+	display: inline-block;
+	left: 190px;
+}
+
+.slider {
+	width: 100%;
+}
+
+#tourneyButton {
+	float: left;
+	width: 120px;
+}
+
+#victoryDiv {
+	margin-top: 10px;
+	width: 289px;
+	text-align: center;
+}
+
+#increaseProbeTrustDiv {
+	float: left;
+	width: 130px;
+	border: 0;
+}
+
+#increaseMaxTrustDiv {
+	float: left;
+	width: 150px;
+	margin: 0;
+	border: 0;
+}
+
+#combatButtonDiv {
+	margin-top: 0;
+}
+
+#battleInterfaceDiv {
+	position: absolute;
+	left: 15px;
+	top: 8px;
+}
+
+canvas {
+	display: block;
+	width: 310px;
+	height: 150px;
+	margin: 0 auto 10px;
+	background-color: #808080;
+}
+
+.qChip {
+	width: 22px;
+	height: 22px;
+	background-color: black;
+}
+
+hr {
+	display: block;
+	margin-top: .05em;
+	margin-bottom: 0.2em;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 1px;
+	
+}
+
+hr.short {
+	
+	width: 225px;
+	margin-left: 0;
+}
+
+.borderBottom {
+	border-bottom: 1px solid grey;
+}
+
+.investments {
+	table-layout: fixed;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	& tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+}
+
+@container (width < 500px) {
+	.optional {
+		display: none;
+	}
+	.investments {
+		table-layout: auto;
+	}
+}
+
+.alignEnd {
+	text-align: end;
+}
+
+table.table3 {
+	border-collapse: collapse;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin: 0;
+	width: 100%;
+}
+
+p.clean {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin-bottom: 0;
+	margin-top: 1px;
+}
+
+p.clean2 {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin-bottom: 0;
+	margin-top: 0;
+	
+}
+
+p.clean3 {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin-bottom: 5px;
+	margin-top: 2px;
+	
+}
+
+.projectButton {
+	animation: blink var(--animation-duration, 0.1s) ease-in-out 0s 4,
+	           shake calc(var(--animation-duration, 0.1s) * 2) ease-in-out 0s 2;
+}
+
+
+@keyframes shake {
+	0%   {transform: translateX(0)}
+	25%  {transform: translateX(4px)}
+	75%  {transform: translateX(-4px)}
+	100% {transform: translateX(0)}
+}
+@keyframes blink {
+	0%   {opacity: 100%}
+	33%  {opacity: 0}
+	66%  {opacity: 100%}
+	100% {opacity: 0}
+}
+
+.picked {
+	animation: toGrey 0.05s linear 0s 1;
+}
+
+@keyframes toGrey {
+	0%   {background-color: inherit}
+	100% {background-color: lightgrey}
+}
+
+#projectListTop {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+	gap: var(--standard-inline-padding);
+}
+
+#increaseProbeTrustDiv {
+	width: auto;
+}
+
+#battleCanvasDiv {
+	position: relative;
+	aspect-ratio: 310 / 150;
+	max-width: 465px;
+	margin-inline: 5px;
+	
+	#canvas {
+		width: 100%;
+		height: 100%;
+	}
+	
+	#battleInterfaceDiv {
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		display: flex;
+		flex-direction: column;
+		
+		& br {
+			display: none;
+		}
+		
+		> p:nth-child(3) {
+			flex: 1;
+		}
+		
+		#victoryDiv {
+			width: auto;
+			margin: 0;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			
+			#battleResult {
+				font-size: large;
+			}
+		}
+	}
+}
+
+.tournamentLayout {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 8px;
+}
+
+.tournamentGrid {
+	table-layout: fixed;
+	border-collapse: collapse;
+}
+
+.tournamentCross {
+	table-layout: fixed;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.secondaryPayoff {
+	position: absolute;
+	right: 4px;
+	top: 2px;
+	color: grey;
+	font-style: italic;
+}
+
+td:has(.secondaryPayoff) {
+	position: relative;
+	height: 2rem;
+}
+
+#horizStrat {
+    min-width: 10ch;
+}
+
+#tournamentResultsList {
+	columns: 200px;
+}
+
+.bordered {
+	border: black 1px solid;
+}
+
+.w100 {
+	width: 100%;
+}
+
+.strategyName {
+	overflow-x: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--btn-hue: 220deg;
+		--btn-saturation: 30%;
+		--btn-lightness: 50%;
+		--btn-text-color: black;
+	}
+	
+	body {
+		background-color: black;
+		color-scheme: dark;
+		color: white;
+		scrollbar-color: hsl(0, 0%, 67%) transparent;
+	}
+	
+	.qChip {
+		background-color: white;
+	}
+	
+	select {
+		background-color: dimgrey;
+	}
+	
+	#prestigeDiv {
+		background-color: dimgrey;
+	}
+	
+	table.table1 tr:nth-child(even) {
+		background-color: dimgrey;
+	}
+	
+	.investments {
+		& tr:nth-child(even) {
+			background-color: inherit;
+			border-bottom: #ddd solid 1px;
+			border-top: #ddd solid 1px;
+		}
+	}
+}
+
+#hypnoDroneEventDiv {
+	opacity: 0;
+	overflow: hidden;
+	position: fixed;
+	& h1 {
+		opacity: 0;
+		position: absolute;
+		margin: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		transition: opacity 3s ease-in;
+		transition-delay: 3s;
+	}
+	
+	& .circle {
+		width: 100px;
+		aspect-ratio: 1 / 1;
+		border: 5px solid white;
+		border-radius: 50%;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		opacity: 0;
+		animation: circles 5s 1 ease-out;
+	}
+}
+
+@keyframes circles {
+	10% {
+		opacity: 100%;
+	}
+	100% {
+		width: 100%;
+	}
+}
+
+#hypnoDroneEventDiv.release {
+	color: white;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	transition: opacity 5s ease-in;
+	opacity: 100;
+	& h1 {
+		opacity: 100;
+	}
+}
+
+#hypnoDroneEventDiv.released {
+	transition: opacity 1s ease-in;
+	opacity: 0;
+}
