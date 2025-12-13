@@ -67,3 +67,6 @@ export const terminal = new Terminal();
 window.addEventListener('error', (ev) => {
   terminal.print(ev.message, 'ERROR');
 });
+
+terminal.warn('This is an ongoing development build. Your save file will be corrupted in the future');
+terminal.print('Welcome to Multiversal Paperclips');
