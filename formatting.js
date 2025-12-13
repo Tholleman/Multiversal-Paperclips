@@ -95,7 +95,7 @@ function spellf(userInput) {
 	}
 }
 
-const withCommas = Intl.NumberFormat("US", {maximumFractionDigits: 0});
+const withCommas = Intl.NumberFormat("en-US", {maximumFractionDigits: 0});
 
 /**
  * @param {number} num
