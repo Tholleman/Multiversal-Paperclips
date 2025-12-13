@@ -151,7 +151,7 @@ function* teardownSteps() {
 		title: 'Lock in probe design',
 		priceTag: '',
 		description: 'Eliminate alignment drift permanently',
-		trigger: () => probeCombat > 4,
+		trigger: () => true,
 		cost: () => true,
 		effect: () => {},
 	});
@@ -170,6 +170,7 @@ function* teardownSteps() {
 	}
 	yield 100;
 	hideElement('#probeSetup');
+	probeCombat = Math.max(5, probeCombat);
 	while (!finalAnimation.value && !rushing) yield busyWaitTime;
 	hideElement('#battleInterfaceDiv');
 	addLastProject('disassembleSensors', {

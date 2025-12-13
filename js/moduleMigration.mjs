@@ -4,3 +4,5 @@ import * as Terminal from './Terminal.mjs';
 Object.assign(window, Terminal);
 import * as Teardown from './teardown.mjs'
 Object.assign(window, Teardown);
+import * as Investment from './Investment.mjs'
+Object.assign(window, Investment);

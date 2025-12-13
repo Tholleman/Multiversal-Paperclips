@@ -308,7 +308,7 @@ function quantumCycle() {
 		return;
 	}
 	qClock += .01;
-	if (qClock / Math.PI % 20 < 1) {
+	if (isCompleted('qObserving') && qClock / Math.PI % 20 < 1) {
 		if (advancements.noQuantum.value === 'ACTIVE' && !autoUnobserved) {
 			autoUnobserved = true;
 			data.observeQuantum.value = false;
@@ -491,13 +491,7 @@ function buttonUpdate() {
 	
 	btnNewTournamentElement.disabled = operations.value < tourneyCost || tourneyInProg.isTrue;
 	btnImproveInvestmentsElement.disabled = yomi.value < investUpgradeCost;
-	if (investmentEngineFlag === 0) {
-		investmentEngineElement.style.display = "none";
-		investmentEngineUpgradeElement.style.display = "none";
-	} else {
-		investmentEngineElement.style.display = "";
-		investmentEngineUpgradeElement.style.display = "";
-	}
+	
 	
 	creativityDivElement.style.display = creativityOn === 0 ? "none" : "";
 	
@@ -544,7 +538,7 @@ humanFlag.onFalse(() => {
 	businessDivElement.style.display = "none";
 	manufacturingDivElement.style.display = "none";
 	trustDivElement.style.display = "none";
-	investmentEngineFlag = 0;
+	data.investmentEngineFlag.value = false;
 	wireBuyerFlag = 0;
 	creationDivElement.style.display = "";
 });
@@ -575,11 +569,16 @@ function investUpgrade() {
 	displayMessage("Investment engine upgraded, expected profit/loss ratio now " + (stockGainThreshold + "").substring(0, 4));
 }
 
+const investBtn = document.getElementById('btnInvest');
+ObservableValue.onAnyChange([funds, data.loaned], () => {
+	investBtn.disabled = funds.value - data.loaned.value <= 0;
+});
 function investDeposit() {
-	const toAdd = Math.floor(funds.value);
+	const toAdd = Math.floor(funds.value - data.loaned.value);
+	if (toAdd <= 0) return;
 	ledger -= toAdd;
 	bankroll = Math.floor(bankroll + toAdd);
-	funds.value %= 1;
+	funds.value -= toAdd;
 	portTotal = bankroll + secTotal;
 	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
 	portValueElement.innerHTML = formatWithCommas(portTotal);
@@ -705,21 +704,25 @@ function updateStocksValue() {
 }
 
 const investInterestCountdownElement = document.getElementById('interestCountdown');
+const loanInterestCountdownElement = document.getElementById('loanCountdown');
+data.investmentInterestCountdown.onChange(seconds => {
+	const unit = 'second' + (seconds === 1 ? '&nbsp;' : 's');
+	investInterestCountdownElement.innerHTML = `${seconds} ${unit}`;
+	loanInterestCountdownElement.innerHTML = `${seconds} ${unit}`;
+});
 investInterestCountdownElement.innerHTML = timeCruncher(data.investmentInterestCountdown * 100);
 function investmentInterest() {
-	data.investmentInterestCountdown--;
-	if (data.investmentInterestCountdown > 0) {
-		const seconds = 'second' + (data.investmentInterestCountdown === 1 ? '&nbsp;' : 's');
-		investInterestCountdownElement.innerHTML = data.investmentInterestCountdown + ' ' + seconds;
+	data.investmentInterestCountdown.value--;
+	if (data.investmentInterestCountdown.value > 0) {
 		return;
 	}
-	data.investmentInterestCountdown = 60;
-	investInterestCountdownElement.innerHTML = '60 seconds';
+	data.investmentInterestCountdown.value = 60;
 	bankroll *= 1.02;
 	if (isCompleted('dividends')) {
 		bankroll += secTotal * 0.02;
 	}
 	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
+	data.loaned.value *= 1.05;
 }
 
 // Stock List Display Routine
@@ -1391,7 +1394,9 @@ function updateOperations() {
 function milestoneCheck() {
 	if (milestoneFlag === 0 && funds.value >= 5) {
 		milestoneFlag = 1;
-		displayMessage("AutoClippers available for purchase");
+		if (advancements.beg.value !== 'ACTIVE') {
+			displayMessage('AutoClippers available for purchase');
+		}
 	}
 	
 	if (milestoneFlag === 1 && Math.ceil(data.clips.value) >= 500) {
@@ -2147,7 +2152,6 @@ function save() {
 		bankroll: bankroll,
 		fib1: fib1,
 		fib2: fib2,
-		investmentEngineFlag: investmentEngineFlag,
 		autoClipperFlag: Number(autoClipperFlag.isTrue),
 		creativitySpeed: creativitySpeed,
 		creativityCounter: creativityCounter,
@@ -2325,7 +2329,6 @@ function load() {
 	bankroll = loadGame.bankroll;
 	fib1 = loadGame.fib1;
 	fib2 = loadGame.fib2;
-	investmentEngineFlag = loadGame.investmentEngineFlag;
 	autoClipperFlag.value = loadGame.autoClipperFlag === 1;
 	creativitySpeed = loadGame.creativitySpeed;
 	creativityCounter = loadGame.creativityCounter;

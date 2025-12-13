@@ -233,7 +233,7 @@ const data = (() => {
 		wireBuyerStatus: new ObservableBoolean(init(loaded.wireBuyerStatus, true)),
 		operationsNormalizer: init(loaded.operationsNormalizer, 0),
 		observeQuantum: new ObservableBoolean(init(loaded.observeQuantum, true)),
-		investmentInterestCountdown: init(loaded.investmentInterestCountdown, 60),
+		investmentInterestCountdown: ObservableValue.new(init(loaded.investmentInterestCountdown, 60)),
 		clipperBoost: ObservableValue.new(init(loaded.clipperBoost, 1)),
 		megaClipperLevel: ObservableValue.new(init(loaded.megaClipperLevel, 0), updateElement('#megaClipperLevel')),
 		megaClipperBoost: ObservableValue.new(init(loaded.megaClipperBoost, 1)),
@@ -255,6 +255,8 @@ const data = (() => {
 		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
 		usedQuantum: ObservableValue.new(init(loaded.usedQuantum, false)),
 		startedTeardown: ObservableValue.new(init(loaded.startedTeardown, false)),
+		loaned: ObservableValue.new(init(loaded.loaned, 0)),
+		investmentEngineFlag: ObservableValue.new(init(loaded.investmentEngineFlag, false)),
 	};
 	
 	/**

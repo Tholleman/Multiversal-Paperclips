@@ -118,6 +118,10 @@
 						<p>
 							Available Funds: $&nbsp;<span id="funds" class="number">0</span>
 						</p>
+						<p id="leveragedLoanContainer" class="toUnlock">
+							Loan: $<span id="leveragedLoan" class="number"></span><br>
+							Interest: 5% in <span id="loanCountdown"></span>
+						</p>
 						<p>
 							Unsold Inventory: <span id="unsoldClips" class="number">0</span>
 						</p>
@@ -141,15 +145,24 @@
 						</p>
 					</div>
 					<div>
-						<button class="satisfying w100" id="btnExpandMarketing" onclick="buyAds()">
-							<span class="shadow"></span>
-							<span class="edge"></span>
-							<span class="front">
-								<h3>Marketing</h3>
-								<p>Level: <span id="marketingLvl">1</span></p>
-								<p class="cost">$&nbsp;<span id="adCost">100.00</span></p>
-							</span>
-						</button>
+						<div class="buttonBar">
+							<button class="satisfying" id="btnExpandMarketing" onclick="buyAds()">
+								<span class="shadow"></span>
+								<span class="edge"></span>
+								<span class="front">
+									<h3>Marketing</h3>
+									<p>Level: <span id="marketingLvl">1</span></p>
+									<p class="cost">$&nbsp;<span id="adCost">100.00</span></p>
+								</span>
+							</button>
+							<button class="satisfying toUnlock" id="btnPayLoan" onclick="payLoan()">
+								<span class="shadow"></span>
+								<span class="edge"></span>
+								<span class="front">
+									<h3>Pay off loan</h3>
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</details>
@@ -196,6 +209,7 @@
 								<span class="front">
 									<h3>Disassemble All</h3>
 									<p><span id="factoryRebootToolTip">0</span> clips</p>
+									<p class="cost">&nbsp;</p>
 								</span>
 							</button>
 						</div>
@@ -408,6 +422,13 @@
 									<h3>Withdraw</h3>
 								</span>
 							</button>
+							<button class="satisfying toUnlock" id="btnLeveragedLoan" onclick="leveragedLoan()">
+								<span class="shadow"></span>
+								<span class="edge"></span>
+								<span class="front">
+									<h3>Leveraged Loan</h3>
+								</span>
+							</button>
 							<button class="satisfying" id="btnImproveInvestments" onclick="investUpgrade()">
 								<span class="shadow"></span>
 								<span class="edge"></span>
@@ -539,7 +560,7 @@
 						<span class="front">
 							<h3>Power Surge</h3>
 							<p><span id="powerSurgeDuration">0 seconds</span></p>
-							<p class="cost"><span id="powerSurgeCost">1,000% performance</span></p>
+							<p class="cost">(1,000% performance)</p>
 						</span>
 					</button>
 				</div>

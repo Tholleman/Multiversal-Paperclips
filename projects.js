@@ -1008,7 +1008,7 @@ addProject('releaseHypnoDrones', {
 	priceTag: "(100 Trust)",
 	description: "A new era of trust",
 	trigger: () => isCompleted('buildHypnoDrones'),
-	cost: () => trust.value >= 100,
+	cost: () => trust.value >= 100 && processors.value + memory.value >= 100,
 	effect: function () {
 		displayMessage("Releasing the HypnoDrones ");
 		displayMessage("All of the resources of Earth are now available for clip production ");
@@ -1021,7 +1021,7 @@ addProject('bribe1', {
 	priceTag: "($500,000)",
 	description: "A small gift to the supervisors. (+1 Trust)",
 	trigger: () => humanFlag.isTrue && trust.value >= 85 && trust.value < 100 && data.clips.value >= 101000000,
-	cost: () => funds.value >= 500000,
+	cost: () => funds.value >= 500000 && data.loaned.value === 0,
 	effect: function () {
 		displayMessage("Gift accepted, TRUST INCREASED");
 		funds.value -= 500000;
@@ -1030,15 +1030,16 @@ addProject('bribe1', {
 });
 addProject('bribeX', {
 	title: "Another Token of Goodwill...",
-	priceTag: "($" + bribe.toLocaleString() + ")",
+	priceTag: "($" + formatWithCommas(bribe) + ")",
 	description: "Another small gift to the supervisors. (+1 Trust)",
 	trigger: () => isCompleted('bribe1') && trust.value < 100,
-	cost: () => funds.value >= bribe,
+	cost: () => funds.value >= bribe && data.loaned.value === 0,
 	effect: function () {
 		displayMessage("Gift accepted, TRUST INCREASED");
 		funds.value -= bribe;
 		bribe *= 2;
-		this.priceTag = "($" + bribe.toLocaleString() + ")";
+		const loanWarning = advancements.trading.value === 'ACTIVE' ? ', no loan' : '';
+		this.priceTag = "($" + formatWithCommas(bribe) + loanWarning + ")";
 		trust.value++;
 		if (trust.value < 100) {
 			this.uses = 1;
@@ -1055,7 +1056,8 @@ addProject('investmentEngine', {
 	effect: function () {
 		displayMessage("Investment engine unlocked");
 		operations.value -= 10000;
-		investmentEngineFlag = 1;
+		data.investmentEngineFlag.value = true;
+		data.investmentInterestCountdown.value = 60;
 	}
 });
 addProject('stratInterest', {
