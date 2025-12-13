@@ -549,7 +549,6 @@ let portTotal = 0;
 let sellDelay = 0;
 let riskiness = 5;
 let maxPort = 3;
-let investLevel = 0;
 let investUpgradeCost = 100;
 let stockGainThreshold = .5;
 let ledger = 0;
@@ -559,7 +558,7 @@ function investUpgrade() {
 	maxPort += 1;
 	data.investLevel.value++;
 	stockGainThreshold += .01;
-	investUpgradeCost = Math.floor(Math.pow(data.investLevel.value + 1, 3) * 100);
+	investUpgradeCost = Math.floor(Math.pow(data.investLevel.value, 3) * 100);
 	investUpgradeCostElement.innerHTML = formatWithCommas(investUpgradeCost);
 	displayMessage("Investment engine upgraded, expected profit/loss ratio now " + (stockGainThreshold + "").substring(0, 4));
 }

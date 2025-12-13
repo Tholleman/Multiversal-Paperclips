@@ -1062,7 +1062,7 @@ addProject('stratInterest', {
 	title: 'Cash interest',
 	priceTag: '(10,000 yomi)',
 	description: 'Gain 2% interest on uninvested money',
-	trigger: () => data.investLevel.value >= 2,
+	trigger: () => data.investLevel.value >= 3,
 	cost: () => yomi.value >= 10_000,
 	effect() {
 		displayMessage('Let\'s not worry about inflation when we can print money');
@@ -1074,7 +1074,7 @@ addProject('dividends', {
 	title: "Dividends",
 	priceTag: "(30,000 yomi)",
 	description: "Gain 2% interest on invested money as well",
-	trigger: () => isCompleted('stratInterest') && data.investLevel.value >= 6,
+	trigger: () => isCompleted('stratInterest') && data.investLevel.value >= 7,
 	cost: () => yomi.value >= 30_000,
 	effect: () => {
 		displayMessage("Communism could never share profits like this");

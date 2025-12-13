@@ -250,7 +250,7 @@ const data = (() => {
 		givenFundBonus: ObservableValue.new(init(loaded.givenFundBonus, false)),
 		lastClickTickStamp: ObservableValue.new(init(loaded.lastClickTickStamp, 0)),
 		marginChanged: ObservableValue.new(init(loaded.marginChanged, false)),
-		investLevel: ObservableValue.new(init(loaded.investLevel, 0), updateElement('#investmentLevel')),
+		investLevel: ObservableValue.new(init(loaded.investLevel, 1), updateElement('#investmentLevel')),
 		wonEveryStrategicModelling: ObservableValue.new(init(loaded.wonEveryStrategicModelling, true)),
 		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
 		usedQuantum: ObservableValue.new(init(loaded.usedQuantum, false)),
