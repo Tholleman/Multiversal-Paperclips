@@ -1,4 +1,5 @@
-import { withElement } from "./view.mjs";
+import {unlockElement, withElement} from "./view.mjs";
+import {advancements} from "./teardown.mjs";
 
 const unusedClipsSpy = spy(10, () => unusedClips);
 
@@ -28,7 +29,7 @@ class Resource {
 	#amount;
 	#cost;
 	#saveData;
-	
+
 	/**
 	 * @param {{
 	 * 	current: ObservableValue<number>,
@@ -52,7 +53,7 @@ class Resource {
 	 * 	disassemble: string,
 	 * 	singular: string,
 	 * 	plural: string
-	 * }} text 
+	 * }} text
 	 */
 	constructor(saveData, settings, selectors, text) {
 		this.#saveData = saveData;
@@ -111,7 +112,7 @@ class Resource {
 		saveData.amount.onChange(withElement(selectors.decBtn, (btn, value) => btn.disabled = value <= 1));
 		saveData.current.onChange(withElement(selectors.disBtn, (btn, value) => btn.disabled = value === 0));
 	}
-	
+
 	increase() {
 		if (this.#saveData.amount.value <= 0) {
 			this.#saveData.amount.value = 1;
@@ -122,7 +123,7 @@ class Resource {
 		}
 		this.#saveData.amount.value=Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1);
 	}
-	
+
 	decrease() {
 		if (this.#saveData.amount.value < 1) {
 			this.#saveData.amount.value = 1;
@@ -130,28 +131,28 @@ class Resource {
 		}
 		this.#saveData.amount.value=Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value - 1)));
 	}
-	
+
 	round() {
 		const goal=Math.max(10, Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1));
 		this.#saveData.amount.value=goal - this.#saveData.current.value % goal;
 	}
-	
+
 	make() {
 		if (this.#cost.value > unusedClips) {
 			console.warn(`Requires ${this.#cost.value} clips`);
 			return;
 		}
-		
+
 		unusedClips -= this.#cost.value;
 		this.#saveData.bill.value += this.#cost.value;
 		this.#saveData.current.value += this.#amount.value;
-		
+
 		if (this.#saveData.amount.value === 0) {
 			this.#saveData.amount.value = 1;
 		} else if (Math.pow(10, Math.floor(Math.log10(this.#amount.value))) !== this.#amount.value) {
 			this.increase();
 		}
-		
+
 		unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
 	}
 }
@@ -243,3 +244,28 @@ export function incBatteryAmount() { batteries.increase(); }
 export function decBatteryAmount() { batteries.decrease(); }
 export function roundBatteryAmount() { batteries.round(); }
 export function makeBattery() { batteries.make(); }
+
+advancements.afk.onChange(value => {
+	if (value !== 'ACTIVE') return;
+	unlockElement('#powerSurgeContainer');
+});
+const storedPower$ = spy(10, () => storedPower);
+const powMod$ = spy(1e3, () => powMod);
+const powerSurgeMs = ObservableValue.computed([storedPower$],
+	(storedPower) => storedPower, 0)
+	.onChange(withElement('#powerSurgeDuration', (el, ms) => {
+		el.innerText = timeCruncher(ms / 10);
+	}));
+ObservableValue.onAnyChange([powerSurgeMs, powMod$], withElement('#powerSurge', (el) => {
+	el.disabled = powerSurgeMs.value < 1e3 || powMod$.value < 10;
+}));
+export function powerSurge() {
+	if (advancements.afk.value !== 'ACTIVE') return;
+	if (powMod$.value < 10) return;
+	const ms = powerSurgeMs.value;
+	storedPower = 0;
+	acquireMatter(ms);
+	processMatter(ms);
+	workFactories(ms);
+	powMod -= 10;
+}

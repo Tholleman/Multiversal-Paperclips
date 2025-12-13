@@ -365,6 +365,7 @@ addProject('wireFallback', {
 		trust.value--;
 		wire.value = wireSupply;
 		this.uses = 1;
+		advancements.beg.value = 'UNLOCKED';
 	}
 });
 addProject('wireBuyer', {
@@ -811,13 +812,13 @@ addProject('rerollStrategyGrid', {
 });
 addProject('avoidNegativeCells', {
 	title: "Reinforced learning",
-	priceTag: "(-10,000 yomi, requires 8 unlocked strategies)",
+	priceTag: "(-8,000 yomi, requires 8 unlocked strategies)",
 	description: "Make many strategies avoid negative values",
-	trigger: () => yomi.value <= -10000,
-	cost: () => yomi.value <= -10000 && stratsUnlocked >= 8,
+	trigger: () => yomi.value <= -8000,
+	cost: () => yomi.value <= -8000 && stratsUnlocked >= 8,
 	effect: function () {
 		displayMessage("The only real mistake is the one from which we learn nothing. - John Powell");
-		yomi.value += 10000;
+		yomi.value += 8000;
 	}
 });
 addProject('yomiDouble', {
@@ -1061,7 +1062,7 @@ addProject('stratInterest', {
 	title: 'Cash interest',
 	priceTag: '(10,000 yomi)',
 	description: 'Gain 2% interest on uninvested money',
-	trigger: () => investLevel >= 2,
+	trigger: () => data.investLevel.value >= 2,
 	cost: () => yomi.value >= 10_000,
 	effect() {
 		displayMessage('Let\'s not worry about inflation when we can print money');
@@ -1073,7 +1074,7 @@ addProject('dividends', {
 	title: "Dividends",
 	priceTag: "(30,000 yomi)",
 	description: "Gain 2% interest on invested money as well",
-	trigger: () => isCompleted('stratInterest') && investLevel >= 6,
+	trigger: () => isCompleted('stratInterest') && data.investLevel.value >= 6,
 	cost: () => yomi.value >= 30_000,
 	effect: () => {
 		displayMessage("Communism could never share profits like this");
@@ -1318,7 +1319,6 @@ addProject('space', {
 	cost: () => operations.value >= 120000 && storedPower >= 10000000 && unusedClips >= 5e27,
 	effect: function () {
 		displayMessage("Von Neumann Probes online");
-		boredomLevel = 0;
 		spaceFlag = 1;
 		operations.value -= 120000;
 		storedPower -= 10000000;

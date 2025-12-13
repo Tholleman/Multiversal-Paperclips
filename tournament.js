@@ -189,6 +189,15 @@ function newTourney(startingData = undefined) {
 				const w = beatBoost === 1 ? "strat" : "strats";
 				displayMessage(`${picked.name} scored ${picked.currentScore} and beat ${beatBoost} ${w}. ${donationMessage}Yomi increased by ${formatWithCommas(earnings)}`);
 			}
+			if (picked.currentScore >= results[0].currentScore) {
+				data.winStreak.value++;
+			} else {
+				if (data.winStreak.value > 2) {
+					displayMessage(`First loss after ${data.winStreak.value} wins`)
+				}
+				data.winStreak.value = 0;
+				data.wonEveryStrategicModelling.value = false;
+			}
 			if (isCompleted('bonusYomi')) {
 				bonusYomi(results, pick);
 			}

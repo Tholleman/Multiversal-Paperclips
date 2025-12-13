@@ -65,46 +65,54 @@ main {
 }
 
 #consoleDiv {
-  display: flex;
-  justify-content: space-between;
-  background: black;
-  width: 100%;
-  font-family: monospace;
-  padding: .75rem;
-  
-  ul {
-    font-size: 0.8rem;
-    color: grey;
-    margin: 0;
-    padding: 0;
-    list-style-position: outside;
-    
-	li {
-		margin-left: 2ch;
+	display: flex;
+	justify-content: space-between;
+	background: black;
+	width: 100%;
+	font-family: monospace;
+	padding: .75rem;
+	
+	a {
+		color: gold;
 	}
 	
-    ::marker {
-      content: '. ';
-    }
-    
-    li:last-child {
-      color: white;
-      
-      &::marker {
-        content: '> '
-      }
-      
-      &::after {
-        content: '|';
-        animation: cursor 1s linear infinite;
-      }
-    }
-  }
+	ul {
+		font-size: 0.8rem;
+		color: grey;
+		margin: 0;
+		padding: 0;
+		list-style-position: outside;
+		
+		li {
+			margin-left: 2ch;
+		}
+		
+		::marker {
+			content: '. ';
+		}
+		
+		li:last-child {
+			color: white;
+			
+			&::marker {
+				content: '> '
+			}
+			
+			&::after {
+				content: '|';
+				animation: cursor 1s linear infinite;
+			}
+		}
+	}
 }
 
 @keyframes cursor {
-    0% {content: '|'}
-  50% {content: '\00a0'}
+	0% {
+		content: '|'
+	}
+	50% {
+		content: '\00a0'
+	}
 }
 
 details {
@@ -115,12 +123,15 @@ details {
 		padding-bottom: 8px;
 		margin-top: 16px;
 		cursor: pointer;
+		
 		& h2 {
 			display: inline;
 		}
+		
 		& .spreader {
 			display: flex
 		}
+		
 		&:hover {
 			border-bottom-style: dotted;
 		}
@@ -205,6 +216,7 @@ details {
 	cursor: pointer;
 	outline-offset: 4px;
 	transition: filter 250ms;
+	
 	& .shadow {
 		position: absolute;
 		top: 0;
@@ -218,6 +230,7 @@ details {
 		transform: translateY(2px);
 		transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 	}
+	
 	& .edge {
 		position: absolute;
 		top: 0;
@@ -226,13 +239,14 @@ details {
 		height: 100%;
 		border-radius: 12px;
 		background: linear-gradient(
-			to left,
-			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 0%,
-			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 8%,
-			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 92%,
-			hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 100%
+				to left,
+				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 0%,
+				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 8%,
+				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 92%,
+				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 100%
 		);
 	}
+	
 	& .front {
 		height: -webkit-fill-available;
 		display: flex;
@@ -247,47 +261,58 @@ details {
 		will-change: transform;
 		transform: translateY(-4px);
 		transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+		
 		& > * {
 			margin: 0;
 		}
+		
 		.cost {
 			margin-top: 1rem;
 		}
 	}
+	
 	&.small .front {
 		padding: 12px;
 	}
+	
 	&:not(:disabled) {
 		&:hover, &:focus-visible {
 			filter: brightness(110%);
+			
 			& .front {
 				transform: translateY(-6px);
 				transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 			}
+			
 			& .shadow {
 				transform: translateY(4px);
 				filter: blur(0px);
 				transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 			}
 		}
+		
 		&:active, &.enter {
 			& .front {
 				transform: translateY(-2px);
 				transition: transform 34ms;
 			}
+			
 			& .shadow {
 				transform: translateY(1px);
 				transition: transform 34ms;
 			}
 		}
 	}
+	
 	&:disabled {
 		filter: brightness(80%);
 		cursor: default;
+		
 		& .front {
 			transform: translateY(-2px);
 			transition: transform 34ms;
 		}
+		
 		& .shadow {
 			transform: translateY(1px);
 			transition: transform 34ms;
@@ -298,6 +323,7 @@ details {
 .hasAmountPicker {
 	display: flex;
 	gap: var(--standard-inline-padding);
+	
 	& > button {
 		flex: 1;
 	}
@@ -307,6 +333,7 @@ details {
 		display: grid;
 		grid-template-columns: min-content min-content;
 		gap: 0.5rem;
+		
 		& button {
 			width: 5ch;
 			aspect-ratio: 1 / 1;
@@ -352,11 +379,14 @@ input[type=number]::-webkit-inner-spin-button {
 	display: flex;
 	margin-bottom: 1rem;
 	transition: filter 1s ease;
+	
 	& > div {
 		transition: opacity 0.5s ease;
 	}
+	
 	&.blur {
 		filter: blur(1px);
+		
 		& > div {
 			opacity: 0.5 !important;
 			transition: opacity 1s ease;
@@ -367,7 +397,7 @@ input[type=number]::-webkit-inner-spin-button {
 .flex {
 	display: flex;
 	flex-wrap: wrap;
-    gap: var(--standard-inline-padding);
+	gap: var(--standard-inline-padding);
 	
 	> * {
 		flex: 1;
@@ -381,9 +411,11 @@ input[type=number]::-webkit-inner-spin-button {
 fieldset {
 	padding: 0;
 	border: none;
+	
 	& div {
 		display: flex;
 		align-items: baseline;
+		
 		& label {
 			flex: 1;
 		}
@@ -403,21 +435,11 @@ fieldset {
 	margin-bottom: 2px;
 }
 
-#btnEntertainSwarm {
-	margin-top: 4px;
-	margin-bottom: 4px;
-}
-
-#btnSynchSwarm {
-	margin-top: 4px;
-	margin-bottom: 4px;
-}
-
-
 #qCompDisplay {
 	margin-left: 3px;
 	opacity: 0%;
 	transition: opacity 8s cubic-bezier(0.70, 0, 0.9, 0);
+	
 	&.show {
 		opacity: 100%;
 		transition: opacity 0s;
@@ -528,6 +550,7 @@ hr.short {
 	border-collapse: collapse;
 	width: 100%;
 	border: none;
+	
 	& tr:nth-child(even) {
 		background-color: #dddddd;
 	}
@@ -537,6 +560,7 @@ hr.short {
 	.optional {
 		display: none;
 	}
+	
 	.investments {
 		table-layout: auto;
 	}
@@ -575,21 +599,38 @@ p.clean3 {
 
 .projectButton {
 	animation: blink var(--animation-duration, 0.1s) ease-in-out 0s 4,
-	           shake calc(var(--animation-duration, 0.1s) * 2) ease-in-out 0s 2;
+	shake calc(var(--animation-duration, 0.1s) * 2) ease-in-out 0s 2;
 }
 
 
 @keyframes shake {
-	0%   {transform: translateX(0)}
-	25%  {transform: translateX(4px)}
-	75%  {transform: translateX(-4px)}
-	100% {transform: translateX(0)}
+	0% {
+		transform: translateX(0)
+	}
+	25% {
+		transform: translateX(4px)
+	}
+	75% {
+		transform: translateX(-4px)
+	}
+	100% {
+		transform: translateX(0)
+	}
 }
+
 @keyframes blink {
-	0%   {opacity: 100%}
-	33%  {opacity: 0}
-	66%  {opacity: 100%}
-	100% {opacity: 0}
+	0% {
+		opacity: 100%
+	}
+	33% {
+		opacity: 0
+	}
+	66% {
+		opacity: 100%
+	}
+	100% {
+		opacity: 0
+	}
 }
 
 .picked {
@@ -597,8 +638,12 @@ p.clean3 {
 }
 
 @keyframes toGrey {
-	0%   {background-color: inherit}
-	100% {background-color: lightgrey}
+	0% {
+		background-color: inherit
+	}
+	100% {
+		background-color: lightgrey
+	}
 }
 
 #projectListTop {
@@ -684,7 +729,7 @@ td:has(.secondaryPayoff) {
 }
 
 #horizStrat {
-    min-width: 10ch;
+	min-width: 10ch;
 }
 
 #tournamentResultsList {
@@ -747,6 +792,7 @@ td:has(.secondaryPayoff) {
 	opacity: 0;
 	overflow: hidden;
 	position: fixed;
+	
 	& h1 {
 		opacity: 0;
 		position: absolute;
@@ -790,6 +836,7 @@ td:has(.secondaryPayoff) {
 	z-index: 1;
 	transition: opacity 5s ease-in;
 	opacity: 100;
+	
 	& h1 {
 		opacity: 100;
 	}

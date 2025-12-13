@@ -28,7 +28,7 @@ export function unlockElement(query) {
 /**
  * @template {keyof HTMLElementTagNameMap} T
  * @param {T} tag
- * @param {{style?: Partial<CSSStyleDeclaration>} & {innerText?: string} & {[key: Exclude<string, 'style'>]: string}} [attributes]
+ * @param {{style?: Partial<CSSStyleDeclaration>} & {innerText?: string} & {innerHTML?: string} & {[key: Exclude<string, 'style'>]: string}} [attributes]
  * @param {HTMLElement} children
  * @returns {HTMLElementTagNameMap[T]}
  */
@@ -38,6 +38,10 @@ export function el(tag, attributes, ...children) {
 		if ('innerText' in attributes) {
 			result.innerText = attributes.innerText;
 			delete attributes.innerText;
+		}
+		if ('innerHTML' in attributes) {
+			result.innerHTML = attributes.innerHTML;
+			delete attributes.innerHTML;
 		}
 		if ('style' in attributes) {
 			for (const style in attributes.style) {

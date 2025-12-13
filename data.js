@@ -120,6 +120,25 @@ class ObservableValue {
 		}
 		lambda();
 	}
+
+	/**
+	 * @template A
+	 * @template B
+	 * @template C
+	 * @template D
+	 * @template Result
+	 * @param {[ObservableValue<A>] | [ObservableValue<A>, ObservableValue<B>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>, ObservableValue<D>, ...ObservableValue<any>]} observables
+	 * @param {(a: A, b: B, c: C, d: D, ...z: any) => Result} compute
+	 * @param {Result} [_typeInference]
+	 * @return {ObservableValue<Result>}
+	 */
+	static computed(observables, compute, _typeInference) {
+		const result = ObservableValue.new(compute(...observables.map(o => o.value)));
+		for (const observable of observables) {
+			observable.onChangeDelayed(() => {result.value = compute(...observables.map(o => o.value))});
+		}
+		return result;
+	}
 }
 
 /**
@@ -228,6 +247,14 @@ const data = (() => {
 		compFlag: ObservableValue.new(init(loaded.compFlag, false)),
 		projectsFlag: ObservableValue.new(init(loaded.projectsFlag, false)),
 		tothFlag: ObservableValue.new(init(loaded.tothFlag, false)),
+		givenFundBonus: ObservableValue.new(init(loaded.givenFundBonus, false)),
+		lastClickTickStamp: ObservableValue.new(init(loaded.lastClickTickStamp, 0)),
+		marginChanged: ObservableValue.new(init(loaded.marginChanged, false)),
+		investLevel: ObservableValue.new(init(loaded.investLevel, 0), updateElement('#investmentLevel')),
+		wonEveryStrategicModelling: ObservableValue.new(init(loaded.wonEveryStrategicModelling, true)),
+		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
+		usedQuantum: ObservableValue.new(init(loaded.usedQuantum, false)),
+		startedTeardown: ObservableValue.new(init(loaded.startedTeardown, false)),
 	};
 	
 	/**
@@ -242,14 +269,21 @@ const data = (() => {
 })();
 
 function saveData() {
-	for (const key in data) {
-		let value = data[key];
+	saveObject('universalPaperclips', data);
+}
+
+/**
+ * @param {string} id
+ * @param {{[k: string]: any}} object
+ */
+function saveObject(id, object) {
+	for (const key in object) {
+		let value = object[key];
 		if (value == null || (typeof value.toJSON === 'function' && value.toJSON() == null)) {
-			alert('Please look at the console');
 			throw new Error('null values can not be saved: ' + key + ': ' + value);
 		}
 	}
-	localStorage.setItem('universalPaperclips', JSON.stringify(data));
+	localStorage.setItem(id, JSON.stringify(object));
 }
 
 /**

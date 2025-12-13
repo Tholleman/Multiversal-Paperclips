@@ -161,14 +161,10 @@ const btnLowerProbeWireElement = document.getElementById("btnLowerProbeWire");
 const btnRaiseProbeCombatElement = document.getElementById("btnRaiseProbeCombat");
 const btnLowerProbeCombatElement = document.getElementById("btnLowerProbeCombat");
 const unusedClipsDisplayElement = document.getElementById("unusedClipsDisplay");
-const clipsElement = document.getElementById("clips");
-const unsoldClipsElement = document.getElementById("unsoldClips");
-const projectListTopElement = document.getElementById("projectListTop");
 const investmentLevelElement = document.getElementById("investmentLevel");
 const driftersKilledElement = document.getElementById('driftersKilled');
 const availableMatterDisplayElement = document.getElementById('availableMatterDisplay');
 const honorDisplayElement = document.getElementById("honorDisplay");
-const clipperCostElement = document.getElementById('clipperCost');
 const acquiredMatterDisplayElement = document.getElementById('acquiredMatterDisplay');
 const probesBornDisplayElement = document.getElementById('probesBornDisplay');
 const probesTotalDisplayElement = document.getElementById('probesTotalDisplay');
@@ -200,7 +196,6 @@ const probeTrustCostDisplayElement = document.getElementById("probeTrustCostDisp
 const mapsElement = document.getElementById('maps');
 const wppsElement = document.getElementById('wpps');
 const swarmEngineElement = document.getElementById("swarmEngine");
-const clipsPerSecDivElement = document.getElementById("clipsPerSecDiv");
 const btnQcomputeElement = document.getElementById("btnQcompute");
 const processorDisplayElement = document.getElementById("processorDisplay");
 const investStratElement = document.getElementById("investStrat");
@@ -213,15 +208,10 @@ const clipmakerLevel2Element = document.getElementById('clipmakerLevel2');
 const nextFactoryUpgradeElement = document.getElementById("nextFactoryUpgrade");
 const nextDroneUpgradeElement = document.getElementById("nextDroneUpgrade");
 const sliderElement = document.getElementById("slider");
-const btnSynchSwarmElement = document.getElementById("btnSynchSwarm");
-const btnEntertainSwarmElement = document.getElementById("btnEntertainSwarm");
 const swarmSizeElement = document.getElementById("swarmSize");
 const swarmStatusElement = document.getElementById("swarmStatus");
 const giftCountdownElement = document.getElementById("giftCountdown");
 const giftTimerElement = document.getElementById("giftTimer");
-const swarmEntertainCostElement = document.getElementById("swarmEntertainCost");
-const entertainButtonDivElement = document.getElementById("entertainButtonDiv");
-const synchButtonDivElement = document.getElementById("synchButtonDiv");
 const swarmStatusDivElement = document.getElementById("swarmStatusDiv");
 const powerProductionRateElement = document.getElementById("powerProductionRate");
 const powerConsumptionRateElement = document.getElementById("powerConsumptionRate");
@@ -567,10 +557,9 @@ let ledger = 0;
 function investUpgrade() {
 	yomi.value -= investUpgradeCost;
 	maxPort += 1;
-	investLevel++;
-	investmentLevelElement.innerHTML = investLevel;
+	data.investLevel.value++;
 	stockGainThreshold += .01;
-	investUpgradeCost = Math.floor(Math.pow(investLevel + 1, 3) * 100);
+	investUpgradeCost = Math.floor(Math.pow(data.investLevel.value + 1, 3) * 100);
 	investUpgradeCostElement.innerHTML = formatWithCommas(investUpgradeCost);
 	displayMessage("Investment engine upgraded, expected profit/loss ratio now " + (stockGainThreshold + "").substring(0, 4));
 }
@@ -902,43 +891,7 @@ function updateSwarm() {
 	if (swarmFlag === 1) {
 		sliderPos = sliderElement.value;
 	}
-	
-	btnSynchSwarmElement.disabled = yomi.value < synchCost;
-	btnEntertainSwarmElement.disabled = creativity.value < entertainCost;
-	
-	if (availableMatter === 0 && (harvesterLevel.value + wireDroneLevel.value) >= 1) {
-		boredomLevel += 1;
-	} else if (availableMatter > 0 && boredomLevel > 0) {
-		boredomLevel -= 1;
-	}
-	
-	if (boredomLevel >= 30000) {
-		boredomFlag = 1;
-		boredomLevel = 0;
-		if (boredomMsg === 0) {
-			displayMessage("No matter to harvest. Inactivity has caused the Swarm to become bored");
-			boredomMsg = 1;
-		}
-	}
-	
-	
-	const droneRatio = Math.max(harvesterLevel.value + 1, wireDroneLevel.value + 1) / Math.min(harvesterLevel.value + 1, wireDroneLevel.value + 1);
-	
-	if (droneRatio < 1.5 && disorgCounter > 1) {
-		disorgCounter -= .01;
-	} else if (droneRatio > 1.5) {
-		disorgCounter += Math.min(0.01, droneRatio / 10000);
-	}
-	
-	
-	if (disorgCounter >= 100) {
-		disorgFlag = 1;
-		if (disorgMsg === 0) {
-			displayMessage("Imbalance between Harvester and Wire Drone levels has disorganized the Swarm");
-			disorgMsg = 1;
-		}
-	}
-	
+
 	const droneTotal = Math.floor(harvesterLevel.value + wireDroneLevel.value);
 	
 	swarmSizeElement.innerHTML = spellf(droneTotal);
@@ -988,10 +941,6 @@ function updateSwarm() {
 		swarmStatus = 6;
 	}
 	
-	if (boredomFlag === 1) {
-		swarmStatus = 3;
-	}
-	
 	if (disorgFlag === 1) {
 		swarmStatus = 5;
 	}
@@ -1015,22 +964,7 @@ function updateSwarm() {
 	} else {
 		giftTimerElement.style.display = "none";
 	}
-	
-	if (swarmStatus === 3) {
-		swarmEntertainCostElement.innerHTML = formatWithCommas(entertainCost);
-		swarmStatusElement.innerHTML = "Bored";
-		entertainButtonDivElement.style.display = "";
-	} else {
-		entertainButtonDivElement.style.display = "none";
-	}
-	
-	if (swarmStatus === 5) {
-		swarmStatusElement.innerHTML = "Disorganized";
-		synchButtonDivElement.style.display = "";
-	} else {
-		synchButtonDivElement.style.display = "none";
-	}
-	
+
 	if (swarmStatus === 6) {
 		swarmStatusElement.innerHTML = "Sleeping";
 	}
@@ -1050,22 +984,6 @@ function updateSwarm() {
 	}
 	
 	
-}
-
-function synchSwarm() {
-	yomi.value -= synchCost;
-	disorgFlag = 0;
-	disorgCounter = 0;
-	disorgMsg = 0;
-	
-}
-
-function entertainSwarm() {
-	creativity.value -= entertainCost;
-	entertainCost += 10000;
-	boredomFlag = 0;
-	boredomLevel = 0;
-	boredomMsg = 0;
 }
 
 // POWER
@@ -1260,10 +1178,7 @@ class CpsTracker {
 const playerClipRate = new CpsTracker(1000, updateHumanClipMakerRate);
 function playerClipClick() {
 	playerClipRate.click();
-	
-	if (dismantle >= 4) {
-		finalClips++;
-	}
+
 	clipClick(1);
 	updateHumanClipMakerRate();
 }
@@ -1340,34 +1255,28 @@ function cheatPrestigeS() {
 function cheatClips() {
 	data.clips.value += 100_000_000;
 	unusedClips += 100_000_000;
-	displayMessage("you just cheated");
 }
 
 function cheatMoney() {
-	funds.value += 10000000;
-	displayMessage("LIZA just cheated");
+	funds.value += 1e9;
 }
 
-function cheatTrust() {
-	trust.value++;
-	displayMessage("Hilary is nice. Also, Liza just cheated");
-}
-
-function cheatOps() {
-	operations.value = memory.value * 10_000;
+function cheatOperations() {
+	operations.value = 1e9;
 	data.operationsNormalizer = -100;
-	displayMessage("you just cheated, Liza");
 }
 
-function cheatCreat() {
+function cheatCreativity() {
 	creativityOn = 1;
-	creativity.value += 100_000;
-	displayMessage("Liza just cheated. Very creative!");
+	if (humanFlag.value) {
+		creativity.value += 50_000;
+	} else {
+		creativity.value += 1e9;
+	}
 }
 
 function cheatYomi() {
-	yomi.value += 1_000_000;
-	displayMessage("you just cheated");
+	yomi.value += 1e9;
 }
 
 function cheatHuman() {
@@ -1648,6 +1557,7 @@ let probeWire = 0;
 let probeWireBaseRate = .000002;
 let probeDescendents = 0;
 let drifterCount = 0;
+const drifterCount$ = spy(10, () => drifterCount);
 let probeTrust = 0;
 let probeUsedTrust = 0;
 let probeDriftBaseRate = .000001;
@@ -1939,14 +1849,14 @@ function drift() {
 
 // DRONES
 
-function acquireMatter() {
+function acquireMatter(ms = 10) {
 	if (availableMatter > 0) {
 		let dbsth = 1;
 		if (droneBoost > 1) {
 			dbsth = droneBoost * Math.floor(harvesterLevel.value);
 		}
 		
-		let mtr = powMod * dbsth * Math.floor(harvesterLevel.value) * harvesterRate;
+		let mtr = powMod * dbsth * Math.floor(harvesterLevel.value) * harvesterRate * (ms / 10);
 		mtr *= ((200 - sliderPos) / 100);
 		
 		if (mtr > availableMatter) {
@@ -1958,20 +1868,20 @@ function acquireMatter() {
 		availableMatterDisplayElement.innerHTML = spellf(availableMatter);
 		acquiredMatterDisplayElement.innerHTML = spellf(acquiredMatter);
 		
-		mapsElement.innerHTML = spellf(mtr * 100);
+		mapsElement.innerHTML = spellf(mtr * 100 / (ms / 10));
 	} else {
 		mapsElement.innerHTML = '0';
 	}
 }
 
-function processMatter() {
+function processMatter(ms = 10) {
 	if (acquiredMatter > 0) {
 		let dbstw = 1;
 		if (droneBoost > 1) {
 			dbstw = droneBoost * Math.floor(wireDroneLevel.value);
 		}
 		
-		let a = powMod * dbstw * Math.floor(wireDroneLevel.value) * wireDroneRate;
+		let a = powMod * dbstw * Math.floor(wireDroneLevel.value) * wireDroneRate * (ms / 10);
 		a *= ((200 - sliderPos) / 100);
 		if (a > acquiredMatter) {
 			a = acquiredMatter;
@@ -1981,12 +1891,20 @@ function processMatter() {
 		wire.value += a;
 		acquiredMatterDisplayElement.innerHTML = spellf(acquiredMatter);
 		
-		wppsElement.innerHTML = spellf(a * 100);
+		wppsElement.innerHTML = spellf(a * 100 / (ms / 10));
 	} else {
 		wppsElement.innerHTML = '0';
 	}
 }
 
+function workFactories(ms = 10) {
+	let fbst = 1;
+	if (factoryBoost > 1) {
+		fbst = factoryBoost * factoryLevel.value;
+	}
+
+	clipClick(powMod * fbst * (Math.floor(factoryLevel.value) * factoryRate) * (ms / 10));
+}
 
 // CHECK FOR SAVES
 
@@ -2036,14 +1954,7 @@ window.setInterval(function () {
 		processMatter();
 	}
 // Then Factories
-	let fbst = 1;
-	if (factoryBoost > 1) {
-		fbst = factoryBoost * factoryLevel.value;
-	}
-	
-	if (dismantle < 4) {
-		clipClick(powMod * fbst * (Math.floor(factoryLevel.value) * factoryRate));
-	}
+	workFactories();
 
 // Then Other Probe Functions
 	if (spaceFlag === 1) {
@@ -2062,10 +1973,8 @@ window.setInterval(function () {
 	}
 
 // Auto-Clipper
-	if (dismantle < 4) {
-		clipClick(data.clipperBoost.value * (clipmakerLevel.value / 100));
-		clipClick(data.megaClipperBoost.value * (data.megaClipperLevel.value * 5));
-	}
+	clipClick(data.clipperBoost.value * (clipmakerLevel.value / 100));
+	clipClick(data.megaClipperBoost.value * (data.megaClipperLevel.value * 5));
 
 // Creativity
 	if (creativityOn && operations.value >= (memory.value * 1000)) {
@@ -2123,7 +2032,6 @@ function refresh() {
 	secValueElement.innerHTML = formatWithCommas(secTotal);
 	portValueElement.innerHTML = formatWithCommas(portTotal);
 	investUpgradeCostElement.innerHTML = formatWithCommas(investUpgradeCost);
-	investmentLevelElement.innerHTML = investLevel;
 	prestigeScounterElement.innerHTML = String(prestigeS + 1);
 	prestigeYcounterElement.innerHTML = String(prestigeY + 1);
 	newTourneyCostElement.innerHTML = formatWithCommas(tourneyCost);
@@ -2142,25 +2050,11 @@ timerHandler.addTimer(25e3, save);
 
 function save() {
 	saveData();
+	saveAdvancements();
 	const saveGame = {
-		dismantle: dismantle,
-		endTimer1: endTimer1,
-		endTimer2: endTimer2,
-		endTimer3: endTimer3,
-		endTimer4: endTimer4,
-		endTimer5: endTimer5,
-		endTimer6: endTimer6,
-		
-		finalClips: finalClips,
-		
 		wirePriceTimer: wirePriceTimer,
 		driftKingMessageCost: driftKingMessageCost,
 		sliderPos: sliderPos,
-		
-		entertainCost: entertainCost,
-		boredomLevel: boredomLevel,
-		boredomFlag: boredomFlag,
-		boredomMsg: boredomMsg,
 		
 		unitSize: unitSize,
 		driftersKilled: driftersKilled,
@@ -2225,7 +2119,6 @@ function save() {
 		clipsSold: clipsSold,
 		ticks: ticks,
 		marketingLvl: marketingLvl.value,
-		x: x,
 		clippperCost: clippperCost,
 		processors: processors.value,
 		memory: memory.value,
@@ -2286,7 +2179,6 @@ function save() {
 		sellDelay: sellDelay,
 		riskiness: riskiness,
 		maxPort: maxPort,
-		investLevel: investLevel,
 		investUpgradeCost: investUpgradeCost,
 		stockGainThreshold: stockGainThreshold,
 		ledger: ledger,
@@ -2336,27 +2228,12 @@ function load() {
 	if (loadGame === null) return;
 	const loadProjects = JSON.parse(localStorage.getItem("saveProjects"));
 	const loadTournament = JSON.parse(localStorage.getItem("saveTournament"));
-	
-	dismantle = loadGame.dismantle;
-	endTimer1 = loadGame.endTimer1;
-	endTimer2 = loadGame.endTimer2;
-	endTimer3 = loadGame.endTimer3;
-	endTimer4 = loadGame.endTimer4;
-	endTimer5 = loadGame.endTimer5;
-	endTimer6 = loadGame.endTimer6;
-	
-	finalClips = loadGame.finalClips;
-	
+
 	wirePriceTimer = loadGame.wirePriceTimer;
 	driftKingMessageCost = loadGame.driftKingMessageCost;
 	sliderPos = loadGame.sliderPos;
 	sliderElement.value = sliderPos;
-	
-	entertainCost = loadGame.entertainCost;
-	boredomLevel = loadGame.boredomLevel;
-	boredomFlag = loadGame.boredomFlag;
-	boredomMsg = loadGame.boredomMsg;
-	
+
 	unitSize = loadGame.unitSize;
 	driftersKilled = loadGame.driftersKilled;
 	battleEndTimer = loadGame.battleEndTimer;
@@ -2420,7 +2297,6 @@ function load() {
 	clipsSold = loadGame.clipsSold;
 	ticks = loadGame.ticks;
 	marketingLvl.value = loadGame.marketingLvl;
-	x = loadGame.x;
 	clippperCost = loadGame.clippperCost;
 	processors.value = loadGame.processors;
 	memory.value = loadGame.memory;
@@ -2492,7 +2368,6 @@ function load() {
 			break;
 	}
 	maxPort = loadGame.maxPort;
-	investLevel = loadGame.investLevel;
 	investUpgradeCost = loadGame.investUpgradeCost;
 	stockGainThreshold = loadGame.stockGainThreshold;
 	ledger = loadGame.ledger;

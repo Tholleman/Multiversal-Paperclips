@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="interface.css" />
-	<title>Universal Paperclips</title>
+	<title>Multiversal Paperclips</title>
 	<script type="module" src="js/moduleMigration.mjs"></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
 		<li></li>
 		<li></li>
 		<li></li>
-		<li>Welcome to Universal Paperclips</li>
+		<li>Welcome to Multiversal Paperclips</li>
 	</ul>
 	<div class="buttonBar" style="width: max-content;">
 		<button class="satisfying small settingButton" onclick="save()" id="save">
@@ -40,7 +40,9 @@
 <div class="fullHeight">
 	<div id="topDiv">
 		<div id="prestigeDiv">
-			Universe: <span id="prestigeUcounter">0</span> / Sim Level: <span id="prestigeScounter">0</span> / Competitiveness: <span id="prestigeYcounter">0</span>
+			Universe: <span id="prestigeUcounter">0</span> /
+			Sim Level: <span id="prestigeScounter">0</span> /
+			Competitiveness: <span id="prestigeYcounter">0</span>
 		</div>
 		<div id="totalCounter">
 			<span id="clipCountCrunched" class="toolTip">total clips produced</span>
@@ -214,11 +216,12 @@
 					</p>
 				</div>
 				<p class="alternateSplit">
-					<span>Available Matter: <span id="availableMatterDisplay" class="number">0</span> g</span> <span><span id="mdpsDiv">(<span
-						id="mdps" class="number">0</span> g per sec)</span></span>
-					<span>Acquired Matter: <span id="acquiredMatterDisplay" class="number">0</span> g</span> <span>(<span id="maps"
-						class="number">0</span> g per sec)</span>
-					<span>Wire: <span id="nanoWire" class="number">0</span> inches</span> <span>(<span id="wpps" class="number">0</span> inches per sec)</span>
+					<span>Available Matter: <span id="availableMatterDisplay" class="number">0</span> g</span>
+					<span><span id="mdpsDiv">(<span id="mdps" class="number">0</span> g per sec)</span></span>
+					<span>Acquired Matter: <span id="acquiredMatterDisplay" class="number">0</span> g</span>
+					<span>(<span id="maps" class="number">0</span> g per sec)</span>
+					<span>Wire: <span id="nanoWire" class="number">0</span> inches</span>
+					<span>(<span id="wpps" class="number">0</span> inches per sec)</span>
 				</p>
 				<div id="harvesterDiv">
 					<div class="mb-standard hasAmountPicker">
@@ -440,7 +443,7 @@
 					</tbody>
 				</table>
 			</details>
-			<details id="powerDiv">
+			<details id="powerDiv" open>
 				<summary><h2>Power</h2></summary>
 				<p>Factory/Drone Performance: <span id="performance" class="number">0</span>%</p>
 				<table>
@@ -528,6 +531,17 @@
 							<span class="front">🗑</span>
 						</button>
 					</div>
+				</div>
+				<div id="powerSurgeContainer" class="mb-standard buttonBar toUnlock">
+					<button class="satisfying small" id="powerSurge" onclick="powerSurge()">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Power Surge</h3>
+							<p><span id="powerSurgeDuration">0 seconds</span></p>
+							<p class="cost"><span id="powerSurgeCost">1,000% performance</span></p>
+						</span>
+					</button>
 				</div>
 			</details>
 			<details id="probeDesignDiv" open>
@@ -789,15 +803,6 @@
 					Drones: <span id="swarmSize" class="number">0</span><br />
 					<div id="swarmStatusDiv">Status: <span id="swarmStatus">x </span></div>
 					<div id="giftTimer">Next gift in <span id="giftCountdown" class="number">Infinity Hours</span></div>
-					<div id="entertainButtonDiv">
-						<button class="button2" id="btnEntertainSwarm" onclick="entertainSwarm()">Entertain the Swarm
-						</button>
-						<br /> Cost: <span id="swarmEntertainCost">0</span> creat
-					</div>
-					<div id="synchButtonDiv">
-						<button class="button2" id="btnSynchSwarm" onclick="synchSwarm()">Synchronize the Swarm</button>
-						<br /> Cost: <span>5,000</span> yomi
-					</div>
 				</div>
 				<div id="swarmSliderDiv">
 					<div id="sliderLabelWork">Work</div>
@@ -928,6 +933,112 @@
 						</tr>
 					</table>
 				</div>
+			</details>
+			<details id="prestigiousUpgrade" class="toUnlock" open>
+				<summary><h2>Prestigious Upgrade</h2></summary>
+				<div class="buttonBar vertical">
+					<button id="prestigiousUpgradeClickLink" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Visit the original</h3>
+							<p>Personalized accent colors</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeBeg" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Beg for Wire</h3>
+							<p>Increase starting capital</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeAFK" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Change nothing for 1 hour</h3>
+							<p>Power surge: use all power in batteries to skip forward in time</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeUnchanged" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Don't change the price of paperclips</h3>
+							<p>New unlock that auto adjusts the price</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeTrading" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Reach Investment Engine Level 20</h3>
+							<p>New unlock for leveraged loans</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeWinner" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Always win strategic modelling</h3>
+							<p>Improve the consecutive drone combat odds</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeNoPrestige" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>No prestige run</h3>
+							<p>Allows re-specialization of prestige</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeNightRun" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Night run</h3>
+							<p>Immediately have momentum unlocked</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeNoQuantum" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Don't manually compute ops</h3>
+							<p>Change the unobservant unlock to auto pause right before the big wave</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeAgainstTheOdds" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Win after being outnumbered in total drones</h3>
+							<p>Combine Von Neumann speed & Exploration, and Harvester & Wire Drones</p>
+						</span>
+					</button>
+					<button id="prestigiousUpgradeSpeedrun" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Win within 30 minutes</h3>
+							<p>Make paperclips 10 at a time</p>
+						</span>
+					</button>
+<!--					<button id="prestigiousUpgradeGrinch" class="satisfying projectButton">-->
+<!--						<span class="shadow"></span>-->
+<!--						<span class="edge"></span>-->
+<!--						<span class="front">-->
+<!--							<h3>Obtain no gifts</h3>-->
+<!--							<p>Always have auto gifts unlocked</p>-->
+<!--							<p class="cost"></p>-->
+<!--						</span>-->
+<!--					</button>-->
+				</div>
+			</details>
+			<details id="challengeRun" class="toUnlock" open>
+				<summary><h2>Challenge Runs</h2></summary>
+				
 			</details>
 		</div>
 	</main>

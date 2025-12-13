@@ -43,6 +43,12 @@ class Terminal {
 		this.addLine(attributes);
 	}
 	
+	printHtml(html) {
+		this.#head = undefined;
+		this.#ul.firstElementChild.remove();
+		this.addLine({innerHTML: html});
+	}
+	
 	/**
 	 * @param {string} line 
 	 */
