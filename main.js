@@ -302,9 +302,21 @@ data.observeQuantum.onTrue(() => {
 });
 data.observeQuantum.onChange(updateElement('#btnQFreeze h3', value => value ? 'Stop observing' : 'Observe'))
 
+let autoUnobserved = false;
 function quantumCycle() {
-	if (data.observeQuantum.isFalse) return;
+	if (data.observeQuantum.isFalse) {
+		return;
+	}
 	qClock += .01;
+	if (qClock / Math.PI % 20 < 1) {
+		if (advancements.noQuantum.value === 'ACTIVE' && !autoUnobserved) {
+			autoUnobserved = true;
+			data.observeQuantum.value = false;
+			return;
+		}
+	} else {
+		autoUnobserved = false;
+	}
 	for (let i = 0; i < qChips.length; i++) {
 		if (qChips[i].active === 0) break;
 		qChips[i].value = Math.sin(qClock * qChips[i].waveSeed * qChips[i].active);
