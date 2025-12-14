@@ -203,18 +203,15 @@ function* teardownSteps() {
 	});
 	while (!isCompleted('disassembleSwarm')) yield busyWaitTime;
 	clips.innerHTML = addBreaksAtComma('29,999,999,999,999,999,999,999,999,999,000,000,000,000,000,000,000,000,000');
-	while (harvesterLevel.value > 0) {
+	while (harvesterLevel.value > 0 && wireDroneLevel.value > 0) {
 		if (harvesterLevel.value > 100) {
 			harvesterLevel.value /= 2;
-		} else {
+		} else if (harvesterLevel.value > 0) {
 			harvesterLevel.value = Math.max(0, harvesterLevel.value - 1);
 		}
-		yield 50;
-	}
-	while (wireDroneLevel.value > 0) {
 		if (wireDroneLevel.value > 100) {
 			wireDroneLevel.value /= 2;
-		} else {
+		} else if (wireDroneLevel.value > 0) {
 			wireDroneLevel.value = Math.max(0, wireDroneLevel.value - 1);
 		}
 		yield 50;
@@ -430,9 +427,11 @@ export function playerTeardown() {
 		wire.value = 0;
 		return;
 	}
+	
 	wire.value--;
 	finalClips++;
-	clips.innerHTML = addBreaksAtComma('29,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,9' + finalClips);
+	const digits=Intl.NumberFormat('en-US', {minimumIntegerDigits: 2}).format(finalClips);
+	clips.innerHTML = addBreaksAtComma('29,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,999,9' + digits);
 }
 
 function hideElement(selector) {

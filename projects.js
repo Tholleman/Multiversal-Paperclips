@@ -1341,17 +1341,6 @@ addProject('hazardReduction', {
 		operations.value -= 125000;
 	}
 });
-addProject('rebootSwarm', {
-	title: "Reboot the Swarm",
-	priceTag: "(100,000 ops)",
-	description: "Turn the swarm off and then turn it back on again  ",
-	trigger: () => spaceFlag === 1 && harvesterLevel.value + wireDroneLevel.value >= 2,
-	cost: () => operations.value >= 100000,
-	effect: function () {
-		displayMessage("Swarm computing back online");
-		operations.value -= 100000;
-	}
-});
 addProject('combat', {
 	title: "Combat",
 	priceTag: "(150,000 ops)",

@@ -224,6 +224,7 @@ const data = (() => {
 	const loaded = JSON.parse(localStorage.getItem('universalPaperclips')) ?? {};
 	const data = {
 		mute: new ObservableBoolean(init(loaded.mute, false)),
+		folding: init(loaded.folding, castObject({}, true)),
 		clips: ObservableValue.new(init(loaded.clips, 0), [
 			updateElement('#clipCountCrunched', value => spellf(Math.round(value))),
 			updateElement('#clips', value => addBreaksAtComma(formatClips(Math.ceil(value)))),
@@ -307,6 +308,16 @@ const data = (() => {
 	 * @return {T[]}
 	 */
 	function castArray(value, _inferType) {
+		return value;
+	}
+	
+	/**
+	 * @template T
+	 * @param {*} value
+	 * @param {T} _valueType
+	 * @return {{key: T}}
+	 */
+	function castObject(value, _valueType) {
 		return value;
 	}
 	

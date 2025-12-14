@@ -89,6 +89,21 @@ function buttonSetup(button) {
 }
 setInterval(() => document.querySelectorAll('.enter').forEach(el => el.classList.remove('enter')), 10e3);
 
+for (let detail of document.querySelectorAll('details')) {
+	if (detail.id == null) {
+		console.warn('No id in', detail)
+		continue;
+	}
+	if (data.folding[detail.id] == null) {
+		data.folding[detail.id] = detail.open;
+	} else {
+		detail.open = data.folding[detail.id];
+	}
+	detail.addEventListener('toggle', (ev) => {
+		data.folding[detail.id] = ev.newState === 'open';
+	});
+}
+
 // Cache all DOM elements
 const mpdsDivElement = document.getElementById("mdpsDiv");
 const swarmSliderDivElement = document.getElementById("swarmSliderDiv");
@@ -642,10 +657,6 @@ function updateSwarm() {
 		swarmStatus = 6;
 	} else {
 		swarmStatus = 0;
-	}
-	
-	if (spaceFlag === 1 && !isCompleted('rebootSwarm')) {
-		swarmStatus = 9;
 	}
 	
 	if (droneTotal === 0) {

@@ -315,19 +315,6 @@
 			<details id="spaceDiv" open>
 				<summary><h2>Space Exploration</h2></summary>
 				<span id="colonizedDisplay" class="number">0</span>% of universe explored
-				<div id="probeDiv">
-					<p>
-						<button class="satisfying" id="btnMakeProbe" onclick="makeProbe()">
-							<span class="shadow"></span>
-							<span class="edge"></span>
-							<span class="front">
-								<h3>Launch Probe</h3>
-								<p class="cost"><span id="probeCostDisplay">0</span> clips</p>
-							</span>
-						</button>
-					</p>
-				</div>
-				
 				
 				<table>
 					<tr>
@@ -464,7 +451,7 @@
 					</tbody>
 				</table>
 			</details>
-			<details id="powerDiv" open>
+			<details id="powerDiv">
 				<summary><h2>Power</h2></summary>
 				<p>Factory/Drone Performance: <span id="performance" class="number">0</span>%</p>
 				<table>
@@ -726,16 +713,6 @@
 						</div>
 						<div>
 							<div class="buttonBar" id="probeIncreaseButtons">
-								<div id="increaseProbeTrustDiv">
-									<button class="satisfying" id="btnIncreaseProbeTrust" onclick="increaseProbeTrust()">
-										<span class="shadow"></span>
-										<span class="edge"></span>
-										<span class="front">
-											<h3>Increase Probe Trust</h3>
-											<p class="cost"><span id="probeTrustCostDisplay">0</span> yomi</p>
-										</span>
-									</button>
-								</div>
 								<div id="increaseMaxTrustDiv">
 									<button class="satisfying" id="btnIncreaseMaxTrust" onclick="increaseMaxTrust()">
 										<span class="shadow"></span>
@@ -746,6 +723,24 @@
 										</span>
 									</button>
 								</div>
+								<div id="increaseProbeTrustDiv">
+									<button class="satisfying" id="btnIncreaseProbeTrust" onclick="increaseProbeTrust()">
+										<span class="shadow"></span>
+										<span class="edge"></span>
+										<span class="front">
+											<h3>Increase Probe Trust</h3>
+											<p class="cost"><span id="probeTrustCostDisplay">0</span> yomi</p>
+										</span>
+									</button>
+								</div>
+								<button class="satisfying" id="btnMakeProbe" onclick="makeProbe()">
+									<span class="shadow"></span>
+									<span class="edge"></span>
+									<span class="front">
+										<h3>Launch Probe</h3>
+										<p class="cost"><span id="probeCostDisplay">0</span> clips</p>
+									</span>
+								</button>
 							</div>
 						</div>
 					</div>
