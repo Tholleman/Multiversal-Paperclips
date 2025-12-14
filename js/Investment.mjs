@@ -151,7 +151,7 @@ function generateSymbol() {
 		for (let i = 0; i < ltrNum; i++) {
 			name = name.concat(alphabet[Math.floor(Math.random() * alphabet.length)]);
 		}
-	} while (data.stocks.list.value.every(stock => stock.symbol !== name));
+	} while (data.stocks.list.value.some(stock => stock.symbol === name));
 	return name;
 }
 
