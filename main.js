@@ -332,6 +332,7 @@ function qComp() {
 		qCompDisplayElement.innerHTML = "Need Photonic Chips";
 		return;
 	}
+	data.advancementTracking.usedQuantum.value = true;
 	const totalQValue = qChips.reduce((acc, curr) => acc + curr.value, 0) * 360;
 	qCompDisplayElement.innerHTML = "qOps: " + formatWithCommas(Math.ceil(totalQValue));
 	const capacity = memory.value * 1000;

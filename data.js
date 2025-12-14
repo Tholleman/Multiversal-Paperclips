@@ -120,7 +120,7 @@ class ObservableValue {
 		}
 		lambda();
 	}
-
+	
 	/**
 	 * @template A
 	 * @template B
@@ -135,7 +135,7 @@ class ObservableValue {
 	static computed(observables, compute, _typeInference) {
 		const result = ObservableValue.new(compute(...observables.map(o => o.value)));
 		for (const observable of observables) {
-			observable.onChangeDelayed(() => {result.value = compute(...observables.map(o => o.value))});
+			observable.onChangeDelayed(() => {result.value = compute(...observables.map(o => o.value));});
 		}
 		return result;
 	}
@@ -253,10 +253,12 @@ const data = (() => {
 		investLevel: ObservableValue.new(init(loaded.investLevel, 1), updateElement('#investmentLevel')),
 		wonEveryStrategicModelling: ObservableValue.new(init(loaded.wonEveryStrategicModelling, true)),
 		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
-		usedQuantum: ObservableValue.new(init(loaded.usedQuantum, false)),
 		startedTeardown: ObservableValue.new(init(loaded.startedTeardown, false)),
 		loaned: ObservableValue.new(init(loaded.loaned, 0)),
 		investmentEngineFlag: ObservableValue.new(init(loaded.investmentEngineFlag, false)),
+		advancementTracking: loadSection(loaded.advancementTracking, advancementTracking => ({
+			usedQuantum: ObservableValue.new(init(advancementTracking.usedQuantum, false)),
+		})),
 	};
 	
 	/**
@@ -267,6 +269,16 @@ const data = (() => {
 	 */
 	function init(loaded, def) {
 		return loaded ?? def;
+	}
+	
+	/**
+	 * @Template T
+	 * @param {Object} loaded
+	 * @param {(Object) => T} fn
+	 * @return {T}
+	 */
+	function loadSection(loaded, fn) {
+		return fn(loaded ?? {});
 	}
 })();
 
@@ -279,13 +291,20 @@ function saveData() {
  * @param {{[k: string]: any}} object
  */
 function saveObject(id, object) {
-	for (const key in object) {
-		let value = object[key];
-		if (value == null || (typeof value.toJSON === 'function' && value.toJSON() == null)) {
-			throw new Error('null values can not be saved: ' + key + ': ' + value);
+	verifyObject(object);
+	localStorage.setItem(id, JSON.stringify(object));
+	
+	function verifyObject(object) {
+		for (const key in object) {
+			let value = object[key];
+			if (value == null || (typeof value.toJSON === 'function' && value.toJSON() == null)) {
+				throw new Error('null values can not be saved: ' + key + ': ' + value);
+			}
+			if (typeof value === 'object') {
+				verifyObject(value);
+			}
 		}
 	}
-	localStorage.setItem(id, JSON.stringify(object));
 }
 
 /**

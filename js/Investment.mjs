@@ -1,5 +1,5 @@
 import {advancements} from './teardown.mjs';
-import {unlockElement, withElement} from './view.mjs';
+import {getElement, unlockElement, withElement} from './view.mjs';
 
 export function leveragedLoan() {
 	funds.value += portTotal;
@@ -28,6 +28,7 @@ data.investmentEngineFlag.onChange(value => {
 })
 
 if (advancements.trading.value === 'ACTIVE') {
+	getElement('#depositLabel').innerText = 'Deposit (non-loaned)'
 	getProject('bribe1').priceTag = '($500,000, no loan)';
 	getProject('bribeX').priceTag = '($' + formatWithCommas(bribe) + ', no loan)';
 }
