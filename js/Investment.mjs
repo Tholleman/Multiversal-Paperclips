@@ -40,7 +40,7 @@ export function investUpgrade() {
 
 const investBtn = document.getElementById('btnInvest');
 ObservableValue.onAnyChange([funds, data.loaned], (funds, loaned) => {
-	investBtn.disabled = funds > loaned;
+	investBtn.disabled = funds <= loaned;
 });
 
 export function investDeposit() {
@@ -272,7 +272,7 @@ data.investmentEngineFlag.onChange(value => {
 if (advancements.trading.value === 'ACTIVE') {
 	getElement('#depositLabel').innerText = 'Deposit (non-loaned)';
 	getProject('bribe1').priceTag = '($500,000, no loan)';
-	getProject('bribeX').priceTag = '($' + formatWithCommas(bribe) + ', no loan)';
+	getProject('bribeX').priceTag = '($' + formatWithCommas(data.bribe.value) + ', no loan)';
 }
 
 data.loaned.onChange(withElement('#leveragedLoan', (el, loan) => {

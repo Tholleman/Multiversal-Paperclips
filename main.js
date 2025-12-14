@@ -1811,9 +1811,6 @@ function save() {
 		wirePriceCounter: wirePriceCounter,
 		wireBasePrice: wireBasePrice,
 		
-		egoFlag: egoFlag,
-		
-		incomeTracker: incomeTracker.slice(0),
 		qChips: qChips.slice(0),
 		battleNumbers: battleNumbers.slice(0),
 		
@@ -1882,7 +1879,6 @@ function save() {
 		qClock: qClock,
 		qChipCost: qChipCost,
 		nextQchip: nextQchip,
-		bribe: bribe,
 		battleFlag: battleFlag,
 		
 		tourneyCost: tourneyCost,
@@ -1977,9 +1973,6 @@ function load() {
 	wirePriceCounter = loadGame.wirePriceCounter;
 	wireBasePrice = loadGame.wireBasePrice;
 	
-	egoFlag = loadGame.egoFlag;
-	
-	incomeTracker = loadGame.incomeTracker;
 	qChips = loadGame.qChips;
 	battleNumbers = loadGame.battleNumbers;
 	
@@ -2048,7 +2041,6 @@ function load() {
 	qClock = loadGame.qClock;
 	qChipCost = loadGame.qChipCost;
 	nextQchip = loadGame.nextQchip;
-	bribe = loadGame.bribe;
 	battleFlag = loadGame.battleFlag;
 	
 	tourneyCost = loadGame.tourneyCost;
@@ -2081,7 +2073,7 @@ function load() {
 	probeLaunchLevel = loadGame.probeLaunchLevel;
 	probeCost = loadGame.probeCost;
 	
-	getProject('bribeX').priceTag = "($" + formatWithCommas(bribe) + ")";
+	getProject('bribeX').priceTag = "($" + formatWithCommas(data.bribe.value) + ")";
 	getProject('qChip').priceTag = "(" + qChipCost + " ops)";
 	
 	for (let id in loadProjects) {

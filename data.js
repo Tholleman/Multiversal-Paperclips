@@ -26,15 +26,6 @@ class ObservableValue {
 	}
 	
 	/**
-	 * @template Type
-	 * @param {Type} [_typeInference]
-	 * @return ObservableValue<Type[]>
-	 */
-	static newArray(_typeInference) {
-		return ObservableValue.new([]);
-	}
-	
-	/**
 	 * @param {Type} value
 	 * @param {((value: Type) => void) | ((value: Type) => void)[]} observers
 	 */
@@ -237,6 +228,7 @@ const data = (() => {
 			updateElement('#clipCountCrunched', value => spellf(Math.round(value))),
 			updateElement('#clips', value => addBreaksAtComma(formatClips(Math.ceil(value)))),
 		]),
+		bribe: ObservableValue.new(init(loaded.bribe, 1_000_000)),
 		wireBuyerStatus: new ObservableBoolean(init(loaded.wireBuyerStatus, true)),
 		operationsNormalizer: init(loaded.operationsNormalizer, 0),
 		observeQuantum: new ObservableBoolean(init(loaded.observeQuantum, true)),
@@ -266,15 +258,15 @@ const data = (() => {
 			usedQuantum: ObservableValue.new(init(advancementTracking.usedQuantum, false)),
 		})),
 		stocks: loadSection(loaded.stocks, stocks => ({
-			investLevel: ObservableValue.new(init(loaded.investLevel, 1), updateElement('#investmentLevel')),
-			list: ObservableValue.newArray(init(stocks.list, {
+			investLevel: ObservableValue.new(init(stocks.investLevel, 1), updateElement('#investmentLevel')),
+			list: ObservableValue.new(init(stocks.list, castArray([], {
 				symbol: '',
 				price: 0,
 				amount: 0,
 				total: 0,
 				profit: 0,
 				riskiness: 0,
-			})),
+			}))),
 			maxPortfolio: ObservableValue.new(init(stocks.maxPortfolio, 3)),
 			bankroll: ObservableValue.new(init(stocks.bankroll, 0)),
 			secTotal: ObservableValue.new(init(stocks.secTotal, 0)),
@@ -296,6 +288,26 @@ const data = (() => {
 	 */
 	function init(loaded, def) {
 		return loaded ?? def;
+	}
+	
+	/**
+	 * @template T
+	 * @param {*} value
+	 * @param {T} _inferType
+	 * @return {T}
+	 */
+	function cast(value, _inferType) {
+		return value;
+	}
+	
+	/**
+	 * @template T
+	 * @param {*} value
+	 * @param {T} _inferType
+	 * @return {T[]}
+	 */
+	function castArray(value, _inferType) {
+		return value;
 	}
 	
 	/**

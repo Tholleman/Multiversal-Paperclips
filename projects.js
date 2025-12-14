@@ -1029,16 +1029,16 @@ addProject('bribe1', {
 });
 addProject('bribeX', {
 	title: "Another Token of Goodwill...",
-	priceTag: "($" + formatWithCommas(bribe) + ")",
+	priceTag: "($" + formatWithCommas(data.bribe.value) + ")",
 	description: "Another small gift to the supervisors. (+1 Trust)",
 	trigger: () => isCompleted('bribe1') && trust.value < 100,
-	cost: () => funds.value >= bribe && data.loaned.value === 0,
+	cost: () => funds.value >= data.bribe.value && data.loaned.value === 0,
 	effect: function () {
 		displayMessage("Gift accepted, TRUST INCREASED");
-		funds.value -= bribe;
-		bribe *= 2;
+		funds.value -= data.bribe.value;
+		data.bribe.value *= 2;
 		const loanWarning = advancements.trading.value === 'ACTIVE' ? ', no loan' : '';
-		this.priceTag = "($" + formatWithCommas(bribe) + loanWarning + ")";
+		this.priceTag = "($" + formatWithCommas(data.bribe.value) + loanWarning + ")";
 		trust.value++;
 		if (trust.value < 100) {
 			this.uses = 1;
@@ -1063,7 +1063,7 @@ addProject('stratInterest', {
 	title: 'Cash interest',
 	priceTag: '(10,000 yomi)',
 	description: 'Gain 2% interest on uninvested money',
-	trigger: () => data.stocks.investLevel.value >= 3,
+	trigger: () => data.stocks.investLevel.value >= 5,
 	cost: () => yomi.value >= 10_000,
 	effect() {
 		displayMessage('Let\'s not worry about inflation when we can print money');

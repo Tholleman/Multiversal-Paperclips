@@ -21,7 +21,6 @@ const wireCost = ObservableValue.new(20, updateElement('#wireCost'));
 const demand = ObservableValue.new(5);
 var clipsSold = 0;
 var income = 0;
-var incomeTracker = [0];
 var ticks = 0;
 const marketingLvl = ObservableValue.new(1, updateElement('#marketingLvl'));
 const marketingLvl_adCost = ObservableValue.new(100, updateElement('#adCost', value => formatWithCommas(value, 2)));
@@ -70,15 +69,12 @@ let foundMatter = availableMatter;
 let qClock = 0;
 let qChipCost = 10000;
 let nextQchip = 0;
-let bribe = 1000000;
 let battleFlag = 0;
 const yomi = ObservableValue.new(0, updateElement('#yomiDisplay', formatWithCommas));
 
 const prestigeU = ObservableValue.new(0, updateElement('#prestigeUcounter', prestigeU => prestigeU + 1));
 var prestigeS = 0;
 var prestigeY = 0;
-
-var egoFlag = 0;
 
 var wirePriceCounter = 0;
 var wireBasePrice = 20;
