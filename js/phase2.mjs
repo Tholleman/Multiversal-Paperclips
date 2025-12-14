@@ -1,10 +1,10 @@
-import {unlockElement, withElement} from "./view.mjs";
-import {advancements} from "./teardown.mjs";
+import {unlockElement, withElement} from './view.mjs';
+import {advancements} from './teardown.mjs';
 
 const unusedClipsSpy = spy(10, () => unusedClips);
 
 data.tothFlag.onChange(value => {
-	tothDivElement.style.display = value ? '' : "none";
+	tothDivElement.style.display = value ? '' : 'none';
 });
 
 ObservableValue.onAnyChange([harvesterLevel, wireDroneLevel], () => {
@@ -26,10 +26,12 @@ data.maxDrones.onChange(withElement('#droneUpgradeDisplay', withElement('#nextDr
 })));
 
 class Resource {
+	/** @type {ObservableValue<number>} */
 	#amount;
+	/** @type {ObservableValue<number>} */
 	#cost;
 	#saveData;
-
+	
 	/**
 	 * @param {{
 	 * 	current: ObservableValue<number>,
@@ -57,46 +59,38 @@ class Resource {
 	 */
 	constructor(saveData, settings, selectors, text) {
 		this.#saveData = saveData;
-		this.#cost = computed([saveData.current, saveData.amount], () => {
-				if (saveData.amount.value === 0) {
-					return -saveData.bill.value;
-				}
-				const currentAmount=saveData.current.value;
-				let sum = currentAmount === 0 ? settings.startingCost : Math.pow(currentAmount + 1, settings.growthRate) * settings.multiplier;
-				if (saveData.amount.value === 1) {
-					return sum;
-				}
-				const end = saveData.amount.value + currentAmount;
-				let calculatedAmount = currentAmount + 1;
-				while (calculatedAmount < end) {
-					sum += Math.pow(++calculatedAmount, settings.growthRate) * settings.multiplier;
-				}
-				return sum;
-			},
+		this.#cost = ObservableValue.computed([saveData.current, saveData.amount], (currentAmount, toAdd) => {
+			if (toAdd === 0) {
+				return -saveData.bill.value;
+			}
+			let sum = currentAmount === 0 ? settings.startingCost : Math.pow(currentAmount + 1, settings.growthRate) * settings.multiplier;
+			const end = toAdd + currentAmount;
+			let calculatedAmount = currentAmount + 1;
+			while (calculatedAmount < end) {
+				sum += Math.pow(++calculatedAmount, settings.growthRate) * settings.multiplier;
+			}
+			return sum;
+		}, 0).onChange(
 			withElement(selectors.cost, (costEl, value) => {
 				if (value <= 0) {
-					costEl.innerText=`+${spellf(-value)}`;
+					costEl.innerText = `+${spellf(-value)}`;
 					return;
 				}
-				costEl.innerText=spellf(value);
-			})
+				costEl.innerText = spellf(value);
+			}),
 		);
-		this.#amount = computed([saveData.current, saveData.amount], () => {
-			if (saveData.amount.value === 0) {
-				return -saveData.current.value;
-			}
-			return saveData.amount.value;
-		});
+		this.#amount = ObservableValue.computed([saveData.current, saveData.amount],
+		                                        (currentAmount, toAdd) => toAdd === 0 ? -currentAmount : toAdd);
 		ObservableValue.onAnyChange([saveData.amount], withElement(selectors.action, label => {
 			switch (saveData.amount.value) {
 				case 0:
-					label.innerText=text.disassemble;
+					label.innerText = text.disassemble;
 					break;
 				case 1:
-					label.innerText=text.singular;
+					label.innerText = text.singular;
 					break;
 				default:
-					label.innerText=`+${formatWithCommas(saveData.amount.value)} ${text.plural}`
+					label.innerText = `+${formatWithCommas(saveData.amount.value)} ${text.plural}`;
 			}
 		}));
 		ObservableValue.onAnyChange([unusedClipsSpy, this.#cost, saveData.amount, saveData.current], withElement(selectors.actionBtn, btn => {
@@ -112,7 +106,7 @@ class Resource {
 		saveData.amount.onChange(withElement(selectors.decBtn, (btn, value) => btn.disabled = value <= 1));
 		saveData.current.onChange(withElement(selectors.disBtn, (btn, value) => btn.disabled = value === 0));
 	}
-
+	
 	increase() {
 		if (this.#saveData.amount.value <= 0) {
 			this.#saveData.amount.value = 1;
@@ -121,38 +115,38 @@ class Resource {
 		if (this.#saveData.amount.value >= Math.max(this.#saveData.current.value * 100, 1000)) {
 			return;
 		}
-		this.#saveData.amount.value=Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1);
+		this.#saveData.amount.value = Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1);
 	}
-
+	
 	decrease() {
 		if (this.#saveData.amount.value < 1) {
 			this.#saveData.amount.value = 1;
 			return;
 		}
-		this.#saveData.amount.value=Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value - 1)));
+		this.#saveData.amount.value = Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value - 1)));
 	}
-
+	
 	round() {
-		const goal=Math.max(10, Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1));
-		this.#saveData.amount.value=goal - this.#saveData.current.value % goal;
+		const goal = Math.max(10, Math.pow(10, Math.floor(Math.log10(this.#saveData.amount.value)) + 1));
+		this.#saveData.amount.value = goal - this.#saveData.current.value % goal;
 	}
-
+	
 	make() {
 		if (this.#cost.value > unusedClips) {
 			console.warn(`Requires ${this.#cost.value} clips`);
 			return;
 		}
-
+		
 		unusedClips -= this.#cost.value;
 		this.#saveData.bill.value += this.#cost.value;
 		this.#saveData.current.value += this.#amount.value;
-
+		
 		if (this.#saveData.amount.value === 0) {
 			this.#saveData.amount.value = 1;
 		} else if (Math.pow(10, Math.floor(Math.log10(this.#amount.value))) !== this.#amount.value) {
 			this.increase();
 		}
-
+		
 		unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
 	}
 }
@@ -166,17 +160,21 @@ const harvesters = new Resource(
 		actionBtn: '#btnMakeHarvester',
 		incBtn: '#incHarvesterAmount',
 		decBtn: '#decHarvesterAmount',
-		disBtn: '#resetHarvesterAmount'
+		disBtn: '#resetHarvesterAmount',
 	},
 	{
 		disassemble: 'Disassemble all Harvester Drones',
 		singular: 'Harvester Drone',
-		plural: 'Harvester Drones'
-	}
-)
+		plural: 'Harvester Drones',
+	},
+);
+
 export function incHarvesterAmount() { harvesters.increase(); }
+
 export function decHarvesterAmount() { harvesters.decrease(); }
+
 export function roundHarvesterAmount() { harvesters.round(); }
+
 export function makeHarvester() { harvesters.make(); }
 
 const wireDrones = new Resource(
@@ -188,17 +186,21 @@ const wireDrones = new Resource(
 		actionBtn: '#btnMakeWireDrone',
 		incBtn: '#incWireDroneAmount',
 		decBtn: '#decWireDroneAmount',
-		disBtn: '#resetWireDroneAmount'
+		disBtn: '#resetWireDroneAmount',
 	},
 	{
 		disassemble: 'Disassemble all Wire Drone',
 		singular: 'Wire Drone',
-		plural: 'Wire Drones'
-	}
-)
+		plural: 'Wire Drones',
+	},
+);
+
 export function incWireDroneAmount() { wireDrones.increase(); }
+
 export function decWireDroneAmount() { wireDrones.decrease(); }
+
 export function roundWireDroneAmount() { wireDrones.round(); }
+
 export function makeWireDrone() { wireDrones.make(); }
 
 const farms = new Resource(
@@ -210,17 +212,21 @@ const farms = new Resource(
 		actionBtn: '#btnMakeFarm',
 		incBtn: '#incFarmAmount',
 		decBtn: '#decFarmAmount',
-		disBtn: '#resetFarmAmount'
+		disBtn: '#resetFarmAmount',
 	},
 	{
 		disassemble: 'Disassemble all Solar Farms',
 		singular: 'Solar Farm',
-		plural: 'Solar Farms'
-	}
-)
+		plural: 'Solar Farms',
+	},
+);
+
 export function incFarmAmount() { farms.increase(); }
+
 export function decFarmAmount() { farms.decrease(); }
+
 export function roundFarmAmount() { farms.round(); }
+
 export function makeFarm() { farms.make(); }
 
 const batteries = new Resource(
@@ -232,17 +238,21 @@ const batteries = new Resource(
 		actionBtn: '#btnMakeBattery',
 		incBtn: '#incBatteryAmount',
 		decBtn: '#decBatteryAmount',
-		disBtn: '#resetBatteryAmount'
+		disBtn: '#resetBatteryAmount',
 	},
 	{
 		disassemble: 'Disassemble all Battery Towers',
 		singular: 'Battery Tower',
-		plural: 'Battery Towers'
-	}
-)
+		plural: 'Battery Towers',
+	},
+);
+
 export function incBatteryAmount() { batteries.increase(); }
+
 export function decBatteryAmount() { batteries.decrease(); }
+
 export function roundBatteryAmount() { batteries.round(); }
+
 export function makeBattery() { batteries.make(); }
 
 advancements.afk.onChange(value => {
@@ -252,13 +262,14 @@ advancements.afk.onChange(value => {
 const storedPower$ = spy(10, () => storedPower);
 const powMod$ = spy(1e3, () => powMod);
 const powerSurgeMs = ObservableValue.computed([storedPower$],
-	(storedPower) => storedPower, 0)
-	.onChange(withElement('#powerSurgeDuration', (el, ms) => {
-		el.innerText = timeCruncher(ms / 10);
-	}));
+                                              (storedPower) => storedPower, 0)
+                                    .onChange(withElement('#powerSurgeDuration', (el, ms) => {
+	                                    el.innerText = timeCruncher(ms / 10);
+                                    }));
 ObservableValue.onAnyChange([powerSurgeMs, powMod$], withElement('#powerSurge', (el) => {
 	el.disabled = powerSurgeMs.value < 1e3 || powMod$.value < 10;
 }));
+
 export function powerSurge() {
 	if (advancements.afk.value !== 'ACTIVE') return;
 	if (powMod$.value < 10) return;

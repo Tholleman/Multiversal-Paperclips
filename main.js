@@ -91,11 +91,9 @@ setInterval(() => document.querySelectorAll('.enter').forEach(el => el.classList
 
 // Cache all DOM elements
 const mpdsDivElement = document.getElementById("mdpsDiv");
-const wireDroneRebootToolTipElement = document.getElementById("wireDroneRebootToolTip");
 const swarmSliderDivElement = document.getElementById("swarmSliderDiv");
 const clipCountCrunchedElement = document.getElementById("clipCountCrunched");
 const wireBuyerDivElement = document.getElementById("wireBuyerDiv");
-const tournamentStuffElement = document.getElementById("tournamentStuff");
 const increaseMaxTrustDivElement = document.getElementById("increaseMaxTrustDiv");
 const honorDivElement = document.getElementById("honorDiv");
 const drifterDivElement = document.getElementById("drifterDiv");
@@ -108,19 +106,7 @@ const probesLostHazardsDisplayElement = document.getElementById("probesLostHazar
 const driftBodyCountElement = document.getElementById("driftBodyCount");
 const combatBodyCountElement = document.getElementById("combatBodyCount");
 const prestigeDivElement = document.getElementById("prestigeDiv");
-const btnMakePaperclipElement = document.getElementById("btnMakePaperclip");
-const btnMakeClipperElement = document.getElementById("btnMakeClipper");
-const btnExpandMarketingElement = document.getElementById("btnExpandMarketing");
-const btnAddProcElement = document.getElementById("btnAddProc");
-const btnAddMemElement = document.getElementById("btnAddMem");
 const btnNewTournamentElement = document.getElementById("btnNewTournament");
-const btnImproveInvestmentsElement = document.getElementById("btnImproveInvestments");
-const investmentEngineElement = document.getElementById("investmentEngine");
-const investmentEngineUpgradeElement = document.getElementById("investmentEngineUpgrade");
-const strategyEngineElement = document.getElementById("strategyEngine");
-const tournamentManagementElement = document.getElementById("tournamentManagement");
-const megaClipperDivElement = document.getElementById("megaClipperDiv");
-const autoClipperDivElement = document.getElementById("autoClipperDiv");
 const compDivElement = document.getElementById("compDiv");
 const creativityDivElement = document.getElementById("creativityDiv");
 const projectsDivElement = document.getElementById("projectsDiv");
@@ -138,10 +124,7 @@ const factoryDivSpaceElement = document.getElementById("factoryDivSpace");
 const droneDivSpaceElement = document.getElementById("droneDivSpace");
 const probeDesignDivElement = document.getElementById("probeDesignDiv");
 const increaseProbeTrustDivElement = document.getElementById("increaseProbeTrustDiv");
-const qComputingElement = document.getElementById("qComputing");
 const btnMakeFactoryElement = document.getElementById("btnMakeFactory");
-const btnWireDroneRebootElement = document.getElementById("btnWireDroneReboot");
-const btnFactoryRebootElement = document.getElementById("btnFactoryReboot");
 const probeTrustUsedDisplayElement = document.getElementById("probeTrustUsedDisplay");
 const btnIncreaseProbeTrustElement = document.getElementById("btnIncreaseProbeTrust");
 const btnRaiseProbeSpeedElement = document.getElementById("btnRaiseProbeSpeed");
@@ -161,7 +144,6 @@ const btnLowerProbeWireElement = document.getElementById("btnLowerProbeWire");
 const btnRaiseProbeCombatElement = document.getElementById("btnRaiseProbeCombat");
 const btnLowerProbeCombatElement = document.getElementById("btnLowerProbeCombat");
 const unusedClipsDisplayElement = document.getElementById("unusedClipsDisplay");
-const investmentLevelElement = document.getElementById("investmentLevel");
 const driftersKilledElement = document.getElementById('driftersKilled');
 const availableMatterDisplayElement = document.getElementById('availableMatterDisplay');
 const honorDisplayElement = document.getElementById("honorDisplay");
@@ -179,14 +161,7 @@ const probeHazDisplayElement = document.getElementById('probeHazDisplay');
 const probeNavDisplayElement = document.getElementById('probeNavDisplay');
 const probeSpeedDisplayElement = document.getElementById('probeSpeedDisplay');
 const probeTrustDisplayElement = document.getElementById('probeTrustDisplay');
-const memoryElement = document.getElementById("memory");
 const priceInputElement = document.getElementById("priceInput");
-const marketingLvlElement = document.getElementById('marketingLvl');
-const investmentBankrollElement = document.getElementById('investmentBankroll');
-const secValueElement = document.getElementById('secValue');
-const portValueElement = document.getElementById('portValue');
-const lifeTimeRevenueElement = document.getElementById('investmentRevenue');
-const investUpgradeCostElement = document.getElementById("investUpgradeCost");
 const prestigeScounterElement = document.getElementById("prestigeScounter");
 const prestigeYcounterElement = document.getElementById("prestigeYcounter");
 const newTourneyCostElement = document.getElementById("newTourneyCost");
@@ -196,17 +171,8 @@ const probeTrustCostDisplayElement = document.getElementById("probeTrustCostDisp
 const mapsElement = document.getElementById('maps');
 const wppsElement = document.getElementById('wpps');
 const swarmEngineElement = document.getElementById("swarmEngine");
-const btnQcomputeElement = document.getElementById("btnQcompute");
-const processorDisplayElement = document.getElementById("processorDisplay");
-const investStratElement = document.getElementById("investStrat");
-const aaPayoffElement = document.getElementById("aaPayoff");
-const abPayoffElement = document.getElementById("abPayoff");
-const baPayoffElement = document.getElementById("baPayoff");
-const bbPayoffElement = document.getElementById("bbPayoff");
 const tourneyDisplayElement = document.getElementById("tourneyDisplay");
-const clipmakerLevel2Element = document.getElementById('clipmakerLevel2');
 const nextFactoryUpgradeElement = document.getElementById("nextFactoryUpgrade");
-const nextDroneUpgradeElement = document.getElementById("nextDroneUpgrade");
 const sliderElement = document.getElementById("slider");
 const swarmSizeElement = document.getElementById("swarmSize");
 const swarmStatusElement = document.getElementById("swarmStatus");
@@ -222,10 +188,6 @@ const maxStorageElement = document.getElementById("maxStorage");
 const performanceElement = document.getElementById("performance");
 const powerDivElement = document.getElementById("powerDiv");
 const inchSpanElement = document.getElementById("inchSpan");
-const nextTrustElement = document.getElementById("nextTrust");
-const harvesterLevelSpaceElement = document.getElementById("harvesterLevelSpace");
-const wireDroneLevelSpaceElement = document.getElementById("wireDroneLevelSpace");
-const maxOpsElement = document.getElementById("maxOps");
 const avgSalesElement = document.getElementById("avgSales");
 const avgRevElement = document.getElementById("avgRev");
 const mdpsElement = document.getElementById('mdps');
@@ -233,17 +195,10 @@ const colonizedDisplayElement = document.getElementById('colonizedDisplay');
 const probesLostDriftDisplayElement = document.getElementById('probesLostDriftDisplay');
 const drifterCountElement = document.getElementById('drifterCount');
 const swarmGiftDivElement = document.getElementById("swarmGiftDiv");
-const clipmakerRateElement = document.getElementById("clipmakerRate");
 const clipmakerRate2Element = document.getElementById("clipmakerRate2");
 
 const stratPickerElement = document.getElementById("stratPicker");
 const qCompDisplayElement = document.getElementById("qCompDisplay");
-
-const stockSymbolElements = [];
-const stockAmountElements = [];
-const stockPriceElements = [];
-const stockTotalElements = [];
-const stockProfitElements = [];
 
 // Wire --------------------------------------------------------
 
@@ -491,7 +446,6 @@ function buttonUpdate() {
 	}
 	
 	btnNewTournamentElement.disabled = operations.value < tourneyCost || tourneyInProg.isTrue;
-	btnImproveInvestmentsElement.disabled = yomi.value < investUpgradeCost;
 	
 	
 	creativityDivElement.style.display = creativityOn === 0 ? "none" : "";
@@ -543,258 +497,6 @@ humanFlag.onFalse(() => {
 	wireBuyerFlag = 0;
 	creationDivElement.style.display = "";
 });
-
-
-//----------INVESTMENTS----------------------------------------------------------------
-
-
-/** @type {{symbol: string, price: number, amount: number, total: number, profit: number, riskiness: number}[]} */
-let stocks = [];
-const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-let secTotal = 0;
-let portTotal = 0;
-let sellDelay = 0;
-let riskiness = 5;
-let maxPort = 3;
-let investUpgradeCost = 100;
-let stockGainThreshold = .5;
-let ledger = 0;
-
-function investUpgrade() {
-	yomi.value -= investUpgradeCost;
-	maxPort += 1;
-	data.investLevel.value++;
-	stockGainThreshold += .01;
-	investUpgradeCost = Math.floor(Math.pow(data.investLevel.value, 3) * 100);
-	investUpgradeCostElement.innerHTML = formatWithCommas(investUpgradeCost);
-	displayMessage("Investment engine upgraded, expected profit/loss ratio now " + (stockGainThreshold + "").substring(0, 4));
-}
-
-const investBtn = document.getElementById('btnInvest');
-ObservableValue.onAnyChange([funds, data.loaned], () => {
-	investBtn.disabled = funds.value - data.loaned.value <= 0;
-});
-function investDeposit() {
-	const toAdd = Math.floor(funds.value - data.loaned.value);
-	if (toAdd <= 0) return;
-	ledger -= toAdd;
-	bankroll = Math.floor(bankroll + toAdd);
-	funds.value -= toAdd;
-	portTotal = bankroll + secTotal;
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-}
-
-function investWithdraw() {
-	ledger += bankroll;
-	funds.value += bankroll;
-	bankroll = 0;
-	portTotal = secTotal;
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-}
-
-function buyStock() {
-	if (investStratElement.value === "no") return;
-	if (stocks.length >= maxPort) return;
-	if (bankroll < 5) return;
-	
-	const min = riskiness === 1 ? portTotal / (2 * maxPort) : 1;
-	const reserves = riskiness === 1 ? 0 : Math.ceil(portTotal / (11 - riskiness));
-	const max = Math.min(bankroll - reserves, Math.max(min, bankroll / (maxPort - stocks.length)));
-	const budget = Math.min(max, Math.ceil(portTotal / riskiness));
-	if (budget < min) return;
-	if (Math.random() < 0.25) {
-		createStock(budget);
-	}
-}
-
-function createStock(dollars) {
-	const sym = generateSymbol();
-	const roll = Math.random();
-	let pri;
-	if (roll > .99) {
-		pri = Math.ceil(Math.random() * 3000);
-	} else if (roll > .85) {
-		pri = Math.ceil(Math.random() * 500);
-	} else if (roll > .60) {
-		pri = Math.ceil(Math.random() * 150);
-	} else if (roll > .20) {
-		pri = Math.ceil(Math.random() * 50);
-	} else {
-		pri = Math.ceil(Math.random() * 15);
-	}
-	
-	if (pri > dollars) {
-		pri = Math.ceil(dollars * roll);
-	}
-	
-	
-	const amt = Math.min(1_000_000, Math.floor(dollars / pri));
-	
-	const newStock = {
-		symbol: sym,
-		price: pri,
-		amount: amt,
-		total: pri * amt,
-		profit: 0,
-		riskiness: riskiness
-	}
-	stocks.push(newStock);
-	bankroll -= (pri * amt);
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	secValueElement.innerHTML = formatWithCommas(secTotal);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-	
-}
-
-function sellStock() {
-	if (stocks.length === 0) return;
-	if (++sellDelay < 5) return;
-	if (investStratElement.value !== "no") {
-		let sellChance = 0.4;
-		if (stocks[0].profit < 0) sellChance /= 2;
-		if (stocks.length === 1) sellChance /= 2;
-		if (Math.random() >= sellChance) {
-			return;
-		}
-	}
-	sellDelay = 0;
-	
-	bankroll += stocks[0].total;
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	secValueElement.innerHTML = formatWithCommas(secTotal);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-	stocks.splice(0, 1);
-}
-
-
-function generateSymbol() {
-	let ltrNum;
-	const x = Math.random();
-	if (x <= 0.01) {
-		ltrNum = 1;
-	} else if (x <= 0.1) {
-		ltrNum = 2;
-	} else if (x <= 0.4) {
-		ltrNum = 3;
-	} else {
-		ltrNum = 4;
-	}
-	let name = '';
-	for (let i = 0; i < ltrNum; i++) {
-		name = name.concat(alphabet[Math.floor(Math.random() * alphabet.length)]);
-	}
-	return name;
-}
-
-function updateStocksValue() {
-	for (const stock of stocks) {
-		if (Math.random() < .6) {
-			const gain = Math.random() <= stockGainThreshold;
-			const currentPrice = stock.price;
-			const delta = Math.ceil((Math.random() * currentPrice) / (4 * stock.riskiness)) * (gain ? 1 : -1);
-			stock.price += delta;
-			if (stock.price === 0 && Math.random() > 0.24) {
-				stock.price = 1;
-			}
-			stock.total = stock.price * stock.amount;
-			stock.profit += delta * stock.amount;
-		}
-	}
-}
-
-const investInterestCountdownElement = document.getElementById('interestCountdown');
-const loanInterestCountdownElement = document.getElementById('loanCountdown');
-data.investmentInterestCountdown.onChange(seconds => {
-	const unit = 'second' + (seconds === 1 ? '&nbsp;' : 's');
-	investInterestCountdownElement.innerHTML = `${seconds} ${unit}`;
-	loanInterestCountdownElement.innerHTML = `${seconds} ${unit}`;
-});
-investInterestCountdownElement.innerHTML = timeCruncher(data.investmentInterestCountdown * 100);
-function investmentInterest() {
-	data.investmentInterestCountdown.value--;
-	if (data.investmentInterestCountdown.value > 0) {
-		return;
-	}
-	data.investmentInterestCountdown.value = 60;
-	bankroll *= 1.02;
-	if (isCompleted('dividends')) {
-		bankroll += secTotal * 0.02;
-	}
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	data.loaned.value *= 1.05;
-}
-
-// Stock List Display Routine
-
-const stockListElement = document.querySelector('#stockList');
-const stockDisplayTemplate = document.querySelector('#stockDisplay');
-
-function repaintStockTable() {
-	switch (investStratElement.value) {
-		case "no":
-			riskiness = 10;
-			break;
-		case "low":
-			riskiness = 7;
-			break;
-		case "med":
-			riskiness = 5;
-			break;
-		case "high":
-		default:
-			riskiness = 1;
-			break;
-	}
-	
-	while (stockListElement.childElementCount <= maxPort) {
-		const element = stockDisplayTemplate.content.cloneNode(true);
-		stockSymbolElements.push(popId(element, 'stockSymbol'));
-		stockAmountElements.push(popId(element, 'stockAmount'));
-		stockPriceElements.push(popId(element, 'stockPrice'));
-		stockTotalElements.push(popId(element, 'stockTotal'));
-		stockProfitElements.push(popId(element, 'stockProfit'));
-		stockListElement.appendChild(element);
-	}
-	
-	secTotal = stocks.reduce((total, stock) => total + stock.total, 0);
-	portTotal = bankroll + secTotal;
-	lifeTimeRevenueElement.innerHTML = formatWithCommas(ledger + portTotal);
-	secValueElement.innerHTML = formatWithCommas(secTotal);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-	
-	for (let i = 0; i < stocks.length; i++) {
-		stockSymbolElements[i].innerHTML = stocks[i].symbol;
-		stockAmountElements[i].innerHTML = formatWithCommas(stocks[i].amount);
-		stockPriceElements[i].innerHTML = formatWithCommas(stocks[i].price);
-		stockTotalElements[i].innerHTML = formatWithCommas(stocks[i].total);
-		stockProfitElements[i].innerHTML = formatWithCommas(stocks[i].profit);
-	}
-	for (let i = stocks.length; i < maxPort; i++) {
-		stockSymbolElements[i].innerHTML = "&nbsp;";
-		stockAmountElements[i].innerHTML = "";
-		stockPriceElements[i].innerHTML = "";
-		stockTotalElements[i].innerHTML = "";
-		stockProfitElements[i].innerHTML = "";
-	}
-}
-
-humanFlag.onTrue(() => timerHandler.addNamedTimer('humans', 1000, () => {
-	investmentInterest();
-	if (bankroll > 0) {
-		buyStock();
-		repaintStockTable();
-	}
-}));
-humanFlag.onTrue(() => timerHandler.addNamedTimer('humans', 2500, () => {
-	sellStock();
-	updateStocksValue();
-	repaintStockTable();
-}));
-
-//--------------------------------------------------------------------------------
-
 
 function clipClick(number) {
 	if (number > wire.value) {
@@ -1213,7 +915,7 @@ function updateHumanClipMakerRate() {
 }
 
 humanFlag.onTrue(() => timerHandler.addNamedTimer('humans', 1000, calculateRev));
-const avgSales = new ObservableValue(0, value => {
+const avgSales = ObservableValue.new(0, value => {
 	avgSalesElement.innerHTML = formatWithCommas(Math.round(value))
 	const avgRev = value * margin.value;
 	avgRevElement.innerHTML = formatWithCommas(avgRev, 2);
@@ -2045,10 +1747,6 @@ function refresh() {
 	probeTrustDisplayElement.innerHTML = probeTrust;
 	priceInputElement.value = margin.value.toFixed(2);
 	unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
-	investmentBankrollElement.innerHTML = formatWithCommas(bankroll);
-	secValueElement.innerHTML = formatWithCommas(secTotal);
-	portValueElement.innerHTML = formatWithCommas(portTotal);
-	investUpgradeCostElement.innerHTML = formatWithCommas(investUpgradeCost);
 	prestigeScounterElement.innerHTML = String(prestigeS + 1);
 	prestigeYcounterElement.innerHTML = String(prestigeY + 1);
 	newTourneyCostElement.innerHTML = formatWithCommas(tourneyCost);
@@ -2058,7 +1756,6 @@ function refresh() {
 	
 	updateUpgrades();
 	updatePower();
-	repaintStockTable();
 }
 
 // SAVES AND LOADS
@@ -2118,7 +1815,6 @@ function save() {
 		
 		incomeTracker: incomeTracker.slice(0),
 		qChips: qChips.slice(0),
-		stocks: stocks,
 		battleNumbers: battleNumbers.slice(0),
 		
 		unusedClips: unusedClips,
@@ -2150,7 +1846,6 @@ function save() {
 		wireSupply: wireSupply,
 		marketingEffectiveness: marketingEffectiveness.value,
 		milestoneFlag: milestoneFlag,
-		bankroll: bankroll,
 		fib1: fib1,
 		fib2: fib2,
 		autoClipperFlag: Number(autoClipperFlag.isTrue),
@@ -2189,15 +1884,6 @@ function save() {
 		nextQchip: nextQchip,
 		bribe: bribe,
 		battleFlag: battleFlag,
-		
-		secTotal: secTotal,
-		portTotal: portTotal,
-		sellDelay: sellDelay,
-		riskiness: riskiness,
-		maxPort: maxPort,
-		investUpgradeCost: investUpgradeCost,
-		stockGainThreshold: stockGainThreshold,
-		ledger: ledger,
 		
 		tourneyCost: tourneyCost,
 		pick: stratPickerElement.value,
@@ -2295,7 +1981,6 @@ function load() {
 	
 	incomeTracker = loadGame.incomeTracker;
 	qChips = loadGame.qChips;
-	stocks = loadGame.stocks;
 	battleNumbers = loadGame.battleNumbers;
 	
 	unusedClips = loadGame.unusedClips;
@@ -2327,7 +2012,6 @@ function load() {
 	wireSupply = loadGame.wireSupply;
 	marketingEffectiveness.value = loadGame.marketingEffectiveness;
 	milestoneFlag = loadGame.milestoneFlag;
-	bankroll = loadGame.bankroll;
 	fib1 = loadGame.fib1;
 	fib2 = loadGame.fib2;
 	autoClipperFlag.value = loadGame.autoClipperFlag === 1;
@@ -2366,26 +2050,6 @@ function load() {
 	nextQchip = loadGame.nextQchip;
 	bribe = loadGame.bribe;
 	battleFlag = loadGame.battleFlag;
-	
-	secTotal = loadGame.secTotal;
-	portTotal = loadGame.portTotal;
-	sellDelay = loadGame.sellDelay;
-	riskiness = loadGame.riskiness;
-	switch (riskiness) {
-		case 7:
-			investStratElement.value = "low";
-			break;
-		case 5:
-			investStratElement.value = "med";
-			break;
-		case 1:
-			investStratElement.value = "hi";
-			break;
-	}
-	maxPort = loadGame.maxPort;
-	investUpgradeCost = loadGame.investUpgradeCost;
-	stockGainThreshold = loadGame.stockGainThreshold;
-	ledger = loadGame.ledger;
 	
 	tourneyCost = loadGame.tourneyCost;
 	pick = loadGame.pick;

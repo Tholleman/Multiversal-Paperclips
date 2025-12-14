@@ -11,6 +11,7 @@ class ObservableValue {
 	#observers;
 	/** @type {{predicate: (value: Type) => boolean, then: (value: Type) => void}[]} */
 	#triggers = [];
+	#isComputed = false;
 	
 	/**
 	 * Helper method that will set the generic correctly which doesn't happen with the constructor
@@ -22,6 +23,15 @@ class ObservableValue {
 	 */
 	static new(value, observers = []) {
 		return new ObservableValue(value, observers);
+	}
+	
+	/**
+	 * @template Type
+	 * @param {Type} [_typeInference]
+	 * @return ObservableValue<Type[]>
+	 */
+	static newArray(_typeInference) {
+		return ObservableValue.new([]);
 	}
 	
 	/**
@@ -48,15 +58,27 @@ class ObservableValue {
 	 * @param {Type} value
 	 */
 	set value(value) {
+		if (this.#isComputed) throw new Error('Computed values are read only');
+		this.#setValue(value);
+	}
+	
+	/**
+	 * @param {Type} value
+	 */
+	#setValue(value) {
 		if (this.#value === value) return;
 		this.#value = value;
+		this.changedContents();
+	}
+	
+	changedContents() {
 		for (const lambda of this.#observers) {
-			lambda(value);
+			lambda(this.#value);
 		}
 		for (let i = this.#triggers.length - 1; i >= 0; i--) {
 			let trigger = this.#triggers[i];
-			if (trigger.predicate(value)) {
-				trigger.then(value);
+			if (trigger.predicate(this.#value)) {
+				trigger.then(this.#value);
 				this.#triggers.splice(i);
 			}
 		}
@@ -95,30 +117,11 @@ class ObservableValue {
 	}
 	
 	toJSON() {
-		return this.#value;
-	}
-	
-	/**
-	 * @template R
-	 * @param {(arg: Type) => R} compute
-	 * @param {R} [_typeInference]
-	 * @return ObservableValue<R>
-	 */
-	newComputed(compute, _typeInference) {
-		const result = new ObservableValue(undefined);
-		this.onChange(value => result.value = compute(value));
-		return result;
-	}
-	
-	/**
-	 * @param {ObservableValue[]} observables
-	 * @param {function} lambda
-	 */
-	static onAnyChange(observables, lambda) {
-		for (const observable of observables) {
-			observable.#observers.push(lambda);
+		if (this.#isComputed) {
+			return undefined;
+		} else {
+			return this.#value;
 		}
-		lambda();
 	}
 	
 	/**
@@ -128,14 +131,33 @@ class ObservableValue {
 	 * @template D
 	 * @template Result
 	 * @param {[ObservableValue<A>] | [ObservableValue<A>, ObservableValue<B>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>, ObservableValue<D>, ...ObservableValue<any>]} observables
-	 * @param {(a: A, b: B, c: C, d: D, ...z: any) => Result} compute
+	 * @param {(a: A, b: B, c: C, d: D, ...z: any) => Result} lambda
+	 */
+	static onAnyChange(observables, lambda) {
+		for (const observable of observables) {
+			observable.#observers.push(() => lambda(...observables.map(o => o.value)));
+		}
+		lambda(...observables.map(o => o.value));
+	}
+	
+	/**
+	 * @template A
+	 * @template B
+	 * @template C
+	 * @template D
+	 * @template Result
+	 * @param {[ObservableValue<A>] | [ObservableValue<A>, ObservableValue<B>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>] | [ObservableValue<A>, ObservableValue<B>, ObservableValue<C>, ObservableValue<D>, ...ObservableValue<any>]} observables
+	 * @param {(a: A, b: B, c: C, d: D, ...z: any) => NoInfer<Result>} compute
 	 * @param {Result} [_typeInference]
 	 * @return {ObservableValue<Result>}
 	 */
 	static computed(observables, compute, _typeInference) {
 		const result = ObservableValue.new(compute(...observables.map(o => o.value)));
+		result.#isComputed = true;
 		for (const observable of observables) {
-			observable.onChangeDelayed(() => {result.value = compute(...observables.map(o => o.value));});
+			observable.onChangeDelayed(() => {
+				result.#setValue(compute(...observables.map(o => o.value)));
+			});
 		}
 		return result;
 	}
@@ -196,21 +218,6 @@ class ObservableBoolean extends ObservableValue {
 
 /**
  * @template Type
- * @param {ObservableValue<any>[]} used
- * @param {() => Type} compute
- * @param {((value: Type) => void) | ((value: Type) => void)[]} [observers]
- * @returns {ObservableValue<Type>}
- */
-function computed(used, compute, observers) {
-	const result = new ObservableValue(compute(), observers);
-	for (const observable of used) {
-		observable.onChangeDelayed(() => {result.value = compute();});
-	}
-	return result;
-}
-
-/**
- * @template Type
  * @param {() => Type} provider
  * @param {number} interval
  * @param {((value: Type) => void) | ((value: Type) => void)[]} [observers]
@@ -224,7 +231,7 @@ function spy(interval, provider, observers) {
 
 const data = (() => {
 	const loaded = JSON.parse(localStorage.getItem('universalPaperclips')) ?? {};
-	return {
+	const data = {
 		mute: new ObservableBoolean(init(loaded.mute, false)),
 		clips: ObservableValue.new(init(loaded.clips, 0), [
 			updateElement('#clipCountCrunched', value => spellf(Math.round(value))),
@@ -250,7 +257,6 @@ const data = (() => {
 		givenFundBonus: ObservableValue.new(init(loaded.givenFundBonus, false)),
 		lastClickTickStamp: ObservableValue.new(init(loaded.lastClickTickStamp, 0)),
 		marginChanged: ObservableValue.new(init(loaded.marginChanged, false)),
-		investLevel: ObservableValue.new(init(loaded.investLevel, 1), updateElement('#investmentLevel')),
 		wonEveryStrategicModelling: ObservableValue.new(init(loaded.wonEveryStrategicModelling, true)),
 		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
 		startedTeardown: ObservableValue.new(init(loaded.startedTeardown, false)),
@@ -259,7 +265,28 @@ const data = (() => {
 		advancementTracking: loadSection(loaded.advancementTracking, advancementTracking => ({
 			usedQuantum: ObservableValue.new(init(advancementTracking.usedQuantum, false)),
 		})),
+		stocks: loadSection(loaded.stocks, stocks => ({
+			investLevel: ObservableValue.new(init(loaded.investLevel, 1), updateElement('#investmentLevel')),
+			list: ObservableValue.newArray(init(stocks.list, {
+				symbol: '',
+				price: 0,
+				amount: 0,
+				total: 0,
+				profit: 0,
+				riskiness: 0,
+			})),
+			maxPortfolio: ObservableValue.new(init(stocks.maxPortfolio, 3)),
+			bankroll: ObservableValue.new(init(stocks.bankroll, 0)),
+			secTotal: ObservableValue.new(init(stocks.secTotal, 0)),
+			stockGainThreshold: ObservableValue.new(init(stocks.stockGainThreshold, 0.5)),
+			investUpgradeCost: ObservableValue.new(init(stocks.investUpgradeCost, 100)),
+			sellDelay: ObservableValue.new(init(stocks.sellDelay, 0)),
+			ledger: ObservableValue.new(init(stocks.ledger, 0)),
+			riskiness: ObservableValue.new(init(stocks.riskiness, 10)),
+		})),
 	};
+	data.stocks.portfolioTotal = ObservableValue.computed([data.stocks.bankroll, data.stocks.secTotal], (bankroll, secTotal) => bankroll + secTotal, 0);
+	return data;
 	
 	/**
 	 * @template T
@@ -291,27 +318,14 @@ function saveData() {
  * @param {{[k: string]: any}} object
  */
 function saveObject(id, object) {
-	verifyObject(object);
 	localStorage.setItem(id, JSON.stringify(object));
-	
-	function verifyObject(object) {
-		for (const key in object) {
-			let value = object[key];
-			if (value == null || (typeof value.toJSON === 'function' && value.toJSON() == null)) {
-				throw new Error('null values can not be saved: ' + key + ': ' + value);
-			}
-			if (typeof value === 'object') {
-				verifyObject(value);
-			}
-		}
-	}
 }
 
 /**
  * @template T
  * @param {string} selector
  * @param {(value: *) => string} [formatter]
- * @param {keyof HTMLElement} update
+ * @param {keyof HTMLElement | 'value'} update
  * @returns {(function(T): void)}
  */
 function updateElement(selector, formatter = undefined, update = 'innerHTML') {
@@ -348,8 +362,13 @@ function enableButton(selector, predicate) {
 	};
 }
 
-const megaClipperCost = data.megaClipperLevel.newComputed(value => value < 1 ? 500 : Math.pow(1.07, value) * 1000)
-                            .onChange(updateElement('#megaClipperCost', value => formatWithCommas(value, 2)));
+const megaClipperCost = ObservableValue.computed([data.megaClipperLevel], (value) => {
+	if (value < 1) {
+		return 500;
+	} else {
+		return Math.pow(1.07, value) * 1000;
+	}
+}, 0).onChange(updateElement('#megaClipperCost', value => formatWithCommas(value, 2)));
 data.wireBuyerStatus.onChange(updateElement('#wireBuyerStatus', value => value ? 'ON' : 'OFF'));
 let isSetUp = false;
 data.mute.onChange(value => {

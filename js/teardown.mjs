@@ -106,7 +106,7 @@ if (advancements.againstTheOdds.value === 'LOCKED') {
 
 function finalAdvancementChecks() {
 	unlock(advancements.unchanged, !data.marginChanged.value);
-	unlock(advancements.trading, data.investLevel.value >= 20);
+	unlock(advancements.trading, data.stocks.investLevel.value >= 20);
 	unlock(advancements.winner, data.wonEveryStrategicModelling.value);
 	unlock(advancements.noQuantum, !data.advancementTracking.usedQuantum.value);
 	unlock(advancements.speedRun, ticks / 100 < 30 * 60);

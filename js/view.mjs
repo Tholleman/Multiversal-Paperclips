@@ -59,3 +59,12 @@ export function el(tag, attributes, ...children) {
 	}
 	return result;
 }
+
+export function bindDropdown(selector, subject) {
+	const element = document.querySelector(selector);
+	if (element == null) throw new Error('Element not found: ' + selector);
+	subject.onChange(value => element.value = value);
+	element.addEventListener('change', () => {
+		subject.value = element.value;
+	});
+}

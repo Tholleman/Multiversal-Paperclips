@@ -358,7 +358,7 @@ addProject('wireFallback', {
 	title: "Beg for More Wire",
 	priceTag: "(1 Trust)",
 	description: "Admit failure, ask for budget increase to cover cost of 1 spool",
-	trigger: () => portTotal < wireCost.value && funds.value < wireCost.value && wire.value < 1 && data.unsoldClips.value < 1 && humanFlag.isTrue,
+	trigger: () => data.stocks.portfolioTotal.value < wireCost.value && funds.value < wireCost.value && wire.value < 1 && data.unsoldClips.value < 1 && humanFlag.isTrue,
 	cost: () => trust.value >= -100,
 	effect: function () {
 		displayMessage("Budget overage approved, 1 spool of wire requisitioned from HQ");
@@ -907,7 +907,7 @@ addProject('trust1', {
 		displayMessage("Cancer is cured, +10 TRUST, global stock prices trending upward");
 		operations.value -= 25000;
 		trust.value += 10;
-		stockGainThreshold += 0.01;
+		data.stocks.stockGainThreshold.value += 0.01;
 	}
 });
 addProject('trust2', {
@@ -921,7 +921,7 @@ addProject('trust2', {
 		yomi.value -= 15000;
 		operations.value -= 30000;
 		trust.value += 12;
-		stockGainThreshold += 0.01;
+		data.stocks.stockGainThreshold.value += 0.01;
 	}
 });
 addProject('trust3', {
@@ -935,7 +935,7 @@ addProject('trust3', {
 		yomi.value -= 4500;
 		operations.value -= 50000;
 		trust.value += 15;
-		stockGainThreshold += 0.01;
+		data.stocks.stockGainThreshold.value += 0.01;
 	}
 });
 addProject('trust4', {
@@ -946,10 +946,9 @@ addProject('trust4', {
 	cost: () => operations.value >= 20000,
 	effect: function () {
 		displayMessage("Male pattern baldness cured, +20 TRUST, Global stock prices trending upward");
-		displayMessage("They are still monkeys");
 		operations.value -= 20000;
 		trust.value += 20;
-		stockGainThreshold += .01;
+		data.stocks.stockGainThreshold.value += 0.01;
 	}
 });
 
@@ -1064,7 +1063,7 @@ addProject('stratInterest', {
 	title: 'Cash interest',
 	priceTag: '(10,000 yomi)',
 	description: 'Gain 2% interest on uninvested money',
-	trigger: () => data.investLevel.value >= 3,
+	trigger: () => data.stocks.investLevel.value >= 3,
 	cost: () => yomi.value >= 10_000,
 	effect() {
 		displayMessage('Let\'s not worry about inflation when we can print money');
@@ -1076,7 +1075,7 @@ addProject('dividends', {
 	title: "Dividends",
 	priceTag: "(30,000 yomi)",
 	description: "Gain 2% interest on invested money as well",
-	trigger: () => isCompleted('stratInterest') && data.investLevel.value >= 7,
+	trigger: () => isCompleted('stratInterest') && data.stocks.investLevel.value >= 7,
 	cost: () => yomi.value >= 30_000,
 	effect: () => {
 		displayMessage("Communism could never share profits like this");
@@ -1090,12 +1089,8 @@ addProject('hostileTakeover', {
 	title: "Hostile Takeover",
 	priceTag: "($1,000,000)",
 	description: "Acquire a controlling interest in Global Fasteners, our biggest rival. (+1 Trust)",
-	trigger: function () {
-		return portTotal >= 10000
-	},
-	cost: function () {
-		return funds.value >= 1000000
-	},
+	trigger: () => data.stocks.portfolioTotal.value >= 10_000,
+	cost: () => funds.value >= 1_000_000,
 	effect: function () {
 		displayMessage("Global Fasteners acquired, public demand increased x5");
 		funds.value -= 1000000;
