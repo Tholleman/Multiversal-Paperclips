@@ -220,6 +220,16 @@ function spy(interval, provider, observers) {
 	return result;
 }
 
+const settings = (() => {
+	const loaded = JSON.parse(localStorage.getItem('settings')) ?? {};
+	return {
+		mute: ObservableValue.new(init(loaded.mute, false)),
+		/** @type {ObservableValue<'system' | 'light' | 'dark'>} */
+		theme: ObservableValue.new(initEnum(loaded.theme, ['system', 'light', 'dark'])),
+		accent: ObservableValue.new(initEnum(loaded.accent, accentOptions)),
+	};
+})();
+
 const data = (() => {
 	const loaded = JSON.parse(localStorage.getItem('universalPaperclips')) ?? {};
 	const data = {
@@ -281,56 +291,67 @@ const data = (() => {
 	data.stocks.portfolioTotal = ObservableValue.computed([data.stocks.bankroll, data.stocks.secTotal], (bankroll, secTotal) => bankroll + secTotal, 0);
 	return data;
 	
-	/**
-	 * @template T
-	 * @param {NoInfer<T>} loaded
-	 * @param {T} def
-	 * @return {T}
-	 */
-	function init(loaded, def) {
-		return loaded ?? def;
-	}
-	
-	/**
-	 * @template T
-	 * @param {*} value
-	 * @param {T} _inferType
-	 * @return {T}
-	 */
-	function cast(value, _inferType) {
-		return value;
-	}
-	
-	/**
-	 * @template T
-	 * @param {*} value
-	 * @param {T} _inferType
-	 * @return {T[]}
-	 */
-	function castArray(value, _inferType) {
-		return value;
-	}
-	
-	/**
-	 * @template T
-	 * @param {*} value
-	 * @param {T} _valueType
-	 * @return {{key: T}}
-	 */
-	function castObject(value, _valueType) {
-		return value;
-	}
-	
-	/**
-	 * @Template T
-	 * @param {Object} loaded
-	 * @param {(Object) => T} fn
-	 * @return {T}
-	 */
-	function loadSection(loaded, fn) {
-		return fn(loaded ?? {});
-	}
 })();
+
+/**
+ * @template T
+ * @param {NoInfer<T>} loaded
+ * @param {T} def
+ * @return {T}
+ */
+function init(loaded, def) {
+	return loaded ?? def;
+}
+
+/**
+ * @template T
+ * @param {*} value
+ * @param {T} _inferType
+ * @return {T}
+ */
+function cast(value, _inferType) {
+	return value;
+}
+
+/**
+ * @template T
+ * @param {*} value
+ * @param {T} _inferType
+ * @return {T[]}
+ */
+function castArray(value, _inferType) {
+	return value;
+}
+
+/**
+ * @template T
+ * @param {*} value
+ * @param {T} _valueType
+ * @return {{key: T}}
+ */
+function castObject(value, _valueType) {
+	return value;
+}
+
+/**
+ * @param {string} loaded
+ * @param {string[]} options
+ * @param {number} [defaultIndex]
+ */
+function initEnum(loaded, options, defaultIndex = 0) {
+	if (options.includes(loaded)) return loaded;
+	return options[defaultIndex];
+}
+
+/**
+ * @Template T
+ * @param {Object} loaded
+ * @param {(Object) => T} fn
+ * @return {T}
+ */
+function loadSection(loaded, fn) {
+	return fn(loaded ?? {});
+}
 
 function saveData() {
 	saveObject('universalPaperclips', data);

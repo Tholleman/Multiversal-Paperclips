@@ -1,0 +1,120 @@
+.accent_blue {
+	--light-accent-hue: 220deg;
+	--light-accent-saturation: 30%;
+	--light-accent-lightness: 60%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 220deg;
+	--dark-accent-saturation: 30%;
+	--dark-accent-lightness: 50%;
+	--dark-text-color: white;
+}
+
+
+.accent_deep_purple {
+	--light-accent-hue: 292deg;
+	--light-accent-saturation: 50%;
+	--light-accent-lightness: 17%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 292deg;
+	--dark-accent-saturation: 50%;
+	--dark-accent-lightness: 17%;
+	--dark-text-color: white;
+}
+
+.accent_teal {
+	--light-accent-hue: 153deg;
+	--light-accent-saturation: 33%;
+	--light-accent-lightness: 70%;
+	--light-text-color: black;
+	
+	--dark-accent-hue: 153deg;
+	--dark-accent-saturation: 33%;
+	--dark-accent-lightness: 50%;
+	--dark-text-color: black;
+}
+
+.accent_honey {
+	--light-accent-hue: 37deg;
+	--light-accent-saturation: 89%;
+	--light-accent-lightness: 67%;
+	--light-text-color: black;
+	
+	--dark-accent-hue: 37deg;
+	--dark-accent-saturation: 89%;
+	--dark-accent-lightness: 40%;
+	--dark-text-color: black;
+}
+
+.accent_pumpkin {
+	--light-accent-hue: 25deg;
+	--light-accent-saturation: 100%;
+	--light-accent-lightness: 49%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 25deg;
+	--dark-accent-saturation: 100%;
+	--dark-accent-lightness: 43%;
+	--dark-text-color: white;
+}
+
+.accent_grape {
+	--light-accent-hue: 251deg;
+	--light-accent-saturation: 19%;
+	--light-accent-lightness: 29%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 251deg;
+	--dark-accent-saturation: 19%;
+	--dark-accent-lightness: 29%;
+	--dark-text-color: white;
+}
+
+.accent_prussian_blue {
+	--light-accent-hue: 217deg;
+	--light-accent-saturation: 87%;
+	--light-accent-lightness: 15%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 217deg;
+	--dark-accent-saturation: 87%;
+	--dark-accent-lightness: 15%;
+	--dark-text-color: white;
+}
+
+.accent_ink {
+	--light-accent-hue: 240deg;
+	--light-accent-saturation: 67%;
+	--light-accent-lightness: 2%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 240deg;
+	--dark-accent-saturation: 67%;
+	--dark-accent-lightness: 7%;
+	--dark-text-color: white;
+}
+
+.accent_brick {
+	--light-accent-hue: 7deg;
+	--light-accent-saturation: 76%;
+	--light-accent-lightness: 42%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 7deg;
+	--dark-accent-saturation: 76%;
+	--dark-accent-lightness: 42%;
+	--dark-text-color: white;
+}
+
+.accent_amaranth {
+	--light-accent-hue: 340deg;
+	--light-accent-saturation: 71%;
+	--light-accent-lightness: 29%;
+	--light-text-color: white;
+	
+	--dark-accent-hue: 340deg;
+	--dark-accent-saturation: 71%;
+	--dark-accent-lightness: 29%;
+	--dark-text-color: white;
+}

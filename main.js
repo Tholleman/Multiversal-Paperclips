@@ -1775,6 +1775,7 @@ timerHandler.addTimer(25e3, save);
 
 function save() {
 	saveData();
+	saveSettings();
 	saveAdvancements();
 	const saveGame = {
 		wirePriceTimer: wirePriceTimer,

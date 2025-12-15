@@ -1,9 +1,52 @@
+@import './colors.css';
+
 :root {
 	--standard-inline-padding: 0.75rem;
-	--btn-hue: 220deg;
-	--btn-saturation: 30%;
-	--btn-lightness: 60%;
-	--btn-text-color: white;
+}
+
+body.light {
+	background-color: #F0F2EF;
+	
+	--accent-hue: var(--light-accent-hue);
+	--accent-saturation: var(--light-accent-saturation);
+	--accent-lightness: var(--light-accent-lightness);
+	--text-color: var(--light-text-color);
+}
+
+body.dark {
+	background-color: black;
+	color-scheme: dark;
+	color: white;
+	scrollbar-color: hsl(0, 0%, 67%) transparent;
+	
+	--accent-hue: var(--dark-accent-hue);
+	--accent-saturation: var(--dark-accent-saturation);
+	--accent-lightness: var(--dark-accent-lightness);
+	--text-color: var(--dark-text-color);
+	
+	.qChip {
+		background-color: white;
+	}
+	
+	select {
+		background-color: dimgrey;
+	}
+	
+	#prestigeDiv {
+		background-color: dimgrey;
+	}
+	
+	table.table1 tr:nth-child(even) {
+		background-color: dimgrey;
+	}
+	
+	.investments {
+		& tr:nth-child(even) {
+			background-color: inherit;
+			border-bottom: #ddd solid 1px;
+			border-top: #ddd solid 1px;
+		}
+	}
 }
 
 * {
@@ -24,7 +67,6 @@ body {
 	font-family: sans-serif;
 	margin: 0;
 	min-width: 300px;
-	background-color: #F0F2EF;
 }
 
 h2:has(~ hr) {
@@ -113,6 +155,19 @@ main {
 	50% {
 		content: '\00a0'
 	}
+}
+
+#settingsButton {
+	anchor-name: --settings-button;
+}
+
+#settings {
+	margin: 0;
+	inset: auto;
+	position: absolute;
+	position-anchor: --settings-button;
+	top: anchor(bottom);
+	right: anchor(right);
 }
 
 details {
@@ -240,10 +295,10 @@ details {
 		border-radius: 12px;
 		background: linear-gradient(
 				to left,
-				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 0%,
-				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 8%,
-				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.6)) 92%,
-				hsl(var(--btn-hue) var(--btn-saturation) calc(var(--btn-lightness) * 0.3)) 100%
+				hsl(var(--accent-hue) var(--accent-saturation) calc(var(--accent-lightness) * 0.3)) 0%,
+				hsl(var(--accent-hue) var(--accent-saturation) calc(var(--accent-lightness) * 0.6)) 8%,
+				hsl(var(--accent-hue) var(--accent-saturation) calc(var(--accent-lightness) * 0.6)) 92%,
+				hsl(var(--accent-hue) var(--accent-saturation) calc(var(--accent-lightness) * 0.3)) 100%
 		);
 	}
 	
@@ -256,8 +311,8 @@ details {
 		padding: 12px 42px;
 		border-radius: 12px;
 		font-size: 1rem;
-		color: var(--btn-text-color);
-		background: hsl(var(--btn-hue) var(--btn-saturation) var(--btn-lightness));
+		color: var(--text-color);
+		background: hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness));
 		will-change: transform;
 		transform: translateY(-4px);
 		transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
@@ -305,7 +360,7 @@ details {
 	}
 	
 	&:disabled {
-		filter: brightness(80%);
+		filter: brightness(70%);
 		cursor: default;
 		
 		& .front {
@@ -746,46 +801,6 @@ td:has(.secondaryPayoff) {
 
 .strategyName {
 	overflow-x: hidden;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--btn-hue: 220deg;
-		--btn-saturation: 30%;
-		--btn-lightness: 50%;
-		--btn-text-color: black;
-	}
-	
-	body {
-		background-color: black;
-		color-scheme: dark;
-		color: white;
-		scrollbar-color: hsl(0, 0%, 67%) transparent;
-	}
-	
-	.qChip {
-		background-color: white;
-	}
-	
-	select {
-		background-color: dimgrey;
-	}
-	
-	#prestigeDiv {
-		background-color: dimgrey;
-	}
-	
-	table.table1 tr:nth-child(even) {
-		background-color: dimgrey;
-	}
-	
-	.investments {
-		& tr:nth-child(even) {
-			background-color: inherit;
-			border-bottom: #ddd solid 1px;
-			border-top: #ddd solid 1px;
-		}
-	}
 }
 
 #hypnoDroneEventDiv {

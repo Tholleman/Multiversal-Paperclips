@@ -8,6 +8,36 @@
 	<script type="module" src="js/moduleMigration.mjs"></script>
 </head>
 <body>
+<script>
+	window.accentOptions = ['accent_blue', 'accent_deep_purple', 'accent_teal', 'accent_honey', 'accent_pumpkin', 'accent_grape', 'accent_prussian_blue', 'accent_ink', 'accent_brick', 'accent_amaranth'];
+	// noinspection JSValidateTypes
+	/**
+	 * @type {{[k: string]: string}}
+	 */
+	const loaded = JSON.parse(localStorage.getItem('settings')) ?? {};
+	const theme = loadEnum(loaded.theme, ['system', 'light', 'dark']);
+	const accent = loadEnum(loaded.accent, accentOptions);
+	
+	let realTheme = theme;
+	if (realTheme === 'system') {
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			realTheme = 'dark';
+		} else {
+			realTheme = 'light';
+		}
+	}
+	document.body.classList.add(realTheme, accent);
+	
+	/**
+	 * @param {string} loaded
+	 * @param {string[]} options
+	 * @param {number} [defaultIndex]
+	 */
+	function loadEnum(loaded, options, defaultIndex = 0) {
+		if (options.includes(loaded)) return loaded;
+		return options[defaultIndex];
+	}
+</script>
 <div id="hypnoDroneEventDiv">
 	<h1 id="hypnoText"></h1>
 </div>
@@ -28,6 +58,13 @@
 				<img style="height: 100%;" src="assets/save.svg" alt="save">
 			</span>
 		</button>
+		<button popovertarget="settings" id="settingsButton">
+			settings
+		</button>
+	</div>
+</div>
+<div popover id="settings">
+	<div class="buttonBar">
 		<button class="satisfying small settingButton silent" onclick="data.mute.toggle()" id="mute">
 			<span class="shadow"></span>
 			<span class="edge"></span>
@@ -35,6 +72,23 @@
 				<img style="height: 100%;" src="assets/unmute.svg" alt="save">
 			</span>
 		</button>
+		<select id="themeSelector">
+			<option value="system">System</option>
+			<option value="light">Light</option>
+			<option value="dark">Dark</option>
+		</select>
+		<select id="accentSelector">
+			<option value="accent_blue">Blue</option>
+			<option value="accent_deep_purple">Deep Purple</option>
+			<option value="accent_teal">Teal</option>
+			<option value="accent_honey">Honey</option>
+			<option value="accent_pumpkin">Pumpkin</option>
+			<option value="accent_grape">Grape</option>
+			<option value="accent_prussian_blue">Prussian Blue</option>
+			<option value="accent_ink">Ink</option>
+			<option value="accent_brick">Brick</option>
+			<option value="accent_amaranth">Amaranth</option>
+		</select>
 	</div>
 </div>
 <div class="fullHeight">

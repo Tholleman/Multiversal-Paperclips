@@ -2,7 +2,9 @@ import * as Phase2 from './phase2.mjs';
 Object.assign(window, Phase2);
 import * as Terminal from './Terminal.mjs';
 Object.assign(window, Terminal);
-import * as Teardown from './teardown.mjs'
+import * as Teardown from './teardown.mjs';
 Object.assign(window, Teardown);
-import * as Investment from './Investment.mjs'
+import * as Investment from './Investment.mjs';
 Object.assign(window, Investment);
+import * as ThemeManager from './ThemeManager.js';
+Object.assign(window, ThemeManager);
