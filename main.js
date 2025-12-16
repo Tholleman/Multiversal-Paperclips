@@ -49,7 +49,7 @@ class ManagedAudio {
 	}
 	
 	play() {
-		if (data.mute.isTrue) return;
+		if (settings.mute.value) return;
 		if (!this.#fileInstances[this.#nextInstanceToPlay].paused) return;
 		const now = new Date().getTime();
 		if (now - this.#lastPlayed < this.#cooldown) return;
@@ -60,7 +60,7 @@ class ManagedAudio {
 }
 
 const buttonSound = new ManagedAudio(() => {
-	const audio = new Audio('button.mp3');
+	const audio = new Audio('assets/button.mp3');
 	audio.volume = 0.5;
 	return audio;
 }, 50);
@@ -113,7 +113,6 @@ const increaseMaxTrustDivElement = document.getElementById("increaseMaxTrustDiv"
 const honorDivElement = document.getElementById("honorDiv");
 const drifterDivElement = document.getElementById("drifterDiv");
 const battleCanvasDivElement = document.getElementById("battleCanvasDiv");
-const factoryUpgradeDisplayElement = document.getElementById("factoryUpgradeDisplay");
 const btnIncreaseMaxTrustElement = document.getElementById("btnIncreaseMaxTrust");
 const btnMakerProbeElement = document.getElementById("btnMakeProbe");
 const hazardBodyCountElement = document.getElementById("hazardBodyCount");

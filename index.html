@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="interface.css" />
+	<link rel="stylesheet" type="text/css" href="interface.css"/>
 	<title>Multiversal Paperclips</title>
 	<script type="module" src="js/moduleMigration.mjs"></script>
 </head>
@@ -55,21 +55,35 @@
 			<span class="shadow"></span>
 			<span class="edge"></span>
 			<span class="front">
-				<img style="height: 100%;" src="assets/save.svg" alt="save">
+				<svg viewBox="0 0 24 24" fill="currentColor">
+		      <path fill-rule="evenodd" clip-rule="evenodd" d="M18.1716 1C18.702 1 19.2107 1.21071 19.5858 1.58579L22.4142 4.41421C22.7893 4.78929 23 5.29799 23 5.82843V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H18.1716ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21L5 21L5 15C5 13.3431 6.34315 12 8 12L16 12C17.6569 12 19 13.3431 19 15V21H20C20.5523 21 21 20.5523 21 20V6.82843C21 6.29799 20.7893 5.78929 20.4142 5.41421L18.5858 3.58579C18.2107 3.21071 17.702 3 17.1716 3H17V5C17 6.65685 15.6569 8 14 8H10C8.34315 8 7 6.65685 7 5V3H4ZM17 21V15C17 14.4477 16.5523 14 16 14L8 14C7.44772 14 7 14.4477 7 15L7 21L17 21ZM9 3H15V5C15 5.55228 14.5523 6 14 6H10C9.44772 6 9 5.55228 9 5V3Z"/>
+				</svg>
 			</span>
 		</button>
-		<button popovertarget="settings" id="settingsButton">
-			settings
+		<button class="satisfying small settingButton" popovertarget="settings" id="settingsButton">
+			<span class="shadow"></span>
+			<span class="edge"></span>
+			<span class="front">
+				<svg viewBox="0 0 48 48" fill="currentColor">
+			    <path d="M0 0h48v48h-48z" fill="none"/>
+			    <path d="M38.86 25.95c.08-.64.14-1.29.14-1.95s-.06-1.31-.14-1.95l4.23-3.31c.38-.3.49-.84.24-1.28l-4-6.93c-.25-.43-.77-.61-1.22-.43l-4.98 2.01c-1.03-.79-2.16-1.46-3.38-1.97l-.75-5.3c-.09-.47-.5-.84-1-.84h-8c-.5 0-.91.37-.99.84l-.75 5.3c-1.22.51-2.35 1.17-3.38 1.97l-4.98-2.01c-.45-.17-.97 0-1.22.43l-4 6.93c-.25.43-.14.97.24 1.28l4.22 3.31c-.08.64-.14 1.29-.14 1.95s.06 1.31.14 1.95l-4.22 3.31c-.38.3-.49.84-.24 1.28l4 6.93c.25.43.77.61 1.22.43l4.98-2.01c1.03.79 2.16 1.46 3.38 1.97l.75 5.3c.08.47.49.84.99.84h8c.5 0 .91-.37.99-.84l.75-5.3c1.22-.51 2.35-1.17 3.38-1.97l4.98 2.01c.45.17.97 0 1.22-.43l4-6.93c.25-.43.14-.97-.24-1.28l-4.22-3.31zm-14.86 5.05c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+				</svg>
+			</span>
 		</button>
 	</div>
 </div>
 <div popover id="settings">
 	<div class="buttonBar">
-		<button class="satisfying small settingButton silent" onclick="data.mute.toggle()" id="mute">
+		<button class="satisfying small settingButton silent" onclick="settings.mute.value = !settings.mute.value" id="mute">
 			<span class="shadow"></span>
 			<span class="edge"></span>
 			<span class="front">
-				<img style="height: 100%;" src="assets/unmute.svg" alt="save">
+				<svg id="muteSvg" viewBox="0 -960 960 960" fill="currentColor">
+			    <path d="M813-56 681-188q-28 20-60.5 34.5T553-131v-62q23-7 44.5-15.5T638-231L473-397v237L273-360H113v-240h156L49-820l43-43 764 763-43 44Zm-36-232-43-43q20-34 29.5-71.92Q773-440.85 773-481q0-103.32-60-184.66T553-769v-62q124 28 202 125.5T833-481q0 51-14 100t-42 93ZM643-422l-90-90v-130q47 22 73.5 66t26.5 96q0 15-2.5 29.5T643-422ZM473-592 369-696l104-104v208Zm-60 286v-150l-84-84H173v120h126l114 114Zm-42-192Z"/>
+				</svg>
+				<svg id="unmuteSvg" viewBox="0 -960 960 960" fill="currentColor">
+				  <path d="M560-131v-62q97-28 158.5-107.5T780-481q0-101-61-181T560-769v-62q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm420 48v-337q55 17 87.5 64T660-480q0 57-33 104t-87 64ZM420-648 307-540H180v120h127l113 109v-337Zm-94 168Z"/>
+				</svg>
 			</span>
 		</button>
 		<select id="themeSelector">
@@ -233,16 +247,16 @@
 				</div>
 				<div id=factoryUpgradeDisplay>
 					<p class="clean">
-						Next Upgrade at: <span id="nextFactoryUpgrade" class="number">0</span> Factories <br />
+						Next Upgrade at: <span id="nextFactoryUpgrade" class="number">0</span> Factories <br/>
 					</p>
 				</div>
 				<div id="clipsPerSecDiv">
-					Clips per Second: <span id="clipmakerRate2" class="number">0</span><br />
+					Clips per Second: <span id="clipmakerRate2" class="number">0</span><br/>
 				</div>
 				<div id="tothDiv">
-					Unused Clips: <span id="unusedClipsDisplay" class="number">0</span><br />
+					Unused Clips: <span id="unusedClipsDisplay" class="number">0</span><br/>
 				</div>
-				<br />
+				<br/>
 				<div id="factoryDiv">
 					<div class="buttonBar">
 						<div>
@@ -273,7 +287,7 @@
 					</div>
 				</div>
 				<div id="wireTransDiv" class="toUnlock">
-					Wire: <span id="transWire" class="number">0</span> <span id="inchSpan">inches</span><br />
+					Wire: <span id="transWire" class="number">0</span> <span id="inchSpan">inches</span><br/>
 				</div>
 				<div id="factoryDivSpace">
 					Factories: <span id="factoryLevelDisplaySpace" class="number">0</span>
@@ -283,7 +297,7 @@
 				<summary><h2>Wire Production</h2></summary>
 				<div id=droneUpgradeDisplay>
 					<p class="clean">
-						Next Upgrade at: <span id="nextDroneUpgrade">0</span> Drones <br />
+						Next Upgrade at: <span id="nextDroneUpgrade">0</span> Drones <br/>
 					</p>
 				</div>
 				<p class="alternateSplit">
@@ -365,7 +379,7 @@
 					</div>
 				</div>
 				<div id="droneDivSpace">
-					Harvester Drones: <span id="harvesterLevelSpace" class="number">0</span><br />
+					Harvester Drones: <span id="harvesterLevelSpace" class="number">0</span><br/>
 					Wire Drones: <span id="wireDroneLevelSpace" class="number">0</span>
 				</div>
 			</details>
@@ -382,7 +396,9 @@
 						<td>Descendents:</td>
 						<td class="alignEnd borderBottom"><span id="probesBornDisplay" class="number">0</span></td>
 					</tr>
-					<tr><td>&nbsp;</td></tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
 					<tr id="hazardBodyCount">
 						<td>Lost to hazards:</td>
 						<td class="alignEnd"><span id="probesLostHazardsDisplay" class="number">0</span></td>
@@ -395,12 +411,17 @@
 						<td>Lost in combat:</td>
 						<td class="alignEnd"><span id="probesLostCombatDisplay" class="number">0</span></td>
 					</tr>
-					<tr><td>&nbsp;</td><td style="border-top: 1px solid grey;"></td></tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td style="border-top: 1px solid grey;"></td>
+					</tr>
 					<tr>
 						<td>Total:</td>
 						<td class="alignEnd"><span id="probesTotalDisplay" class="number">0</span></td>
 					</tr>
-					<tr><td>&nbsp;</td></tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
 					<tr id="drifterDiv">
 						<td>Drifters Killed:</td>
 						<td class="alignEnd"><span id="driftersKilled" class="number">0</span></td>
@@ -441,7 +462,9 @@
 								<td><b>Total:</b></td>
 								<td class="alignEnd"><b>$&nbsp;<span id="portValue" class="number">0</span></b></td>
 							</tr>
-							<tr><td>&nbsp;</td></tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
 							<tr>
 								<td><b>Lifetime revenue:</b></td>
 								<td class="alignEnd"><b>$&nbsp;<span id="investmentRevenue" class="number">0</span></b></td>
@@ -487,24 +510,24 @@
 				</div>
 				<table class="investments">
 					<thead>
-						<tr>
-							<th>Stock</th>
-							<th class="optional">Amt.</th>
-							<th class="optional">Price</th>
-							<th class="">Total</th>
-							<th>P/L</th>
-						</tr>
+					<tr>
+						<th>Stock</th>
+						<th class="optional">Amt.</th>
+						<th class="optional">Price</th>
+						<th class="">Total</th>
+						<th>P/L</th>
+					</tr>
 					</thead>
 					<tbody id="stockList">
-						<template id="stockDisplay">
-							<tr>
-								<td id="stockSymbol">&nbsp;</td>
-								<td class="number alignEnd optional" id="stockAmount"></td>
-								<td class="number alignEnd optional" id="stockPrice"></td>
-								<td class="number alignEnd" id="stockTotal"></td>
-								<td class="number alignEnd" id="stockProfit"></td>
-							</tr>
-						</template>
+					<template id="stockDisplay">
+						<tr>
+							<td id="stockSymbol">&nbsp;</td>
+							<td class="number alignEnd optional" id="stockAmount"></td>
+							<td class="number alignEnd optional" id="stockPrice"></td>
+							<td class="number alignEnd" id="stockTotal"></td>
+							<td class="number alignEnd" id="stockProfit"></td>
+						</tr>
+					</template>
 					</tbody>
 				</table>
 			</details>
@@ -524,13 +547,16 @@
 						<td>Consumption:</td>
 						<td class="alignEnd"><span id="powerConsumptionRate" class="number">0</span> MWs</td>
 					</tr>
-					<tr><td>&nbsp;</td></tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
 					<tr>
 						<td>Production:</td>
 						<td><span id="powerProductionRate" class="number">0</span> MWs</td>
 					</tr>
 				</table>
-				<p>Storage: <span id="storedPower" class="number">0</span> / <span id="maxStorage" class="number">0</span> MWs</p>
+				<p>Storage: <span id="storedPower" class="number">0</span> / <span id="maxStorage" class="number">0</span> MWs
+				</p>
 				<div class="mb-standard hasAmountPicker">
 					<button id="btnMakeFarm" onclick="makeFarm()" class="satisfying">
 						<span class="shadow"></span>
@@ -614,18 +640,18 @@
 				<div id="battleCanvasDiv">
 					<canvas id="canvas"></canvas>
 					<div id="battleInterfaceDiv">
-						<b>Combat</b><br />
+						<b>Combat</b><br/>
 						<p class="clean2">
-							<span id="battleName">Drifter Attack 1</span></p><br />
+							<span id="battleName">Drifter Attack 1</span></p><br/>
 						<div id="victoryDiv">
 							<span id="battleResult">VICTORY</span>
 							<p class="clean2">
 								<span id="battleResultSign">+</span><span id="honorAmount">200</span> honor
 							</p>
 						</div>
-						<br /><br />
+						<br/><br/>
 						<p class="clean2">
-							Scale = <span id="battleScale">1</span>:1<br />
+							Scale = <span id="battleScale">1</span>:1<br/>
 						</p>
 					</div>
 				</div>
@@ -635,7 +661,8 @@
 					</div>
 					<h3>Design</h3>
 					<p>
-						Trust: <span id="probeTrustUsedDisplay">0</span> / <span id="probeTrustDisplay">0</span> (<span id="maxTrustDisplay">0</span> Max)
+						Trust: <span id="probeTrustUsedDisplay">0</span> / <span id="probeTrustDisplay">0</span>
+						(<span id="maxTrustDisplay">0</span> Max)
 					</p>
 					<div class="flex">
 						<div class="fitContent" id="probeAdjustButtons">
@@ -824,10 +851,10 @@
 			<details id="compDiv" open>
 				<summary><h2>Computational Resources</h2></summary>
 				<p id="trustDiv">
-					Trust: <span id="trust">2</span><br /> +1 Trust at: <span id="nextTrust">1000</span> clips<br />
+					Trust: <span id="trust">2</span><br/> +1 Trust at: <span id="nextTrust">1000</span> clips<br/>
 				</p>
 				<p id="swarmGiftDiv">
-					Swarm Gifts: <span id="swarmGifts">0</span><br />
+					Swarm Gifts: <span id="swarmGifts">0</span><br/>
 				</p>
 				<div class="buttonBar">
 					<div id="processorDisplay" class="buttonBar vertical">
@@ -873,7 +900,7 @@
 				</p>
 				<div class="swarmEngine" id="swarmEngine">
 					<h3>Swarm Computing</h3>
-					Drones: <span id="swarmSize" class="number">0</span><br />
+					Drones: <span id="swarmSize" class="number">0</span><br/>
 					<div id="swarmStatusDiv">Status: <span id="swarmStatus">x </span></div>
 					<div id="giftTimer">Next gift in <span id="giftCountdown" class="number">Infinity Hours</span></div>
 				</div>
@@ -923,7 +950,7 @@
 					<div>
 						<div id="tournamentLabel">
 							<p class="clean2">
-								<span id="tourneyDisplay">Pick strategy, run tournament, gain yomi</span><br />
+								<span id="tourneyDisplay">Pick strategy, run tournament, gain yomi</span><br/>
 							</p>
 						</div>
 						<p>Yomi: <span id="yomiDisplay">0</span></p>
@@ -1098,20 +1125,20 @@
 							<p>Make paperclips 10 at a time</p>
 						</span>
 					</button>
-<!--					<button id="prestigiousUpgradeGrinch" class="satisfying projectButton">-->
-<!--						<span class="shadow"></span>-->
-<!--						<span class="edge"></span>-->
-<!--						<span class="front">-->
-<!--							<h3>Obtain no gifts</h3>-->
-<!--							<p>Always have auto gifts unlocked</p>-->
-<!--							<p class="cost"></p>-->
-<!--						</span>-->
-<!--					</button>-->
+					<!--					<button id="prestigiousUpgradeGrinch" class="satisfying projectButton">-->
+					<!--						<span class="shadow"></span>-->
+					<!--						<span class="edge"></span>-->
+					<!--						<span class="front">-->
+					<!--							<h3>Obtain no gifts</h3>-->
+					<!--							<p>Always have auto gifts unlocked</p>-->
+					<!--							<p class="cost"></p>-->
+					<!--						</span>-->
+					<!--					</button>-->
 				</div>
 			</details>
 			<details id="challengeRun" class="toUnlock" open>
 				<summary><h2>Challenge Runs</h2></summary>
-				
+			
 			</details>
 		</div>
 	</main>

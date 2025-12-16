@@ -290,7 +290,7 @@ export function powerSurge() {
 factoryLevel.onChange(value => {
 	data.droneManufacturing.maxFactoryLevel.value = Math.max(data.droneManufacturing.maxFactoryLevel.value, value);
 });
-data.droneManufacturing.maxFactoryLevel.onChange(withElement('#nextFactoryUpgrade', (el, value) => {
+data.droneManufacturing.maxFactoryLevel.onChange(withElement('#nextFactoryUpgrade', withElement('#factoryUpgradeDisplay', (container, el, value) => {
 	let nextFactoryUp = 0;
 	if (value < 10) {
 		nextFactoryUp = 10;
@@ -299,11 +299,11 @@ data.droneManufacturing.maxFactoryLevel.onChange(withElement('#nextFactoryUpgrad
 	} else if (value < 50) {
 		nextFactoryUp = 50;
 	} else {
-		el.style.display = 'none';
+		container.style.display = 'none';
 		return;
 	}
 	el.innerText = formatWithCommas(nextFactoryUp);
-}));
+})));
 const factoryButton = getElement('#btnMakeFactory');
 
 // updateElement('#factoryRebootToolTip', value => '+' + spellf(value))

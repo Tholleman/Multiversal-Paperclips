@@ -419,8 +419,9 @@ const megaClipperCost = ObservableValue.computed([data.megaClipperLevel], (value
 }, 0).onChange(updateElement('#megaClipperCost', value => formatWithCommas(value, 2)));
 data.wireBuyerStatus.onChange(updateElement('#wireBuyerStatus', value => value ? 'ON' : 'OFF'));
 let isSetUp = false;
-data.mute.onChange(value => {
-	document.querySelector('#mute img').src = value ? 'assets/mute.svg' : 'assets/unmute.svg';
+settings.mute.onChange(value => {
+	document.querySelector('#muteSvg').style.display = value ? '' : 'none';
+	document.querySelector('#unmuteSvg').style.display = value ? 'none' : '';
 	if (isSetUp && !value) {
 		buttonSound.play();
 	}

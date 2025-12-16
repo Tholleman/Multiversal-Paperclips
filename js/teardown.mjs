@@ -26,6 +26,7 @@ export const advancements = (() => {
 		speedRun: ObservableValue.new(advancementStatus(loaded.speedRun)),
 		challengeRun: ObservableValue.new(challengeRun(loaded.challengeRun)),
 		longestWinStreak: ObservableValue.new(init(loaded.longestWinStreak, 0)),
+		fastestWin: ObservableValue.new(init(loaded.fastestWin, -1)),
 	};
 	
 	/**
@@ -111,6 +112,11 @@ function finalAdvancementChecks() {
 	unlock(advancements.winner, data.wonEveryStrategicModelling.value);
 	unlock(advancements.noQuantum, !data.advancementTracking.usedQuantum.value);
 	unlock(advancements.speedRun, ticks / 100 < 30 * 60);
+	if (advancements.fastestWin.value <= 0) {
+		advancements.fastestWin.value = ticks;
+	} else {
+		advancements.fastestWin.value = Math.min(advancements.fastestWin.value, ticks);
+	}
 	unlock(advancements.nightRun, advancements.challengeRun.value === 'night');
 	unlock(advancements.noPrestige, advancements.challengeRun.value === 'noPrestige');
 
