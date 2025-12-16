@@ -187,7 +187,6 @@ const mapsElement = document.getElementById('maps');
 const wppsElement = document.getElementById('wpps');
 const swarmEngineElement = document.getElementById("swarmEngine");
 const tourneyDisplayElement = document.getElementById("tourneyDisplay");
-const nextFactoryUpgradeElement = document.getElementById("nextFactoryUpgrade");
 const sliderElement = document.getElementById("slider");
 const swarmSizeElement = document.getElementById("swarmSize");
 const swarmStatusElement = document.getElementById("swarmStatus");
@@ -427,8 +426,6 @@ function buttonUpdate() {
 		battleCanvasDivElement.style.display = "";
 	}
 	
-	factoryUpgradeDisplayElement.style.display = isCompleted('clipFactories') && maxFactoryLevel < 50 ? "" : "none";
-	
 	btnIncreaseMaxTrustElement.disabled = honor < maxTrustCost;
 	
 	btnMakerProbeElement.disabled = unusedClips < probeCost;
@@ -472,8 +469,6 @@ function buttonUpdate() {
 		harvesterDivElement.style.display = "none";
 		wireDroneDivElement.style.display = "none";
 	}
-	
-	btnMakeFactoryElement.disabled = unusedClips < factoryCost.value;
 
 
 // PROBE DESIGN
@@ -543,55 +538,6 @@ function makeMegaClipper() {
 	data.megaClipperLevel.value++;
 }
 
-let maxFactoryLevel = 0;
-
-function updateUpgrades() {
-	let nextFactoryUp = 0;
-	
-	if (maxFactoryLevel < 10) {
-		nextFactoryUp = 10;
-	} else if (maxFactoryLevel < 20) {
-		nextFactoryUp = 20;
-	} else if (maxFactoryLevel < 50) {
-		nextFactoryUp = 50;
-	}
-	
-	nextFactoryUpgradeElement.innerHTML = formatWithCommas(nextFactoryUp);
-}
-
-
-function makeFactory() {
-	if (unusedClips < factoryCost.value) return;
-	unusedClips -= factoryCost.value;
-	factoryBill.value += factoryCost.value;
-	unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
-	factoryLevel.value++;
-	let fcmod;
-	if (factoryLevel.value < 8) {
-		fcmod = 11 - factoryLevel.value;
-	} else if (factoryLevel.value < 13) {
-		fcmod = 2;
-	} else if (factoryLevel.value < 20) {
-		fcmod = 1.5;
-	} else if (factoryLevel.value < 39) {
-		fcmod = 1.25;
-	} else if (factoryLevel.value < 79) {
-		fcmod = 1.15;
-	} else {
-		fcmod = 1.10;
-	}
-	if (factoryLevel.value > maxFactoryLevel) {
-		maxFactoryLevel = factoryLevel.value;
-	}
-	updateUpgrades();
-	factoryCost.value *= fcmod;
-}
-
-const unusedClipsSpy = spy(10, () => unusedClips);
-
-function updateDroneButtons() {
-}
-
 function harvesterReboot() {
 	harvesterLevel.value = 0;
 	unusedClips += harvesterBill.value;
@@ -607,6 +553,7 @@ function wireDroneReboot() {
 }
 
 function factoryReboot() {
+	data.droneManufacturing.factoryAmountSelected.value = 1;
 	factoryLevel.value = 0;
 	unusedClips += factoryBill.value;
 	factoryBill.value = 0;
@@ -783,32 +730,27 @@ function updatePower() {
 	const demand = dDemand + fDemand;
 	const cap = batteryLevel.value * 10_000;
 	
-	if (supply >= demand) {
-		let xsSupply = supply - demand;
+	const toAdd = supply - demand;
+	if (toAdd >= 0) {
 		if (storedPower < cap) {
-			if (xsSupply > cap - storedPower) {
-				xsSupply = cap - storedPower;
-			}
-			storedPower = storedPower + xsSupply;
+			storedPower = Math.min(cap, storedPower + toAdd);
 		}
-		
 		if (powMod < 1) {
 			powMod = 1;
 		}
-		
 		if (momentum === 1) {
 			powMod += .0005;
 		}
-	} else if (supply < demand) {
-		let xsDemand = demand - supply;
+	} else {
 		if (storedPower > 0) {
+			let xsDemand = -toAdd;
 			if (storedPower >= xsDemand) {
 				if (momentum === 1) {
 					powMod += .0005;
 				}
-				storedPower = storedPower - xsDemand;
+				storedPower -= xsDemand;
 			} else if (storedPower < xsDemand) {
-				xsDemand = xsDemand - storedPower;
+				xsDemand -= storedPower;
 				storedPower = 0;
 				let nuSupply = supply - xsDemand;
 				powMod = nuSupply / demand;
@@ -1765,7 +1707,6 @@ function refresh() {
 	victoryDivElement.style.visibility = "hidden";
 	probeTrustCostDisplayElement.innerHTML = formatWithCommas(probeTrustCost);
 	
-	updateUpgrades();
 	updatePower();
 }
 
@@ -1817,8 +1758,6 @@ function save() {
 		autoGiftReceiver: Boolean(autoGiftReceiver.value),
 		processorGiftReceiver: Boolean(processorGiftReceiver.value),
 		memoryGiftReceiver: Boolean(memoryGiftReceiver.value),
-		
-		maxFactoryLevel: maxFactoryLevel,
 		
 		wirePriceCounter: wirePriceCounter,
 		wireBasePrice: wireBasePrice,
@@ -1979,8 +1918,6 @@ function load() {
 	autoGiftReceiver.value = loadGame.autoGiftReceiver === true;
 	processorGiftReceiver.value = loadGame.processorGiftReceiver === true;
 	memoryGiftReceiver.value = loadGame.memoryGiftReceiver === true;
-	
-	maxFactoryLevel = loadGame.maxFactoryLevel;
 	
 	wirePriceCounter = loadGame.wirePriceCounter;
 	wireBasePrice = loadGame.wireBasePrice;

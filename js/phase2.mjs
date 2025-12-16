@@ -1,4 +1,4 @@
-import {unlockElement, withElement} from './view.mjs';
+import {getElement, unlockElement, withElement} from './view.mjs';
 import {advancements} from './teardown.mjs';
 
 const unusedClipsSpy = spy(10, () => unusedClips);
@@ -80,7 +80,13 @@ class Resource {
 			}),
 		);
 		this.#amount = ObservableValue.computed([saveData.current, saveData.amount],
-		                                        (currentAmount, toAdd) => toAdd === 0 ? -currentAmount : toAdd);
+		                                        (currentAmount, toAdd) => {
+			                                        if (toAdd === 0) {
+				                                        return -currentAmount;
+			                                        } else {
+				                                        return toAdd;
+			                                        }
+		                                        });
 		ObservableValue.onAnyChange([saveData.amount], withElement(selectors.action, label => {
 			switch (saveData.amount.value) {
 				case 0:
@@ -262,7 +268,7 @@ advancements.afk.onChange(value => {
 const storedPower$ = spy(10, () => storedPower);
 const powMod$ = spy(1e3, () => powMod);
 const powerSurgeMs = ObservableValue.computed([storedPower$],
-                                              (storedPower) => storedPower, 0)
+                                              (storedPower) => storedPower / 1, 0)
                                     .onChange(withElement('#powerSurgeDuration', (el, ms) => {
 	                                    el.innerText = timeCruncher(ms / 10);
                                     }));
@@ -279,4 +285,74 @@ export function powerSurge() {
 	processMatter(ms);
 	workFactories(ms);
 	powMod -= 10;
+}
+
+factoryLevel.onChange(value => {
+	data.droneManufacturing.maxFactoryLevel.value = Math.max(data.droneManufacturing.maxFactoryLevel.value, value);
+});
+data.droneManufacturing.maxFactoryLevel.onChange(withElement('#nextFactoryUpgrade', (el, value) => {
+	let nextFactoryUp = 0;
+	if (value < 10) {
+		nextFactoryUp = 10;
+	} else if (value < 20) {
+		nextFactoryUp = 20;
+	} else if (value < 50) {
+		nextFactoryUp = 50;
+	} else {
+		el.style.display = 'none';
+		return;
+	}
+	el.innerText = formatWithCommas(nextFactoryUp);
+}));
+const factoryButton = getElement('#btnMakeFactory');
+
+// updateElement('#factoryRebootToolTip', value => '+' + spellf(value))
+ObservableValue.onAnyChange([data.droneManufacturing.factoryAmountSelected, factoryLevel, unusedClipsSpy, factoryCost],
+                            (selected, factories, unused, cost, bill) => {
+	                            if (selected === 0) {
+		                            factoryButton.disabled = factories === 0;
+	                            } else {
+		                            factoryButton.disabled = unused < cost;
+	                            }
+                            });
+ObservableValue.onAnyChange([data.droneManufacturing.factoryAmountSelected, factoryBill, factoryCost], withElement('#factoryCostDisplay', (el, selected, bill, cost) => {
+	if (selected === 0) {
+		el.innerText = `+${spellf(bill)}`;
+	} else {
+		el.innerText = `${spellf(cost)}`;
+	}
+}));
+ObservableValue.onAnyChange([data.droneManufacturing.factoryAmountSelected], withElement('#factoryActionLabel', (label, amount) => {
+	if (amount === 0) {
+		label.innerText = 'Disassemble All Clip Factories';
+	} else {
+		label.innerText = 'Clip Factory';
+	}
+}));
+
+export function factoryAction() {
+	if (data.droneManufacturing.factoryAmountSelected.value === 0) {
+		factoryReboot();
+		return;
+	}
+	if (unusedClips < factoryCost.value) return;
+	unusedClips -= factoryCost.value;
+	factoryBill.value += factoryCost.value;
+	unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
+	factoryLevel.value++;
+	let priceMod;
+	if (factoryLevel.value < 8) {
+		priceMod = 11 - factoryLevel.value;
+	} else if (factoryLevel.value < 13) {
+		priceMod = 2;
+	} else if (factoryLevel.value < 20) {
+		priceMod = 1.5;
+	} else if (factoryLevel.value < 39) {
+		priceMod = 1.25;
+	} else if (factoryLevel.value < 79) {
+		priceMod = 1.15;
+	} else {
+		priceMod = 1.10;
+	}
+	factoryCost.value *= priceMod;
 }

@@ -25,6 +25,7 @@ export const advancements = (() => {
 		againstTheOdds: ObservableValue.new(advancementStatus(loaded.againstTheOdds)),
 		speedRun: ObservableValue.new(advancementStatus(loaded.speedRun)),
 		challengeRun: ObservableValue.new(challengeRun(loaded.challengeRun)),
+		longestWinStreak: ObservableValue.new(init(loaded.longestWinStreak, 0)),
 	};
 	
 	/**

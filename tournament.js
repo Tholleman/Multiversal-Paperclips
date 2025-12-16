@@ -25,7 +25,7 @@ for (let row of cells) {
 const resultList = document.querySelector('#tournamentResultsList');
 let averageCellValue = 5;
 const rerollButton = document.querySelector('#rerollGridButton');
-const rerollCost = new ObservableValue(0, updateElement('#rerollCost', formatWithCommas));
+const rerollCost = ObservableValue.new(0, updateElement('#rerollCost', formatWithCommas));
 const tourneyInProg = new ObservableBoolean(false,
 	[() => btnNewTournamentElement.disabled = true]);
 ObservableValue.onAnyChange([tourneyInProg, yomi, rerollCost], () => rerollButton.disabled = !tourneyInProg.isTrue || yomi.value < rerollCost.value);
@@ -195,6 +195,7 @@ function newTourney(startingData = undefined) {
 				if (data.winStreak.value > 2) {
 					displayMessage(`First loss after ${data.winStreak.value} wins`)
 				}
+				advancements.longestWinStreak.value = Math.max(advancements.longestWinStreak.value, data.winStreak.value)
 				data.winStreak.value = 0;
 				data.wonEveryStrategicModelling.value = false;
 			}

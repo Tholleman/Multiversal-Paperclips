@@ -89,11 +89,10 @@ factoryFlag.onChange(value => document.querySelector('#factoryDiv').style.displa
 const factoryLevel = ObservableValue.new(0, [
 	updateElement('#factoryLevelDisplay'),
 	updateElement('#factoryLevelDisplaySpace', spellf),
-	enableButton('#btnFactoryReboot', value => value > 0),
 ]);
 let factoryBoost = 1;
 const factoryCost = ObservableValue.new(100_000_000, updateElement('#factoryCostDisplay', spellf));
-const factoryBill = ObservableValue.new(0, updateElement('#factoryRebootToolTip', value => '+' + spellf(value)));
+const factoryBill = ObservableValue.new(0);
 
 var harvesterRate = 26180337;
 const harvesterLevel = ObservableValue.new(0, [

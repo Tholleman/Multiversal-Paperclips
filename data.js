@@ -254,6 +254,10 @@ const data = (() => {
 		batteryAmountSelected: ObservableValue.new(init(loaded.batteryAmountSelected, 1)),
 		maxDrones: ObservableValue.new(init(loaded.maxDrones, 0)),
 		maxFactories: ObservableValue.new(init(loaded.maxFactories, 0)),
+		droneManufacturing: loadSection(loaded.droneManufacturing, droneManufacturing => ({
+			factoryAmountSelected: ObservableValue.new(init(droneManufacturing.factoryAmountSelected, 1)),
+			maxFactoryLevel: ObservableValue.new(init(droneManufacturing.maxFactoryLevel, 0)),
+		})),
 		compFlag: ObservableValue.new(init(loaded.compFlag, false)),
 		projectsFlag: ObservableValue.new(init(loaded.projectsFlag, false)),
 		tothFlag: ObservableValue.new(init(loaded.tothFlag, false)),

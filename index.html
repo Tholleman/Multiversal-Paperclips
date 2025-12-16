@@ -246,26 +246,29 @@
 				<div id="factoryDiv">
 					<div class="buttonBar">
 						<div>
-							<button class="satisfying" id="btnMakeFactory" onclick="makeFactory()">
-								<span class="shadow"></span>
-								<span class="edge"></span>
-								<span class="front">
-									<h3>Clip Factory</h3>
-									<p id="factoryLevelDisplay"></p>
-									<p class="cost"><span id="factoryCostDisplay">0</span> clips</p>
-								</span>
-							</button>
-						</div>
-						<div>
-							<button class="satisfying" id="btnFactoryReboot" onclick="factoryReboot()">
-								<span class="shadow"></span>
-								<span class="edge"></span>
-								<span class="front">
-									<h3>Disassemble All</h3>
-									<p><span id="factoryRebootToolTip">0</span> clips</p>
-									<p class="cost">&nbsp;</p>
-								</span>
-							</button>
+							<div class="mb-standard hasAmountPicker">
+								<button id="btnMakeFactory" onclick="factoryAction()" class="satisfying">
+									<span class="shadow"></span>
+									<span class="edge"></span>
+									<span class="front">
+										<h3 id="factoryActionLabel">Clip Factory</h3>
+										<p id="factoryLevelDisplay">0</p>
+										<p class="cost"><span id="factoryCostDisplay">0</span> clips</p>
+									</span>
+								</button>
+								<div class="amountPicker single">
+									<button class="satisfying small" id="" onclick="data.droneManufacturing.factoryAmountSelected.value = 1">
+										<span class="shadow"></span>
+										<span class="edge"></span>
+										<span class="front">1</span>
+									</button>
+									<button class="satisfying small" id="" onclick="data.droneManufacturing.factoryAmountSelected.value = 0">
+										<span class="shadow"></span>
+										<span class="edge"></span>
+										<span class="front">🗑</span>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
