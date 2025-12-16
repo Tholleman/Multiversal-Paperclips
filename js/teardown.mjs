@@ -1,5 +1,6 @@
 import {getElement, unlockElement} from './view.mjs';
 import {terminal} from './Terminal.mjs';
+import {advancements, finalAdvancementChecks, showPrestigiousUpgrades} from './Prestige.mjs';
 
 export function startTeardown() {
 	if (data.startedTeardown.value) {
@@ -8,145 +9,6 @@ export function startTeardown() {
 	}
 	data.startedTeardown.value = true;
 	scheduleTeardown(teardownSteps());
-}
-
-export const advancements = (() => {
-	const loaded = JSON.parse(localStorage.getItem('MultiversalPaperclipsAdvancements')) ?? {};
-	return {
-		original: ObservableValue.new(advancementStatus(loaded.original)),
-		beg: ObservableValue.new(advancementStatus(loaded.beg)),
-		afk: ObservableValue.new(advancementStatus(loaded.afk)),
-		unchanged: ObservableValue.new(advancementStatus(loaded.unchanged)),
-		trading: ObservableValue.new(advancementStatus(loaded.trading)),
-		winner: ObservableValue.new(advancementStatus(loaded.winner)),
-		noPrestige: ObservableValue.new(advancementStatus(loaded.noPrestige)),
-		nightRun: ObservableValue.new(advancementStatus(loaded.nightRun)),
-		noQuantum: ObservableValue.new(advancementStatus(loaded.noQuantum)),
-		againstTheOdds: ObservableValue.new(advancementStatus(loaded.againstTheOdds)),
-		speedRun: ObservableValue.new(advancementStatus(loaded.speedRun)),
-		challengeRun: ObservableValue.new(challengeRun(loaded.challengeRun)),
-		longestWinStreak: ObservableValue.new(init(loaded.longestWinStreak, 0)),
-		fastestWin: ObservableValue.new(init(loaded.fastestWin, -1)),
-	};
-	
-	/**
-	 * @template T
-	 * @param {NoInfer<T>} loaded
-	 * @param {T} def
-	 * @return {T}
-	 */
-	function init(loaded, def) {
-		return loaded ?? def;
-	}
-	
-	/**
-	 * @param loaded
-	 * @return {'LOCKED' | 'UNLOCKED' | 'ACTIVE'}
-	 */
-	function advancementStatus(loaded) {
-		return init(loaded, 'LOCKED');
-	}
-
-	/**
-	 * @param loaded
-	 * @return {'' | 'noPrestige' | 'night'}
-	 */
-	function challengeRun(loaded) {
-		return init(loaded, '');
-	}
-})();
-
-export function saveAdvancements() {
-	saveObject('MultiversalPaperclipsAdvancements', advancements);
-}
-
-manageButton(advancements.original, '#prestigiousUpgradeClickLink');
-manageButton(advancements.beg, '#prestigiousUpgradeBeg');
-advancements.beg.onChange(status => {
-	if (status !== 'ACTIVE') return;
-	if (data.givenFundBonus.value) return;
-	if (!humanFlag.value) return;
-	data.givenFundBonus.value = true;
-	funds.value += 500;
-	terminal.print('$ 500 starting capital has been granted');
-});
-manageButton(advancements.afk, '#prestigiousUpgradeAFK');
-advancements.afk.onChange(status => {
-	if (status === 'LOCKED') {
-		document.body.addEventListener('click', trackClicks);
-	} else {
-		document.body.removeEventListener('click', trackClicks);
-	}
-	
-	function trackClicks() {
-		if (advancements.afk.value !== 'LOCKED') return;
-		const lastClick = data.lastClickTickStamp.value;
-		const durationInSeconds = (ticks - lastClick) / 100;
-		if (durationInSeconds > 3600) {
-			advancements.afk.value = 'UNLOCKED';
-		} else {
-			data.lastClickTickStamp.value = ticks;
-		}
-	}
-});
-manageButton(advancements.unchanged, '#prestigiousUpgradeUnchanged');
-manageButton(advancements.trading, '#prestigiousUpgradeTrading');
-manageButton(advancements.winner, '#prestigiousUpgradeWinner');
-manageButton(advancements.noPrestige, '#prestigiousUpgradeNoPrestige');
-manageButton(advancements.nightRun, '#prestigiousUpgradeNightRun');
-manageButton(advancements.noQuantum, '#prestigiousUpgradeNoQuantum');
-manageButton(advancements.againstTheOdds, '#prestigiousUpgradeAgainstTheOdds');
-manageButton(advancements.speedRun, '#prestigiousUpgradeSpeedrun');
-if (advancements.againstTheOdds.value === 'LOCKED') {
-	ObservableValue.onAnyChange([drifterCount$, probeCount$], () => {
-		if (advancements.againstTheOdds.value !== 'LOCKED') return;
-		if (drifterCount$.value - probeCount$.value > 100) {
-			advancements.againstTheOdds.value = 'UNLOCKED';
-		}
-	});
-}
-
-function finalAdvancementChecks() {
-	unlock(advancements.unchanged, !data.marginChanged.value);
-	unlock(advancements.trading, data.stocks.investLevel.value >= 20);
-	unlock(advancements.winner, data.wonEveryStrategicModelling.value);
-	unlock(advancements.noQuantum, !data.advancementTracking.usedQuantum.value);
-	unlock(advancements.speedRun, ticks / 100 < 30 * 60);
-	if (advancements.fastestWin.value <= 0) {
-		advancements.fastestWin.value = ticks;
-	} else {
-		advancements.fastestWin.value = Math.min(advancements.fastestWin.value, ticks);
-	}
-	unlock(advancements.nightRun, advancements.challengeRun.value === 'night');
-	unlock(advancements.noPrestige, advancements.challengeRun.value === 'noPrestige');
-
-	/**
-	 * @param {ObservableValue<'LOCKED' | 'UNLOCKED' | 'ACTIVE'>} advancement
-	 * @param {boolean} when
-	 */
-	function unlock(advancement, when) {
-		if (advancement.value !== 'LOCKED') return;
-		if (!when) return;
-		advancement.value = 'UNLOCKED';
-	}
-}
-
-/**
- * @param {ObservableValue<'LOCKED' | 'UNLOCKED' | 'ACTIVE'>} subject
- * @param {string} selector
- */
-function manageButton(subject, selector) {
-	const btn = getElement(selector);
-	subject.onChange(status => {
-		btn.disabled = status === 'LOCKED';
-		if (status === 'ACTIVE') {
-			btn.remove();
-		}
-	});
-	btn.addEventListener('click', () => {
-		subject.value = 'ACTIVE';
-		saveAdvancements();
-	});
 }
 
 const busyWaitTime = 10;
@@ -391,14 +253,12 @@ function* teardownSteps() {
 			reset();
 		},
 	});
-	if (prestigeS > 0 && prestigeU.value > 0 && prestigeY > 0) {
-		unlockElement('#prestigiousUpgrade');
-	}
+	showPrestigiousUpgrades();
 	terminal.print('');
 	yield 1e3;
 	terminal.print('Multiversal Paperclips');
 	yield 1e3;
-	terminal.printHtml('<a href="https://www.decisionproblem.com/paperclips/index2.html" target="_blank" onclick="clickedLink()">Original</a> by Frank Lantz');
+	terminal.printHtml('<a href="https://www.decisionproblem.com/paperclips/index2.html" target="_blank" onclick="clickedLink()" onauxclick="clickedLink()">Original</a> by Frank Lantz');
 	yield 1e3;
 	terminal.print('With combat programming by Bennett Foddy');
 	yield 1e3;
@@ -424,11 +284,16 @@ function addLastProject(id, project) {
 }
 
 export function clickedLink() {
-	advancements.original.value = 'UNLOCKED';
+	advancements.unlocks.original.value = 'UNLOCKED';
+	try {
+		unlockElement('#prestigiousUpgrade');
+	} catch (_) {
+	}
 }
 
 export function playerTeardown() {
 	if (wire.value <= 1) {
+		getElement('#btnMakeLastPaperclip').disabled = true;
 		clips.innerHTML = addBreaksAtComma('30,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000');
 		clipCountCrunchedElement.innerHTML = '30.0 septendecillion';
 		wire.value = 0;

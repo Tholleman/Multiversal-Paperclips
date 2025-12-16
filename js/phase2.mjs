@@ -1,5 +1,5 @@
 import {getElement, unlockElement, withElement} from './view.mjs';
-import {advancements} from './teardown.mjs';
+import {advancements} from './Prestige.mjs';
 
 const unusedClipsSpy = spy(10, () => unusedClips);
 
@@ -261,7 +261,7 @@ export function roundBatteryAmount() { batteries.round(); }
 
 export function makeBattery() { batteries.make(); }
 
-advancements.afk.onChange(value => {
+advancements.unlocks.afk.onChange(value => {
 	if (value !== 'ACTIVE') return;
 	unlockElement('#powerSurgeContainer');
 });
@@ -277,7 +277,7 @@ ObservableValue.onAnyChange([powerSurgeMs, powMod$], withElement('#powerSurge', 
 }));
 
 export function powerSurge() {
-	if (advancements.afk.value !== 'ACTIVE') return;
+	if (advancements.unlocks.afk.value !== 'ACTIVE') return;
 	if (powMod$.value < 10) return;
 	const ms = powerSurgeMs.value;
 	storedPower = 0;
@@ -285,6 +285,12 @@ export function powerSurge() {
 	processMatter(ms);
 	workFactories(ms);
 	powMod -= 10;
+}
+
+window.cheatPowerSurge = () => {
+	acquireMatter(3600e3);
+	processMatter(3600e3);
+	workFactories(3600e3);
 }
 
 factoryLevel.onChange(value => {

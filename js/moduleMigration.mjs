@@ -6,5 +6,7 @@ import * as Teardown from './teardown.mjs';
 Object.assign(window, Teardown);
 import * as Investment from './Investment.mjs';
 Object.assign(window, Investment);
-import * as ThemeManager from './ThemeManager.js';
+import * as ThemeManager from './ThemeManager.mjs';
 Object.assign(window, ThemeManager);
+import * as Prestige from './Prestige.mjs';
+Object.assign(window, Prestige);

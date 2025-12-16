@@ -277,7 +277,7 @@ function quantumCycle() {
 	}
 	qClock += .01;
 	if (isCompleted('qObserving') && qClock / Math.PI % 20 < 1) {
-		if (advancements.noQuantum.value === 'ACTIVE' && !autoUnobserved) {
+		if (advancements.unlocks.noQuantum.value === 'ACTIVE' && !autoUnobserved) {
 			autoUnobserved = true;
 			data.observeQuantum.value = false;
 			return;
@@ -987,7 +987,8 @@ function cheatHuman() {
 	unusedClips=Math.max(300000000, unusedClips);
 	unusedClipsDisplayElement.innerHTML = formatWithCommas(unusedClips);
 	yomi.value = Math.max(50_000, yomi.value);
-	displayMessage('Skipping past humanity')
+	displayMessage('Skipping past humanity');
+	milestoneFlag = Math.max(1, milestoneFlag);
 }
 
 function zeroMatter() {
@@ -1049,7 +1050,7 @@ function updateOperations() {
 function milestoneCheck() {
 	if (milestoneFlag === 0 && funds.value >= 5) {
 		milestoneFlag = 1;
-		if (advancements.beg.value !== 'ACTIVE') {
+		if (advancements.unlocks.beg.value !== 'ACTIVE') {
 			displayMessage('AutoClippers available for purchase');
 		}
 	}
@@ -1234,6 +1235,18 @@ let probeUsedTrust = 0;
 let probeDriftBaseRate = .000001;
 let probeLaunchLevel = 0;
 let probeCost = Math.pow(10, 17);
+
+function cheatProbeDesign() {
+	probeSpeed = 99;
+	probeNav = 99;
+	probeRep = 99;
+	probeHaz = 99;
+	probeFac = 1;
+	probeHarv = 1;
+	probeWire = 1;
+	probeCombat = 99;
+	probeTrust = Math.max(1, probeTrust)
+}
 
 let probeTrustCost = Math.floor(Math.pow(probeTrust + 1, 1.47) * 500);
 

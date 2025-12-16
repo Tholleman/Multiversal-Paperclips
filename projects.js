@@ -365,7 +365,7 @@ addProject('wireFallback', {
 		trust.value--;
 		wire.value = wireSupply;
 		this.uses = 1;
-		advancements.beg.value = 'UNLOCKED';
+		advancements.unlocks.beg.value = 'UNLOCKED';
 	}
 });
 addProject('wireBuyer', {
@@ -1037,7 +1037,7 @@ addProject('bribeX', {
 		displayMessage("Gift accepted, TRUST INCREASED");
 		funds.value -= data.bribe.value;
 		data.bribe.value *= 2;
-		const loanWarning = advancements.trading.value === 'ACTIVE' ? ', no loan' : '';
+		const loanWarning = advancements.unlocks.trading.value === 'ACTIVE' ? ', no loan' : '';
 		this.priceTag = "($" + formatWithCommas(data.bribe.value) + loanWarning + ")";
 		trust.value++;
 		if (trust.value < 100) {

@@ -1,4 +1,4 @@
-import {advancements} from './teardown.mjs';
+import {advancements} from './Prestige.mjs';
 import {bindDropdown, getElement, unlockElement, withElement} from './view.mjs';
 
 const stockSymbolElements = [];
@@ -258,7 +258,7 @@ data.investmentEngineFlag.onChange(value => {
 	if (value) {
 		investmentEngineElement.style.display = '';
 		investmentEngineUpgradeElement.style.display = '';
-		if (advancements.trading.value === 'ACTIVE') {
+		if (advancements.unlocks.trading.value === 'ACTIVE') {
 			unlockElement('#leveragedLoanContainer');
 			unlockElement('#btnPayLoan');
 			unlockElement('#btnLeveragedLoan');
@@ -269,7 +269,7 @@ data.investmentEngineFlag.onChange(value => {
 	}
 });
 
-if (advancements.trading.value === 'ACTIVE') {
+if (advancements.unlocks.trading.value === 'ACTIVE') {
 	getElement('#depositLabel').innerText = 'Deposit (non-loaned)';
 	getProject('bribe1').priceTag = '($500,000, no loan)';
 	getProject('bribeX').priceTag = '($' + formatWithCommas(data.bribe.value) + ', no loan)';
