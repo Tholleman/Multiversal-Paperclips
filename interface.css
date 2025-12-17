@@ -2,6 +2,7 @@
 
 :root {
 	--standard-inline-padding: 0.75rem;
+	interpolate-size: allow-keywords;
 }
 
 body.light {
@@ -172,6 +173,16 @@ main {
 }
 
 details {
+	&::details-content {
+		block-size: 0;
+		overflow: hidden;
+		transition: block-size 200ms, content-visibility 200ms;
+		transition-behavior: allow-discrete;
+	}
+	&[open]::details-content {
+		block-size: auto;
+	}
+	
 	& summary {
 		border: none;
 		border-bottom: gray 1px solid;
@@ -182,15 +193,28 @@ details {
 		
 		& h2 {
 			display: inline;
+			margin: 0;
 		}
 		
-		& .spreader {
-			display: flex
+		& .notification {
+			float: right;
+			background: hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness));
+			border-radius: 100%;
+			padding: 4px;
+			min-width: 3ch;
+			text-align: center;
+			&:empty {
+				display: none;
+			}
 		}
 		
 		&:hover {
 			border-bottom-style: dotted;
 		}
+	}
+	
+	&[open] .notification {
+		display: none;
 	}
 }
 

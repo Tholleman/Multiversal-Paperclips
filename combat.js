@@ -76,8 +76,9 @@ function createBattle() {
 	battleRIGHTSHIPS = Math.min(200, Math.ceil(rr / 1000000));
 
 	Battle();
-
-	document.getElementById('battleName').innerHTML = isCompleted('nameBattles') ? generateBattleName() : `Drifter Attack ${++battleID}`;
+	
+	battleName = isCompleted('nameBattles') ? generateBattleName() : `Drifter Attack ${++battleID}`;
+	document.getElementById('battleName').innerHTML = battleName;
 }
 
 const battleNames = [

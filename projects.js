@@ -125,15 +125,20 @@ function unmarshalProject(id, data) {
 	return project;
 }
 
+const availableEl = document.getElementById('projectsNotification');
 function updateProjects() {
 	for (let entry of unavailableProjects.entries()) {
 		if (entry[1].trigger()) {
 			displayProject(entry[0]);
 		}
 	}
+	let available = 0;
 	for (let project of availableProjects.values()) {
-		project.element.disabled = !project.cost();
+		const enabled = project.cost();
+		project.element.disabled = !enabled;
+		if (enabled) available++;
 	}
+	availableEl.innerText = available > 0 ? available : '';
 }
 
 /** @type {HTMLTemplateElement} */
@@ -516,7 +521,7 @@ addProject('creativity2', {
 	effect: function () {
 		displayMessage("Lexical Processing online, TRUST INCREASED");
 		displayMessage("'Impossible' is a word to be found only in the dictionary of fools. -Napoleon");
-		trust.value += 1;
+		trust.value++;
 		creativity.value -= 50;
 	}
 });

@@ -394,6 +394,8 @@ data.compFlag.onChange(value => {
 	compDivElement.style.display = value ? '' : "none";
 });
 
+const strategyNotification = document.getElementById('strategyNotification');
+const probeNotification = document.getElementById('probeNotification');
 function buttonUpdate() {
 	
 	powerDivElement.style.display = isCompleted('solarPanels') && spaceFlag === 0 ? "" : "none";
@@ -457,7 +459,7 @@ function buttonUpdate() {
 	}
 	
 	btnNewTournamentElement.disabled = operations.value < tourneyCost || tourneyInProg.isTrue;
-	
+	strategyNotification.innerText = (!btnNewTournamentElement.disabled && autoTourneyFlag.isFalse) ? '1' : '';
 	
 	creativityDivElement.style.display = creativityOn === 0 ? "none" : "";
 	
@@ -490,6 +492,11 @@ function buttonUpdate() {
 	btnLowerProbeWireElement.disabled = probeWire < 1;
 	btnRaiseProbeCombatElement.disabled = probeTrust - probeUsedTrust < 1;
 	btnLowerProbeCombatElement.disabled = probeCombat < 1;
+	
+	let probeNotificationCount = 0;
+	if (honor >= maxTrustCost) probeNotificationCount++;
+	if (!btnIncreaseProbeTrustElement.disabled) probeNotificationCount++;
+	probeNotification.innerText = probeNotificationCount > 0 ? probeNotificationCount : '';
 }
 
 humanFlag.onTrue(() => {
@@ -720,6 +727,7 @@ function batteryReboot() {
 	batteryBill.value = 0;
 }
 
+const powerNotification = document.getElementById('powerNotification');
 function updatePower() {
 	if (!humanFlag.isTrue && spaceFlag !== 0) return;
 	
@@ -731,6 +739,7 @@ function updatePower() {
 	
 	const toAdd = supply - demand;
 	if (toAdd >= 0) {
+		powerNotification.innerText = ''
 		if (storedPower < cap) {
 			storedPower = Math.min(cap, storedPower + toAdd);
 		}
@@ -741,6 +750,7 @@ function updatePower() {
 			powMod += .0005;
 		}
 	} else {
+		powerNotification.innerText = '!'
 		if (storedPower > 0) {
 			let xsDemand = -toAdd;
 			if (storedPower >= xsDemand) {
@@ -872,13 +882,21 @@ const avgSales = ObservableValue.new(0, value => {
 	const avgRev = value * margin.value;
 	avgRevElement.innerHTML = formatWithCommas(avgRev, 2);
 });
+const businessNotification = document.getElementById('businessNotification');
 ObservableValue.onAnyChange([demand, clipRate], calculateRev);
 data.unsoldClips.onChange(value => {if (value === 0) calculateRev();});
 function calculateRev() {
 	const per100Milliseconds = Math.floor(0.7 * Math.pow(demand.value, 1.15));
 	const occurrencePerSecond = Math.min(1, demand.value / 100) * 10;
-	
-	avgSales.value = Math.min(Math.max(clipRate.value, data.unsoldClips.value), occurrencePerSecond * per100Milliseconds);
+	const available = Math.max(clipRate.value, data.unsoldClips.value);
+	const rate = occurrencePerSecond * per100Milliseconds;
+	if (rate > available) {
+		businessNotification.innerText = available > 0 ? '!' : '';
+		avgSales.value = available;
+	} else {
+		businessNotification.innerText = '';
+		avgSales.value = rate;
+	}
 }
 
 const creativityThreshold = 400;

@@ -19,9 +19,11 @@ data.stocks.portfolioTotal.onChange(withElement('#portValue', (el, value) => {
 data.stocks.investUpgradeCost.onChange(withElement('#investUpgradeCost', (el, value) => {
 	el.innerText = formatWithCommas(value);
 }));
-ObservableValue.onAnyChange([yomi, data.stocks.investUpgradeCost], withElement('#btnImproveInvestments', (btn, yomi, investUpgradeCost) => {
-	btn.disabled = yomi < investUpgradeCost;
-}));
+ObservableValue.onAnyChange([yomi, data.stocks.investUpgradeCost], withElement('#btnImproveInvestments', withElement('#investmentNotification', (notify, btn, yomi, investUpgradeCost) => {
+	const available = yomi >= investUpgradeCost;
+	btn.disabled = !available;
+	notify.innerText = available ? '1' : '';
+})));
 ObservableValue.onAnyChange([data.stocks.ledger, data.stocks.portfolioTotal], withElement('#investmentRevenue', (el, ledger, portfolioTotal) => {
 	el.innerText = formatWithCommas(ledger + portfolioTotal);
 }));

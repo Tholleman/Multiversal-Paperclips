@@ -11,11 +11,15 @@ const clipmakerAmount_clipperCost = ObservableValue.new(5, updateElement('#clipp
 const funds = ObservableValue.new(0, updateElement('#funds', value => formatWithCommas(value, value < 1000 ? 2 : 0)));
 const margin = ObservableValue.new(0.25, enableButton('#priceDecrease', margin => margin > 0.01));
 margin.onChange(() => data.marginChanged.value = true);
+const manufacturingNotification = document.getElementById('manufacturingNotification');
 const wire = ObservableValue.new(1000, [
 	updateElement('#wire', formatWithCommas),
 	updateElement('#nanoWire', spellf),
 	updateElement('#transWire', spellf),
 	enableButton('#btnMakePaperclip', amount => Math.floor(amount) > 0),
+	value => {
+		manufacturingNotification.innerText = value === 0 ? '!' : '';
+	}
 ]);
 const wireCost = ObservableValue.new(20, updateElement('#wireCost'));
 const demand = ObservableValue.new(5);
@@ -160,9 +164,12 @@ ObservableValue.onAnyChange([marketingLvl, margin, marketingEffectiveness, deman
 	const withoutPrestige = ((0.8 / margin.value) * marketing * marketingEffectiveness.value) * demandBoost.value;
 	demand.value = withoutPrestige + (withoutPrestige / 10) * prestigeU.value;
 });
-ObservableValue.onAnyChange([trust, processors, memory, swarmGifts], () => {
-	const disable = trust.value <= processors.value + memory.value && swarmGifts.value <= 0;
-	document.getElementById('btnAddProc').disabled = disable;
-	document.getElementById('btnAddMem').disabled = disable;
+const addProcBtn = document.getElementById('btnAddProc');
+const addMemoryBtn = document.getElementById('btnAddMem');
+const compNotification = document.getElementById('compNotification');
+ObservableValue.onAnyChange([trust, processors, memory, swarmGifts], (trust, processors, memory, swarmGifts) => {
+	const actionsAvailable = Math.max(0, trust - (processors + memory)) + swarmGifts;
+	compNotification.innerText = actionsAvailable > 0 ? actionsAvailable : '';
+	addProcBtn.disabled = actionsAvailable <= 0;
+	addMemoryBtn.disabled = actionsAvailable <= 0;
 });
-
