@@ -635,10 +635,7 @@ addProject('strategyEngine', {
 function activateStrategy(strategy) {
 	tourneyCost += isCompleted('yomiDouble') ? 2000 : 1000;
 	document.getElementById("newTourneyCost").innerHTML = tourneyCost.toLocaleString();
-	const el = document.createElement("option");
-	el.textContent = strategy.name;
-	el.value = String(stratsUnlocked++);
-	stratPickerElement.appendChild(el);
+	addStrat(stratsUnlocked++, strategy);
 }
 addSequentialProjects('strategy',
 	{

@@ -5,6 +5,8 @@ const choiceBNames = ["defect", "straight", "micro", "back_down", "fold", "lower
 const namesElements = [document.querySelector('#vLabela'), document.querySelector('#vLabelb'), document.querySelector('#hLabela'), document.querySelector('#hLabelb')];
 const horizStratElement = document.querySelector('#horizStrat');
 const vertStratElement = document.querySelector('#vertStrat');
+const stratSelector = document.getElementById('stratSelector');
+const tournamentRound = document.getElementById('tournamentRound');
 
 /** @typedef {[[number, number], [number, number]]} scoreChoices */
 /** @typedef {[[0|1|2|3, 0|1|2|3],[0|1|2|3, 0|1|2|3]]} preference */
@@ -17,8 +19,8 @@ const cells = [
 const crossLabels = [
 	document.querySelectorAll('.abPayoff'),
 	document.querySelectorAll('.baPayoff')]
-for (let row of cells) {
-	for (let cell of row) {
+for (const row of cells) {
+	for (const cell of row) {
 		cell.addEventListener('animationend', () => cell.classList.remove('picked'));
 	}
 }
@@ -77,7 +79,7 @@ function newTourney(startingData = undefined) {
 	if (startingData === undefined) {
 		save();
 	}
-	
+	resetStrategySelector();
 	startRound();
 	
 	function newEmptyTournament() {
@@ -102,12 +104,26 @@ function newTourney(startingData = undefined) {
 		currentMove = 0;
 	}
 	
+	function resetStrategySelector() {
+		let previousEl = undefined;
+		for (let i = 0; i < stratsUnlocked; i++) {
+			const elId=`strategy${i}`;
+			const labelEl = document.getElementById(elId).nextElementSibling;
+			labelEl.innerText = allStrats[i].name;
+			const container = labelEl.parentElement;
+			if (previousEl != null) {
+				previousEl.after(container);
+			}
+			previousEl = container;
+		}
+	}
+	
 	function startRound() {
 		if (currentRound >= totalRounds) {
 			finish();
 			return;
 		}
-		tourneyReport("Round " + (currentRound + 1));
+		tournamentRound.innerText = "Round " + (currentRound + 1);
 		stratH = strats[Math.floor(currentRound / strats.length)];
 		stratV = strats[currentRound % strats.length];
 		horizStratElement.innerText = stratH.name;
@@ -172,8 +188,9 @@ function newTourney(startingData = undefined) {
 	}
 	
 	function finish() {
+		for (const row of cells) { for (const cell of row) { cell.classList.remove('picked'); } }
 		tourneyInProg.value = false;
-		const pick = Number(stratPickerElement.value);
+		const pick = getSelectedStratId();
 		const results = strats.toSorted((a, b) => b.currentScore - a.currentScore);
 		const donation = strats.includes(stratDonator) ? stratDonator.currentScore : 0;
 		if (pick >= 0 && pick < strats.length) {
@@ -213,7 +230,6 @@ function newTourney(startingData = undefined) {
 			displayMessage('DONATOR added ' + donation + ' yomi.');
 			yomi.value += donation;
 		}
-		tourneyReport("TOURNAMENT RESULTS");
 		populateTourneyReport(results, pick);
 		save();
 	}
@@ -259,25 +275,30 @@ function newTourney(startingData = undefined) {
 		}
 	}
 	
+	/**
+	 * @param {strategy[]} results
+	 * @param {number} pick
+	 */
 	function populateTourneyReport(results, pick) {
 		while (resultList.firstChild) resultList.firstChild.remove();
+		
+		let previousEl = undefined;
 		for (const strategy of results) {
-			const li = document.createElement('LI');
-			li.innerText = strategy.name + ": " + formatWithCommas(strategy.currentScore);
-			if (pick >= 0 && strategy === allStrats[pick]) {
-				li.style.fontWeight = "bold";
+			const elId=`strategy${allStrats.indexOf(strategy)}`;
+			const labelEl = document.getElementById(elId).nextElementSibling;
+			labelEl.innerText = `${strategy.name}: ${formatWithCommas(strategy.currentScore)}`;
+			const container = labelEl.parentElement;
+			if (previousEl != null) {
+				previousEl.after(container);
 			}
-			resultList.appendChild(li);
+			previousEl = container;
 		}
 		horizStratElement.innerText = '';
 		vertStratElement.innerText = '';
+		tournamentRound.innerHTML = '&nbsp;';
 		document.querySelector('#horizScore').innerText = '';
 		crossLabels[0][1].innerHTML = '';
 		crossLabels[1][0].innerHTML = '';
-	}
-	
-	function tourneyReport(message) {
-		tourneyDisplayElement.innerHTML = message;
 	}
 }
 
@@ -408,13 +429,9 @@ function unmarshallTournament(startingData) {
 	autoTourneyFlag.value = startingData.autoTourneyFlag;
 	autoTourneyStatus.value = startingData.autoTourneyStatus;
 	for (let i = 1; i < stratsUnlocked; i++) {
-		const strat = allStrats[i];
-		const el = document.createElement("option");
-		el.textContent = strat.name;
-		el.value = String(i);
-		stratPickerElement.appendChild(el);
+		addStrat(i, allStrats[i]);
 	}
-	stratPickerElement.value = pick;
+	selectStrat(pick);
 	tourneyInProg.value = startingData.tourneyInProg;
 	
 	if (!tourneyInProg.isTrue) return;
@@ -437,6 +454,34 @@ function unmarshallTournament(startingData) {
 	currentMove = startingData.currentMove;
 	prevMoves = startingData.prevMoves.map(val => val ?? undefined);
 }
+
+function addStrat(id, strat) {
+	const div = document.createElement('div');
+	div.innerHTML = `<input type="radio" name="strategy" id="strategy${id}" value="${id}"><label for="strategy${id}">${strat.name}</label>`
+	stratSelector.appendChild(div);
+}
+
+const selectNoStrategy = document.getElementById('selectNoStrategy');
+function selectStrat(id) {
+	const pickedEl = stratSelector.querySelector(`#strategy${id}`);
+	if (pickedEl != null) {
+		pickedEl.checked = true;
+		selectNoStrategy.disabled = false;
+	}
+}
+
+function getSelectedStratId() {
+	return Number(stratSelector.querySelector('input:checked')?.value);
+}
+
+stratSelector.addEventListener('change', (e) => {
+	selectNoStrategy.disabled = false;
+});
+selectNoStrategy.addEventListener('click', () => {
+	selectNoStrategy.disabled = true;
+	const checked = stratSelector.querySelector('input:checked');
+	if (checked != null) checked.checked = false;
+})
 
 function setChoiceNames(index) {
 	nameIndex = index;

@@ -185,7 +185,6 @@ const probeTrustCostDisplayElement = document.getElementById("probeTrustCostDisp
 const mapsElement = document.getElementById('maps');
 const wppsElement = document.getElementById('wpps');
 const swarmEngineElement = document.getElementById("swarmEngine");
-const tourneyDisplayElement = document.getElementById("tourneyDisplay");
 const sliderElement = document.getElementById("slider");
 const swarmSizeElement = document.getElementById("swarmSize");
 const swarmStatusElement = document.getElementById("swarmStatus");
@@ -210,7 +209,6 @@ const drifterCountElement = document.getElementById('drifterCount');
 const swarmGiftDivElement = document.getElementById("swarmGiftDiv");
 const clipmakerRate2Element = document.getElementById("clipmakerRate2");
 
-const stratPickerElement = document.getElementById("stratPicker");
 const qCompDisplayElement = document.getElementById("qCompDisplay");
 
 // Wire --------------------------------------------------------
@@ -1863,7 +1861,7 @@ function save() {
 		battleFlag: battleFlag,
 		
 		tourneyCost: tourneyCost,
-		pick: stratPickerElement.value,
+		pick: getSelectedStratId(),
 		yomi: yomi.value,
 		yomiBoost: yomiBoost,
 		
@@ -2024,7 +2022,7 @@ function load() {
 	
 	tourneyCost = loadGame.tourneyCost;
 	pick = loadGame.pick;
-	stratPickerElement.value = pick;
+	selectStrat(pick);
 	yomi.value = loadGame.yomi;
 	yomiBoost = loadGame.yomiBoost;
 	

@@ -782,6 +782,10 @@ p.clean3 {
 	}
 }
 
+#stratSelector input:checked + label {
+	font-weight: bold;
+}
+
 .tournamentLayout {
 	width: 100%;
 	text-align: center;

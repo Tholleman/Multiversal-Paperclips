@@ -970,45 +970,44 @@
 					<h2>Strategic Modeling</h2>
 					<span id="strategyNotification" class="notification"></span>
 				</summary>
-				<div class="flex">
-					<div>
-						<div id="tournamentLabel">
-							<p class="clean2">
-								<span id="tourneyDisplay">Pick strategy, run tournament, gain yomi</span><br/>
-							</p>
-						</div>
-						<p>Yomi: <span id="yomiDisplay">0</span></p>
-						<p>
-							<select id="stratPicker">
-								<option value="-1">Pick a Strat</option>
-								<option value="0">A100</option>
-							</select>
-						</p>
-					</div>
-					<div id="tournamentManagement" class="buttonBar vertical toUnlock">
-						<button class="satisfying" id="btnNewTournament" onclick="newTourney()">
-							<span class="shadow"></span>
-							<span class="edge"></span>
-							<span class="front">
-								<h3>New Tournament</h3>
-								<p class="cost"><span id="newTourneyCost">1,000</span> ops</p>
-							</span>
-						</button>
-						<button class="satisfying" id="btnToggleAutoTourney" onclick="autoTourneyStatus.value ^= true">
-							<span class="shadow"></span>
-							<span class="edge"></span>
-							<span class="front">
-								<h3>AutoTourney</h3>
-								<p id="autoTourneyStatus">OFF</p>
-							</span>
-						</button>
-					</div>
-				</div>
+				<p>Yomi: <span id="yomiDisplay">0</span></p>
 				<div id="tournamentStuff">
+					<div class="flex">
+						<div>
+							<fieldset id="stratSelector" class="mb-standard" style="min-width: 13rem">
+								<div><input type="radio" name="strategy" id="strategy0" value="0"><label for="strategy0">A100</label></div>
+							</fieldset>
+							<button class="satisfying small" id="selectNoStrategy" onclick="" disabled>
+								<span class="shadow"></span>
+								<span class="edge"></span>
+								<span class="front">Select none</span>
+							</button>
+						</div>
+						<div>
+							<div id="tournamentManagement" class="buttonBar vertical toUnlock">
+								<button class="satisfying" id="btnNewTournament" onclick="newTourney()">
+									<span class="shadow"></span>
+									<span class="edge"></span>
+									<span class="front">
+										<h3>New Tournament</h3>
+										<p class="cost"><span id="newTourneyCost">1,000</span> ops</p>
+									</span>
+								</button>
+								<button class="satisfying" id="btnToggleAutoTourney" onclick="autoTourneyStatus.toggle()">
+									<span class="shadow"></span>
+									<span class="edge"></span>
+									<span class="front">
+										<h3>AutoTourney</h3>
+										<p id="autoTourneyStatus">OFF</p>
+									</span>
+								</button>
+							</div>
+						</div>
+					</div>
 					<ol id="tournamentResultsList"></ol>
 					<table class="tournamentLayout">
 						<tr>
-							<td></td>
+							<td id="tournamentRound">&nbsp;</td>
 							<td id="vertStrat"></td>
 						</tr>
 						<tr>
