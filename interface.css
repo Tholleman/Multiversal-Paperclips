@@ -199,6 +199,7 @@ details {
 		& .notification {
 			float: right;
 			background: hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness));
+			color: var(--text-color);
 			border-radius: 100%;
 			padding: 4px;
 			min-width: 3ch;
