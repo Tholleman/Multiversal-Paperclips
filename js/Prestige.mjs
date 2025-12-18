@@ -137,6 +137,7 @@ function manageButton(subject, selector) {
 
 export function showPrestigiousUpgrades() {
 	if (prestigeS > 0 && prestigeU.value > 0 && prestigeY > 0) {
+		getElement('#prestigiousUpgradeExplanation').style.display = 'none';
 		unlockElement('#prestigiousUpgrade');
 	} else {
 		let anyUnlocked = false;

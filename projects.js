@@ -27,6 +27,8 @@
 /** @type {Map<string, project>} */
 const unavailableProjects = new Map();
 /** @type {Map<string, project>} */
+const disabledProjects = new Map();
+/** @type {Map<string, project>} */
 const availableProjects = new Map();
 /** @type {Map<string, project>} */
 const completedProjects = new Map();
@@ -79,7 +81,7 @@ function isCompleted(id) {
  * @returns {project}
  */
 function getProject(id) {
-	for (let map of [unavailableProjects, availableProjects, completedProjects]) {
+	for (let map of [unavailableProjects, availableProjects, completedProjects, disabledProjects]) {
 		if (map.has(id)) return map.get(id);
 	}
 	throw new Error('Unknown project: ' + id);
@@ -96,6 +98,9 @@ function marshalProjects() {
 	}
 	for (let entry of completedProjects.entries()) {
 		jsonExport[entry[0]] = [entry[1].uses, 2];
+	}
+	for (let entry of disabledProjects.entries()) {
+		jsonExport[entry[0]] = [entry[1].uses, 3];
 	}
 	return jsonExport;
 }
@@ -121,6 +126,9 @@ function unmarshalProject(id, data) {
 		unavailableProjects.delete(id);
 		if (project.completionEffect != null)
 			project.completionEffect();
+	} else if (data[1] === 3) {
+		disabledProjects.set(id, project);
+		unavailableProjects.delete(id);
 	}
 	return project;
 }
@@ -228,13 +236,18 @@ function popId(element, id) {
 
 /** @param {string} id */
 function disableProject(id) {
-	const wasAvailable = availableProjects.has(id);
-	const fromList = wasAvailable ? availableProjects : unavailableProjects;
-	if (!fromList.has(id)) return;
-	const project = fromList.get(id);
-	if (wasAvailable) projectListElement.removeChild(project.element);
-	fromList.delete(id);
-	fromList.set(id, project);
+	let project;
+	if (availableProjects.has(id)) {
+		project = availableProjects.get(id);
+		project.element.remove();
+		availableProjects.delete(id);
+	} else if (unavailableProjects.has(id)) {
+		project = unavailableProjects.get(id);
+		unavailableProjects.delete(id);
+	} else {
+		return;
+	}
+	disabledProjects.set(id, project);
 }
 
 function unlockHTMLElement(...selectors) {
