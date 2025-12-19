@@ -458,6 +458,11 @@ input[type=number]::-webkit-inner-spin-button {
 	&:focus-visible, &:focus {
 		outline: none;
 	}
+	
+	&:disabled {
+		text-decoration: none;
+		color: inherit;
+	}
 }
 
 .qchips {

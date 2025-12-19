@@ -886,12 +886,20 @@ data.unsoldClips.onChange(value => {if (value === 0) calculateRev();});
 function calculateRev() {
 	const per100Milliseconds = Math.floor(0.7 * Math.pow(demand.value, 1.15));
 	const occurrencePerSecond = Math.min(1, demand.value / 100) * 10;
-	const available = Math.max(clipRate.value, data.unsoldClips.value);
 	const rate = occurrencePerSecond * per100Milliseconds;
+	const available = Math.max(clipRate.value, data.unsoldClips.value);
 	if (rate > available) {
-		businessNotification.innerText = available > 0 ? '!' : '';
+		if (isCompleted('autoPriceAdjust')) {
+			editPrice(0.01);
+		} else {
+			businessNotification.innerText = available > 0 ? '!' : '';
+		}
 		avgSales.value = available;
 	} else {
+		if (isCompleted('autoPriceAdjust')
+		    && rate * 10 < available && margin.value > (0.01 + (wireBasePrice / wireSupply))) {
+			editPrice(-0.01);
+		}
 		businessNotification.innerText = '';
 		avgSales.value = rate;
 	}

@@ -258,6 +258,7 @@ const data = (() => {
 			factoryAmountSelected: ObservableValue.new(init(droneManufacturing.factoryAmountSelected, 1)),
 			maxFactoryLevel: ObservableValue.new(init(droneManufacturing.maxFactoryLevel, 0)),
 		})),
+		allowAutoPriceAdjust: ObservableValue.new(init(loaded.allowAutoPriceAdjust, false)),
 		compFlag: ObservableValue.new(init(loaded.compFlag, false)),
 		projectsFlag: ObservableValue.new(init(loaded.projectsFlag, false)),
 		tothFlag: ObservableValue.new(init(loaded.tothFlag, false)),

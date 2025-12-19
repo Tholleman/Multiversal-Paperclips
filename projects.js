@@ -262,7 +262,7 @@ function unlockHTMLElement(...selectors) {
 }
 
 addProject('revTracker', {
-	title: "RevTracker ",
+	title: "RevTracker",
 	priceTag: "(500 ops)",
 	description: "Automatically calculates average revenue per second",
 	trigger: () => true,
@@ -273,6 +273,24 @@ addProject('revTracker', {
 	},
 	completionEffect: unlockHTMLElement('#revPerSecDiv')
 });
+
+addProject('autoPriceAdjust', {
+	title: 'RevCalculator',
+	priceTag: '(15,000 ops)',
+	description: 'Automatically adjusts the price of paperclips',
+	trigger: () => isCompleted('revTracker') && data.allowAutoPriceAdjust.value,
+	cost: () => operations.value >= 15000,
+	effect: () => {
+		displayMessage('RevCalculator online');
+	},
+	completionEffect: () => {
+		const marginControls = document.getElementById('marginControls');
+		marginControls.querySelector('input').disabled = true;
+		for (const button of marginControls.querySelectorAll('button')) {
+			button.remove();
+		}
+	}
+})
 
 addSequentialProjects('autoClippers',
 	{

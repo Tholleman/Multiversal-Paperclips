@@ -23,12 +23,12 @@ data.stocks.investUpgradeCost.onChange(withElement('#investUpgradeCost', (el, va
 	const btnImproveInvestments = getElement('#btnImproveInvestments');
 	const investmentNotification = getElement('#investmentNotification');
 	ObservableValue.onAnyChange([yomi, data.stocks.investUpgradeCost, data.stocks.portfolioTotal], (yomi, upgradeCost, portfolio) => {
+		const available = yomi >= upgradeCost;
+		btnImproveInvestments.disabled = !available;
 		if (portfolio === 0) {
 			investmentNotification.innerText = '';
 			return;
 		}
-		const available = yomi >= upgradeCost;
-		btnImproveInvestments.disabled = !available;
 		investmentNotification.innerText = available ? '1' : '';
 	});
 }

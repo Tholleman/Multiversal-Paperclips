@@ -72,6 +72,9 @@ advancements.unlocks.afk.onChange(status => {
 	}
 });
 manageButton(advancements.unlocks.unchanged, '#prestigiousUpgradeUnchanged');
+advancements.unlocks.unchanged.onChange(value => {
+	data.allowAutoPriceAdjust.value = value === 'ACTIVE'
+});
 manageButton(advancements.unlocks.trading, '#prestigiousUpgradeTrading');
 manageButton(advancements.unlocks.winner, '#prestigiousUpgradeWinner');
 manageButton(advancements.unlocks.noPrestige, '#prestigiousUpgradeNoPrestige');
