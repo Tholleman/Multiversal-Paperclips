@@ -108,6 +108,16 @@ function* teardownSteps() {
 	});
 	while (!isCompleted('disassembleStrategyEngine')) yield busyWaitTime;
 	clips.innerHTML = addBreaksAtComma('29,999,999,999,999,999,999,999,999,999,999,999,000,000,000,000,000,000,000');
+	do {
+		let child = getElement('#stratSelector').firstElementChild;
+		if (child == null) break;
+		child.addEventListener('animationend', () => {
+			child.remove();
+		});
+		child.classList.add('picked');
+		yield 200;
+	} while (true);
+	
 	hideElement('#strategyEngine');
 	addLastProject('disassembleQuantumComputing', {
 		title: 'Disassemble Quantum Computing ',

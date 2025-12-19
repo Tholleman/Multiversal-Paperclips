@@ -62,7 +62,7 @@ function checkForBattles() {
 }
 
 function createBattle() {
-	unitSize = Math.max(1, Math.min(drifterCount, probeCount) / 100);
+	unitSize = Math.max(1, Math.min(drifterCount, probeCount) / 200);
 	document.getElementById('battleScale').innerHTML = numberCruncher(unitSize, 0);
 
 	const rr = Math.max(1, Math.random() * drifterCount);
@@ -70,11 +70,16 @@ function createBattle() {
 
 
 	battleLEFTSHIPS = Math.min(200, Math.ceil(ss / 1000000));
-	if (battleLEFTSHIPS === 200 && Math.random() < 0.5) {
+	let nerfOdds = 0.001;
+	// noinspection JSIncompatibleTypesComparison
+	if (window.advancements?.unlocks?.winner?.value !== 'ACTIVE') {
+		nerfOdds = 0.5;
+	}
+	if (battleLEFTSHIPS === 200 && Math.random() < nerfOdds) {
 		battleLEFTSHIPS -= Math.min(199, Math.ceil(Math.random() * bonusHonor));
 	}
 	battleRIGHTSHIPS = Math.min(200, Math.ceil(rr / 1000000));
-
+	
 	Battle();
 	
 	battleName = isCompleted('nameBattles') ? generateBattleName() : `Drifter Attack ${++battleID}`;
