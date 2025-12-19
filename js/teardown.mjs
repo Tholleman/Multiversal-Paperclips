@@ -8,6 +8,7 @@ export function startTeardown() {
 		return;
 	}
 	data.startedTeardown.value = true;
+	advancements.prestigeCounter.value++;
 	scheduleTeardown(teardownSteps());
 }
 
@@ -110,7 +111,7 @@ function* teardownSteps() {
 	clips.innerHTML = addBreaksAtComma('29,999,999,999,999,999,999,999,999,999,999,999,000,000,000,000,000,000,000');
 	do {
 		let child = getElement('#stratSelector').firstElementChild;
-		if (child == null) break;
+		if (child == null || rushing) break;
 		child.addEventListener('animationend', () => {
 			child.remove();
 		});
@@ -223,7 +224,11 @@ function* teardownSteps() {
 		terminal.addLine({innerText: line});
 		yield 5e3;
 	}
-	getElement('#projectsDiv').style.display = '';
+	if (advancements.unlocks.noPrestige.value !== 'ACTIVE') {
+		getElement('#projectsDiv').style.display = '';
+	} else {
+		unlockElement('#resetBonuses');
+	}
 	addProject('prestigeU', {
 		title: 'The Universe Next Door',
 		priceTag: '',
@@ -245,7 +250,7 @@ function* teardownSteps() {
 		cost: () => true,
 		effect: function () {
 			displayMessage('Entering Simulated Universe.');
-			prestigeS++;
+			prestigeS.value++;
 			savePrestige();
 			reset();
 		},
@@ -258,7 +263,7 @@ function* teardownSteps() {
 		cost: () => true,
 		effect: function () {
 			displayMessage('Entering a hostile environment.');
-			prestigeY++;
+			prestigeY.value++;
 			savePrestige();
 			reset();
 		},

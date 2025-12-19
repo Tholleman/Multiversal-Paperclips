@@ -77,8 +77,10 @@ let battleFlag = 0;
 const yomi = ObservableValue.new(0, updateElement('#yomiDisplay', formatWithCommas));
 
 const prestigeU = ObservableValue.new(0, updateElement('#prestigeUcounter', prestigeU => prestigeU + 1));
-var prestigeS = 0;
-var prestigeY = 0;
+const prestigeS = ObservableValue.new(0, updateElement('#prestigeScounter', prestigeU => prestigeU + 1));
+const prestigeY = ObservableValue.new(0, updateElement('#prestigeYcounter', prestigeU => prestigeU + 1));
+/** @type {ObservableValue<number>} */
+const totalPrestigeBonuses = ObservableValue.computed([prestigeU, prestigeS, prestigeY], (u, s, y) => u + s + y);
 
 var wirePriceCounter = 0;
 var wireBasePrice = 20;

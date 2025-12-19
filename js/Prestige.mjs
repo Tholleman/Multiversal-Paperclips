@@ -21,6 +21,7 @@ export const advancements = (() => {
 		challengeRun: ObservableValue.new(initEnum(loaded.challengeRun, ['', 'noPrestige', 'night'])),
 		longestWinStreak: ObservableValue.new(init(loaded.longestWinStreak, 0)),
 		fastestWin: ObservableValue.new(init(loaded.fastestWin, -1)),
+		prestigeCounter: ObservableValue.new(init(loaded.prestigeCounter, 0)),
 	};
 	
 	/**
@@ -73,7 +74,7 @@ advancements.unlocks.afk.onChange(status => {
 });
 manageButton(advancements.unlocks.unchanged, '#prestigiousUpgradeUnchanged');
 advancements.unlocks.unchanged.onChange(value => {
-	data.allowAutoPriceAdjust.value = value === 'ACTIVE'
+	data.allowAutoPriceAdjust.value = value === 'ACTIVE';
 });
 manageButton(advancements.unlocks.trading, '#prestigiousUpgradeTrading');
 manageButton(advancements.unlocks.winner, '#prestigiousUpgradeWinner');
@@ -104,6 +105,16 @@ export function finalAdvancementChecks() {
 	}
 	unlock(advancements.unlocks.nightRun, advancements.challengeRun.value === 'night');
 	unlock(advancements.unlocks.noPrestige, advancements.challengeRun.value === 'noPrestige');
+	if (advancements.unlocks.noPrestige.value !== 'ACTIVE' && (prestigeS.value + prestigeU.value + prestigeY.value) < 9) {
+		const buttons = document.querySelectorAll('#challengeRun button');
+		for (let button of buttons) {
+			button.disabled = true;
+		}
+	} else {
+		if (advancements.unlocks.noPrestige.value === 'ACTIVE') {
+			getElement('#noPrestigeButton').remove();
+		}
+	}
 	
 	/**
 	 * @param {ObservableValue<'LOCKED' | 'UNLOCKED' | 'ACTIVE'>} advancement
@@ -139,9 +150,12 @@ function manageButton(subject, selector) {
 }
 
 export function showPrestigiousUpgrades() {
-	if (prestigeS > 0 && prestigeU.value > 0 && prestigeY > 0) {
+	if ((prestigeS.value > 0 && prestigeU.value > 0 && prestigeY.value > 0)
+	    || advancements.unlocks.noPrestige.value === 'ACTIVE'
+	    || advancements.challengeRun.value === 'noPrestige') {
 		getElement('#prestigiousUpgradeExplanation').style.display = 'none';
 		unlockElement('#prestigiousUpgrade');
+		unlockElement('#challengeRun');
 	} else {
 		let anyUnlocked = false;
 		for (let key in advancements.unlocks) {
@@ -153,6 +167,72 @@ export function showPrestigiousUpgrades() {
 		}
 		if (anyUnlocked) {
 			unlockElement('#prestigiousUpgrade');
+			unlockElement('#challengeRun');
 		}
 	}
 }
+
+export function startNoPrestigeRun() {
+	advancements.challengeRun.value = 'noPrestige';
+	advancements.prestigeCounter = 1 + prestigeS.value + prestigeU.value + prestigeY.value;
+	prestigeS.value = 0;
+	prestigeU.value = 0;
+	prestigeY.value = 0;
+	save();
+	reset();
+}
+export function finishRun() {
+	save();
+	reset();
+}
+export function unlockNoPrestigeRun() {
+	getElement('#projectsDiv').style.display = 'none';
+	unlockElement('#resetBonuses');
+}
+
+const resetBonusAssignedEl = getElement('#resetBonusAssigned');
+const resetBonusTotalEl = getElement('#resetBonusTotal');
+ObservableValue.computed([totalPrestigeBonuses, advancements.prestigeCounter], (assigned, unassigned) => assigned + unassigned)
+	.onChange(value => resetBonusTotalEl.innerText = `${value + 3}`);
+totalPrestigeBonuses.onChange(value => resetBonusAssignedEl.innerText = `${value + 3}`);
+
+/**
+ * @param {ObservableValue} observable
+ * @param {{dec: string, inc: string, label: string}} selectors
+ */
+function managePrestigeControls(observable, selectors) {
+	const dec = getElement(selectors.dec);
+	const inc = getElement(selectors.inc);
+	const label = getElement(selectors.label);
+	advancements.prestigeCounter.onChange(value => {
+		inc.disabled = value <= 0;
+	});
+	observable.onChange(value => {
+		dec.disabled = value <= 0;
+		label.innerText = `${value + 1}`;
+	});
+	inc.addEventListener('click', () => {
+		observable.value++;
+		advancements.prestigeCounter.value--;
+	});
+	dec.addEventListener('click', () => {
+		observable.value--;
+		advancements.prestigeCounter.value++;
+	});
+}
+
+managePrestigeControls(prestigeU, {
+	dec: '#prestigeUDec',
+	inc: '#prestigeUInc',
+	label: '#prestigeURespec',
+});
+managePrestigeControls(prestigeS, {
+	dec: '#prestigeSDec',
+	inc: '#prestigeSInc',
+	label: '#prestigeSRespec',
+});
+managePrestigeControls(prestigeY, {
+	dec: '#prestigeYDec',
+	inc: '#prestigeYInc',
+	label: '#prestigeYRespec',
+});

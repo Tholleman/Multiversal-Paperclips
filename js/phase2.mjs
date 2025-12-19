@@ -60,6 +60,7 @@ class Resource {
 	constructor(saveData, settings, selectors, text) {
 		this.#saveData = saveData;
 		this.#cost = ObservableValue.computed([saveData.current, saveData.amount], (currentAmount, toAdd) => {
+			if (spaceFlag === 1) return 0;
 			if (toAdd === 0) {
 				return -saveData.bill.value;
 			}

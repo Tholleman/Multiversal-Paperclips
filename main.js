@@ -450,7 +450,7 @@ function buttonUpdate() {
 		combatBodyCountElement.style.display = "";
 	}
 	
-	if (prestigeU.value < 1 && prestigeS < 1 && prestigeY < 1) {
+	if (prestigeU.value < 1 && prestigeS.value < 1 && prestigeY.value < 1) {
 		prestigeDivElement.style.display = "none";
 	} else {
 		prestigeDivElement.style.display = "";
@@ -909,7 +909,7 @@ const creativityThreshold = 400;
 function calculateCreativity() {
 	creativityCounter++;
 	
-	const s = prestigeS / 10;
+	const s = prestigeS.value / 10;
 	const ss = creativitySpeed + (creativitySpeed * s);
 	const creativityCheck = creativityThreshold / ss;
 	
@@ -929,8 +929,8 @@ function calculateCreativity() {
 
 function resetPrestige() {
 	prestigeU.value = 0;
-	prestigeS = 0;
-	prestigeY = 0;
+	prestigeS.value = 0;
+	prestigeY.value = 0;
 	
 	localStorage.removeItem("savePrestige");
 }
@@ -941,7 +941,7 @@ function cheatPrestigeU() {
 }
 
 function cheatPrestigeS() {
-	prestigeS++;
+	prestigeS.value++;
 	savePrestige();
 }
 
@@ -1736,8 +1736,6 @@ function refresh() {
 	probeTrustDisplayElement.innerHTML = probeTrust;
 	priceInputElement.value = margin.value.toFixed(2);
 	unusedClipsDisplayElement.innerHTML = spellf(unusedClips);
-	prestigeScounterElement.innerHTML = String(prestigeS + 1);
-	prestigeYcounterElement.innerHTML = String(prestigeY + 1);
 	newTourneyCostElement.innerHTML = formatWithCommas(tourneyCost);
 	maxTrustDisplayElement.innerHTML = formatWithCommas(maxTrust);
 	victoryDivElement.style.visibility = "hidden";
@@ -1754,6 +1752,7 @@ function save() {
 	saveData();
 	saveSettings();
 	saveAdvancements();
+	savePrestige();
 	const saveGame = {
 		wirePriceTimer: wirePriceTimer,
 		driftKingMessageCost: driftKingMessageCost,
@@ -2082,14 +2081,14 @@ function loadPrestige() {
 	if (loadPrestige === null) return;
 	
 	prestigeU.value = loadPrestige.prestigeU;
-	prestigeS = loadPrestige.prestigeS;
-	prestigeY = loadPrestige.prestigeY;
+	prestigeS.value = loadPrestige.prestigeS;
+	prestigeY.value = loadPrestige.prestigeY;
 }
 
 function savePrestige() {
 	localStorage.setItem('savePrestige', JSON.stringify({
 		prestigeU: prestigeU.value,
-		prestigeS: prestigeS,
-		prestigeY: prestigeY,
+		prestigeS: prestigeS.value,
+		prestigeY: prestigeY.value,
 	}));
 }

@@ -739,7 +739,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: AVERAGE",
 		priceTag: "(50,000 ops)",
 		description: "Choose the option that is the best on average",
-		trigger: () => prestigeY >= 1,
+		trigger: () => prestigeY.value >= 1,
 		cost: () => operations.value >= 50000,
 		effect: function () {
 			displayMessage("AVERAGE added to strategy pool");
@@ -751,7 +751,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: GENEROUS",
 		priceTag: "(60,000 ops)",
 		description: "Choose the option that gives your opponent the largest potential payoff",
-		trigger: () => prestigeY >= 2,
+		trigger: () => prestigeY.value >= 2,
 		cost: () => operations.value >= 60000,
 		effect: function () {
 			displayMessage("GENEROUS added to strategy pool");
@@ -763,7 +763,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: SPINELESS",
 		priceTag: "(70,000 ops)",
 		description: "Don't choose options that could have negative outcomes",
-		trigger: () => prestigeY >= 3,
+		trigger: () => prestigeY.value >= 3,
 		cost: () => operations.value >= 70000,
 		effect: function () {
 			displayMessage("SPINELESS added to strategy pool");
@@ -775,7 +775,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: PEEKER",
 		priceTag: "(80,000 ops)",
 		description: "Copy the strategy of whoever is currently in the lead",
-		trigger: () => prestigeY >= 4,
+		trigger: () => prestigeY.value >= 4,
 		cost: () => operations.value >= 80000,
 		effect: function () {
 			displayMessage("PEEKER added to strategy pool");
@@ -787,7 +787,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: DONATOR",
 		priceTag: "(90,000 ops)",
 		description: "Choose the lowest option, donate the results after the tournament",
-		trigger: () => prestigeY >= 5,
+		trigger: () => prestigeY.value >= 5,
 		cost: () => operations.value >= 90000,
 		effect: function () {
 			displayMessage("DONATOR added to strategy pool");
@@ -799,7 +799,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: FRAUD",
 		priceTag: "(100,000 ops)",
 		description: "Choose like GREED, change the record to show a compromise",
-		trigger: () => prestigeY >= 6,
+		trigger: () => prestigeY.value >= 6,
 		cost: () => operations.value >= 100000,
 		effect: function () {
 			displayMessage("FRAUD added to strategy pool");
@@ -811,7 +811,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: INVESTOR",
 		priceTag: "(150,000 ops)",
 		description: 'Reroll one cell if it\'s below average value',
-		trigger: () => prestigeY >= 7 && isCompleted('rerollStrategyGrid'),
+		trigger: () => prestigeY.value >= 7 && isCompleted('rerollStrategyGrid'),
 		cost: () => operations.value >= 150000,
 		effect: function () {
 			displayMessage("INVESTOR added to strategy pool");
@@ -823,7 +823,7 @@ addSequentialProjects('strategy',
 		title: "New Strategy: FLIP",
 		priceTag: "(200,000 ops)",
 		description: "Switch the picked cell with the highest value cell",
-		trigger: () => prestigeY >= 8,
+		trigger: () => prestigeY.value >= 8,
 		cost: () => operations.value >= 200000,
 		effect: function () {
 			displayMessage("FLIP added to strategy pool");

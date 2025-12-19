@@ -66,13 +66,13 @@ function newTourney(startingData = undefined) {
 	} else {
 		unmarshallTournament(startingData);
 		if (!tourneyInProg.isTrue) {
-			rerollCost.value = stratsUnlocked ** 2 * (5 + 2.5 * (prestigeY + 1));
+			rerollCost.value = stratsUnlocked ** 2 * (5 + 2.5 * (prestigeY.value + 1));
 			return;
 		}
 	}
 	
 	const totalRounds = strats.length ** 2;
-	rerollCost.value = totalRounds * (5 + 2.5 * (prestigeY + 1));
+	rerollCost.value = totalRounds * (5 + 2.5 * (prestigeY.value + 1));
 	tourneyInProg.value = true;
 	if (startingData === undefined) {
 		save();
@@ -306,8 +306,8 @@ function buyRerollStrategyGrid() {
 /** @returns {[number, number]} */
 function minMaxCellValue() {
 	return [
-		0 - prestigeY * 5,
-		10 + prestigeY * 5
+		0 - prestigeY.value * 5,
+		10 + prestigeY.value * 5
 	]
 }
 function rerollStrategyGrid(strategies = strats) {

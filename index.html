@@ -864,6 +864,67 @@
 					</button>
 				</template>
 			</details>
+			<details id="resetBonuses" class="toUnlock" open>
+				<summary><h2>Reset Bonuses</h2></summary>
+				<p>Reset bonuses: <span id="resetBonusAssigned" class="number">0</span>/<span id="resetBonusTotal" class="number">0</span></p>
+				<div class="mb-standard">
+					<button class="satisfying small" id="prestigeUDec">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&lt;</span>
+					</button>
+					<button class="satisfying small" id="prestigeUInc">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&gt;</span>
+					</button>
+					<div>
+						<span class="toolTip">10% boost to demand per level</span>
+						The Universe Next Door: <span id="prestigeURespec" class="number">0</span>
+					</div>
+				</div>
+				<div class="mb-standard">
+					<button class="satisfying small" id="prestigeSDec" onclick="">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&lt;</span>
+					</button>
+					<button class="satisfying small" id="prestigeSInc" onclick="">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&gt;</span>
+					</button>
+					<div>
+						<span class="toolTip">10% speed boost to creativity generation per level</span>
+						The Universe Within: <span id="prestigeSRespec" class="number">0</span>
+					</div>
+				</div>
+				<div class="mb-standard">
+					<button class="satisfying small" id="prestigeYDec" onclick="">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&lt;</span>
+					</button>
+					<button class="satisfying small" id="prestigeYInc" onclick="">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">&gt;</span>
+					</button>
+					<div>
+						<span class="toolTip">Higher and lower yomi rewards</span>
+						A Hostile Simulation: <span id="prestigeYRespec" class="number">0</span>
+					</div>
+				</div>
+				<div class="buttonBar">
+					<button class="satisfying small" onclick="finishRun()">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h2>Reset</h2>
+						</span>
+					</button>
+				</div>
+			</details>
 		</div>
 		<div>
 			<details id="compDiv" open>
@@ -1108,11 +1169,11 @@
 							<p>Improve the consecutive drone combat odds</p>
 						</span>
 					</button>
-					<button id="prestigiousUpgradeNoPrestige" class="satisfying projectButton">
+					<button id="prestigiousUpgradeNoPrestige" class="satisfying projectButton" onclick="unlockNoPrestigeRun()">
 						<span class="shadow"></span>
 						<span class="edge"></span>
 						<span class="front">
-							<h3>No prestige run</h3>
+							<h3>No Prestige Run</h3>
 							<p>Allows re-specialization of prestige</p>
 						</span>
 					</button>
@@ -1160,11 +1221,26 @@
 				</div>
 			</details>
 			<details id="challengeRun" class="toUnlock" open>
-				<summary>
-					<h2>Challenge Runs</h2>
-<!--					<span class="notification">1</span>-->
-				</summary>
-			
+				<summary><h2>Challenge Runs</h2></summary>
+				<p id="challengeRunIntro">Will become available after 9 resets</p>
+				<div class="buttonBar">
+					<button id="noPrestigeButton" class="satisfying" onclick="startNoPrestigeRun()">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>No Prestige Run</h3>
+							<p>Do a new run without prestige buffs</p>
+						</span>
+					</button>
+					<button id="nightRunButton" class="satisfying">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Night Run</h3>
+							<p>Do a new run where power generates on a cycle</p>
+						</span>
+					</button>
+				</div>
 			</details>
 		</div>
 	</main>
