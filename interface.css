@@ -826,10 +826,6 @@ td:has(.secondaryPayoff) {
 	min-width: 10ch;
 }
 
-#tournamentResultsList {
-	columns: 200px;
-}
-
 .bordered {
 	border: black 1px solid;
 }

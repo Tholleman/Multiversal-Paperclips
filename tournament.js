@@ -24,7 +24,6 @@ for (const row of cells) {
 		cell.addEventListener('animationend', () => cell.classList.remove('picked'));
 	}
 }
-const resultList = document.querySelector('#tournamentResultsList');
 let averageCellValue = 5;
 const rerollButton = document.querySelector('#rerollGridButton');
 const rerollCost = ObservableValue.new(0, updateElement('#rerollCost', formatWithCommas));
@@ -75,16 +74,15 @@ function newTourney(startingData = undefined) {
 	const totalRounds = strats.length ** 2;
 	rerollCost.value = totalRounds * (5 + 2.5 * (prestigeY + 1));
 	tourneyInProg.value = true;
-	createScoreboard();
 	if (startingData === undefined) {
 		save();
 	}
 	resetStrategySelector();
+	createScoreboard();
 	startRound();
 	
 	function newEmptyTournament() {
 		if (operations.value < tourneyCost) return;
-		while (resultList.firstChild) resultList.firstChild.remove();
 		operations.value -= tourneyCost; // NOSONAR
 		strats = [];
 		for (let i = 0; i < stratsUnlocked; i++) {
@@ -230,7 +228,7 @@ function newTourney(startingData = undefined) {
 			displayMessage('DONATOR added ' + donation + ' yomi.');
 			yomi.value += donation;
 		}
-		populateTourneyReport(results, pick);
+		populateTourneyReport(results);
 		save();
 	}
 	
@@ -277,16 +275,13 @@ function newTourney(startingData = undefined) {
 	
 	/**
 	 * @param {strategy[]} results
-	 * @param {number} pick
 	 */
-	function populateTourneyReport(results, pick) {
-		while (resultList.firstChild) resultList.firstChild.remove();
-		
+	function populateTourneyReport(results) {
 		let previousEl = undefined;
 		for (const strategy of results) {
 			const elId=`strategy${allStrats.indexOf(strategy)}`;
 			const labelEl = document.getElementById(elId).nextElementSibling;
-			labelEl.innerText = `${strategy.name}: ${formatWithCommas(strategy.currentScore)}`;
+			labelEl.innerHTML = `${strategy.name}: <span class="number">${formatWithCommas(strategy.currentScore)}</span>`;
 			const container = labelEl.parentElement;
 			if (previousEl != null) {
 				previousEl.after(container);
@@ -297,8 +292,8 @@ function newTourney(startingData = undefined) {
 		vertStratElement.innerText = '';
 		tournamentRound.innerHTML = '&nbsp;';
 		document.querySelector('#horizScore').innerText = '';
-		crossLabels[0][1].innerHTML = '';
-		crossLabels[1][0].innerHTML = '';
+		crossLabels[0][1].innerText = '';
+		crossLabels[1][0].innerText = '';
 	}
 }
 
@@ -383,15 +378,15 @@ function updateGrid() {
 
 function createScoreboard(force = false) {
 	if (!isCompleted('scoreboard') || force) return;
-	for (const strategy of strats) {
-		const li = document.createElement('LI');
-		li.innerText = strategy.name + ": ";
-		const span = document.createElement('span');
-		span.setAttribute('class', 'number');
-		span.innerText = formatWithCommas(strategy.currentScore);
-		li.appendChild(span);
-		resultList.appendChild(li);
-		strategy.element = span;
+	for (let i = 0; i < strats.length; i++) {
+		const strat = allStrats[i];
+		const elId=`strategy${i}`;
+		const labelEl = document.getElementById(elId).nextElementSibling;
+		strat.element = document.createElement('span');
+		strat.element.classList.add('number');
+		strat.element.innerText = formatWithCommas(strat.currentScore);
+		labelEl.innerText = strat.name + ': ';
+		labelEl.appendChild(strat.element);
 	}
 }
 

@@ -282,6 +282,7 @@ addProject('autoPriceAdjust', {
 	cost: () => operations.value >= 15000,
 	effect: () => {
 		displayMessage('RevCalculator online');
+		operations.value -= 15000;
 	},
 	completionEffect: () => {
 		const marginControls = document.getElementById('marginControls');
