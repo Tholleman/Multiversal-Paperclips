@@ -725,19 +725,30 @@ function batteryReboot() {
 	batteryBill.value = 0;
 }
 
+function clamp(value, low, high) {
+	return Math.min(high, Math.max(low, value));
+}
+
 const powerNotification = document.getElementById('powerNotification');
+const nightCycle = document.getElementById('dayNightEfficiency');
 function updatePower() {
 	if (!humanFlag.isTrue && spaceFlag !== 0) return;
 	
-	const supply = farmLevel.value / 2;
+	let supply = farmLevel.value / 2;
+	if (window.advancements?.challengeRun?.value === 'night') {
+		const efficiency = clamp(Math.pow(Math.sin(ticks / 10_000), 2), 0, 1);
+		supply *= efficiency;
+		nightCycle.innerText = formatWithCommas(100 * efficiency, 2);
+	}
+	
 	const dDemand = (harvesterLevel.value * 0.01) + (wireDroneLevel.value * 0.01);
 	const fDemand = (factoryLevel.value * 2);
 	const demand = dDemand + fDemand;
 	const cap = batteryLevel.value * 10_000;
 	
-	const toAdd = supply - demand;
+	let toAdd = supply - demand;
 	if (toAdd >= 0) {
-		powerNotification.innerText = ''
+		powerNotification.innerText = '';
 		if (storedPower < cap) {
 			storedPower = Math.min(cap, storedPower + toAdd);
 		}

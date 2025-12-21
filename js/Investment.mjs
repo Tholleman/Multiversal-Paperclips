@@ -268,22 +268,11 @@ data.investmentEngineFlag.onChange(value => {
 	if (value) {
 		investmentEngineElement.style.display = '';
 		investmentEngineUpgradeElement.style.display = '';
-		if (advancements.unlocks.trading.value === 'ACTIVE') {
-			unlockElement('#leveragedLoanContainer');
-			unlockElement('#btnPayLoan');
-			unlockElement('#btnLeveragedLoan');
-		}
 	} else {
 		investmentEngineElement.style.display = 'none';
 		investmentEngineUpgradeElement.style.display = 'none';
 	}
 });
-
-if (advancements.unlocks.trading.value === 'ACTIVE') {
-	getElement('#depositLabel').innerText = 'Deposit (non-loaned)';
-	getProject('bribe1').priceTag = '($500,000, no loan)';
-	getProject('bribeX').priceTag = '($' + formatWithCommas(data.bribe.value) + ', no loan)';
-}
 
 data.loaned.onChange(withElement('#leveragedLoan', (el, loan) => {
 	el.innerText = formatWithCommas(loan);

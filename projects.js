@@ -402,7 +402,7 @@ addProject('wireFallback', {
 		trust.value--;
 		wire.value = wireSupply;
 		this.uses = 1;
-		advancements.unlocks.beg.value = 'UNLOCKED';
+		data.begForWireCount.value++;
 	}
 });
 addProject('wireBuyer', {
@@ -1104,7 +1104,7 @@ addProject('stratInterest', {
 		yomi.value -= 10_000;
 	},
 	completionEffect: unlockHTMLElement('#stratInterest')
-})
+});
 addProject('dividends', {
 	title: "Dividends",
 	priceTag: "(30,000 yomi)",
@@ -1117,6 +1117,24 @@ addProject('dividends', {
 	},
 	completionEffect: () => {
 		document.querySelector('#interestTarget').innerHTML = 'Interest'
+	}
+});
+addProject('leveragedLoan', {
+	title: "Leveraged Loans",
+	priceTag: "(50,000 yomi)",
+	description: "Allows borrowing the value of the investment portfolio",
+	trigger: () => isCompleted('dividends') && window.advancements?.unlocks?.trading?.value === 'ACTIVE',
+	cost: () => yomi.value >= 50_000,
+	effect: () => {
+		displayMessage("Because you're worth it");
+		yomi.value -= 50_000;
+	},
+	completionEffect: () => {
+		unlockHTMLElement('#leveragedLoanContainer', '#btnPayLoan', '#btnLeveragedLoan')();
+		
+		document.querySelector('#depositLabel').innerText = 'Deposit (non-loaned)';
+		getProject('bribe1').priceTag = '($500,000, no loan)';
+		getProject('bribeX').priceTag = '($' + formatWithCommas(data.bribe.value) + ', no loan)';
 	}
 });
 addProject('hostileTakeover', {
@@ -1178,8 +1196,10 @@ addProject('momentum', {
 	cost: () => creativity.value >= 20000,
 	effect: function () {
 		displayMessage("Activit\xE9, activit\xE9, vitesse.");
-		momentum = 1;
 		creativity.value -= 20000;
+	},
+	completionEffect: () => {
+		momentum = 1;
 	}
 });
 addProject('wireProduction', {

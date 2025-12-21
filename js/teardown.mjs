@@ -41,6 +41,7 @@ function* teardownSteps() {
 	yield 100;
 	hideElement('#probeSetup');
 	probeCombat = Math.max(5, probeCombat);
+	warTrigger = 1;
 	while (!finalAnimation.value && !rushing) yield busyWaitTime;
 	hideElement('#battleInterfaceDiv');
 	addLastProject('disassembleSensors', {

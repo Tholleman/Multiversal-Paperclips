@@ -265,6 +265,7 @@ const data = (() => {
 		givenFundBonus: ObservableValue.new(init(loaded.givenFundBonus, false)),
 		lastClickTickStamp: ObservableValue.new(init(loaded.lastClickTickStamp, 0)),
 		marginChanged: ObservableValue.new(init(loaded.marginChanged, false)),
+		begForWireCount: ObservableValue.new(init(loaded.begForWireCount, 0)),
 		wonEveryStrategicModelling: ObservableValue.new(init(loaded.wonEveryStrategicModelling, true)),
 		winStreak: ObservableValue.new(init(loaded.winStreak, 0)),
 		startedTeardown: ObservableValue.new(init(loaded.startedTeardown, false)),

@@ -566,6 +566,10 @@
 						<td>Production:</td>
 						<td><span id="powerProductionRate" class="number">0</span> MWs</td>
 					</tr>
+					<tr id="dayNightEfficiencyContainer" class="toUnlock">
+						<td>Day/Night:</td>
+						<td><span id="dayNightEfficiency" class="number">100</span>%</td>
+					</tr>
 				</table>
 				<p>Storage: <span id="storedPower" class="number">0</span> / <span id="maxStorage" class="number">0</span> MWs
 				</p>
@@ -1133,7 +1137,7 @@
 						<span class="shadow"></span>
 						<span class="edge"></span>
 						<span class="front">
-							<h3>Beg for Wire</h3>
+							<h3>Beg for Wire 3 times</h3>
 							<p>Increase starting capital</p>
 						</span>
 					</button>
@@ -1150,7 +1154,7 @@
 						<span class="edge"></span>
 						<span class="front">
 							<h3>Don't change the price of paperclips</h3>
-							<p>New unlock that auto adjusts the price</p>
+							<p>New project that auto adjusts the price</p>
 						</span>
 					</button>
 					<button id="prestigiousUpgradeTrading" class="satisfying projectButton">
@@ -1158,7 +1162,7 @@
 						<span class="edge"></span>
 						<span class="front">
 							<h3>Reach Investment Engine Level 20</h3>
-							<p>New unlock for leveraged loans</p>
+							<p>New project for leveraged loans</p>
 						</span>
 					</button>
 					<button id="prestigiousUpgradeWinner" class="satisfying projectButton">
@@ -1198,7 +1202,7 @@
 						<span class="edge"></span>
 						<span class="front">
 							<h3>Win after being outnumbered in total drones</h3>
-							<p>Combine Von Neumann speed & Exploration, and Harvester & Wire Drones</p>
+							<p>Combine Von Neumann Speed & Exploration</p>
 						</span>
 					</button>
 					<button id="prestigiousUpgradeSpeedrun" class="satisfying projectButton">
@@ -1206,7 +1210,15 @@
 						<span class="edge"></span>
 						<span class="front">
 							<h3>Win within 30 minutes</h3>
-							<p>Make paperclips 10 at a time</p>
+							<p>Make paperclips button adds 1% of clips per second</p>
+						</span>
+					</button>
+					<button id="prestigiousNegativeYomi" class="satisfying projectButton">
+						<span class="shadow"></span>
+						<span class="edge"></span>
+						<span class="front">
+							<h3>Reach -32,000 yomi</h3>
+							<p>Many strategies always avoid negative values</p>
 						</span>
 					</button>
 					<!--					<button id="prestigiousUpgradeGrinch" class="satisfying projectButton">-->
@@ -1232,7 +1244,7 @@
 							<p>Do a new run without prestige buffs</p>
 						</span>
 					</button>
-					<button id="nightRunButton" class="satisfying">
+					<button id="nightRunButton" class="satisfying" onclick="startNightRun()">
 						<span class="shadow"></span>
 						<span class="edge"></span>
 						<span class="front">

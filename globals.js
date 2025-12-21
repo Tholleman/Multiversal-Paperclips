@@ -10,7 +10,7 @@ const clipmakerLevel = ObservableValue.new(0, updateElement('#clipmakerLevel2'))
 const clipmakerAmount_clipperCost = ObservableValue.new(5, updateElement('#clipperCost', value => formatWithCommas(value, 2)));
 const funds = ObservableValue.new(0, updateElement('#funds', value => formatWithCommas(value, value < 1000 ? 2 : 0)));
 const margin = ObservableValue.new(0.25, enableButton('#priceDecrease', margin => margin > 0.01));
-margin.onChange(() => data.marginChanged.value = true);
+margin.onChangeDelayed(() => data.marginChanged.value = true);
 const manufacturingNotification = document.getElementById('manufacturingNotification');
 const wire = ObservableValue.new(1000, [
 	updateElement('#wire', formatWithCommas),

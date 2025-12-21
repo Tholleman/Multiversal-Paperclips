@@ -16,6 +16,7 @@ export const advancements = (() => {
 			noQuantum: ObservableValue.new(advancementStatus(unlocks.noQuantum)),
 			againstTheOdds: ObservableValue.new(advancementStatus(unlocks.againstTheOdds)),
 			speedRun: ObservableValue.new(advancementStatus(unlocks.speedRun)),
+			negativeYomi: ObservableValue.new(advancementStatus(unlocks.negativeYomi)),
 		})),
 		/** @type {ObservableValue<'' | 'noPrestige' | 'night'>} */
 		challengeRun: ObservableValue.new(initEnum(loaded.challengeRun, ['', 'noPrestige', 'night'])),
@@ -80,9 +81,14 @@ manageButton(advancements.unlocks.trading, '#prestigiousUpgradeTrading');
 manageButton(advancements.unlocks.winner, '#prestigiousUpgradeWinner');
 manageButton(advancements.unlocks.noPrestige, '#prestigiousUpgradeNoPrestige');
 manageButton(advancements.unlocks.nightRun, '#prestigiousUpgradeNightRun');
+if (advancements.challengeRun.value === 'night') {
+	unlockElement('#dayNightEfficiencyContainer');
+}
+if (advancements.unlocks.nightRun.value === 'ACTIVE') {
+	cheatProject('momentum');
+}
 manageButton(advancements.unlocks.noQuantum, '#prestigiousUpgradeNoQuantum');
 manageButton(advancements.unlocks.againstTheOdds, '#prestigiousUpgradeAgainstTheOdds');
-manageButton(advancements.unlocks.speedRun, '#prestigiousUpgradeSpeedrun');
 if (advancements.unlocks.againstTheOdds.value === 'LOCKED') {
 	ObservableValue.onAnyChange([drifterCount$, probeCount$], () => {
 		if (advancements.unlocks.againstTheOdds.value !== 'LOCKED') return;
@@ -91,8 +97,21 @@ if (advancements.unlocks.againstTheOdds.value === 'LOCKED') {
 		}
 	});
 }
+manageButton(advancements.unlocks.speedRun, '#prestigiousUpgradeSpeedrun');
+manageButton(advancements.unlocks.negativeYomi, '#prestigiousNegativeYomi');
+if (advancements.unlocks.negativeYomi.value === 'LOCKED') {
+	yomi.onTrigger(yomi => yomi <= 32000, () => {
+		if (advancements.unlocks.negativeYomi.value === 'LOCKED') {
+			advancements.unlocks.negativeYomi.value = 'UNLOCKED';
+		}
+	});
+}
+advancements.unlocks.negativeYomi.onTrigger(negativeYomi => negativeYomi === 'ACTIVE', () => {
+	cheatProject('avoidNegativeCells');
+});
 
 export function finalAdvancementChecks() {
+	unlock(advancements.unlocks.beg, data.begForWireCount.value >= 3);
 	unlock(advancements.unlocks.unchanged, !data.marginChanged.value);
 	unlock(advancements.unlocks.trading, data.stocks.investLevel.value >= 20);
 	unlock(advancements.unlocks.winner, data.wonEveryStrategicModelling.value);
@@ -104,6 +123,9 @@ export function finalAdvancementChecks() {
 		advancements.fastestWin.value = Math.min(advancements.fastestWin.value, ticks);
 	}
 	unlock(advancements.unlocks.nightRun, advancements.challengeRun.value === 'night');
+	if (advancements.unlocks.nightRun.value !== 'LOCKED') {
+		getElement('#nightRunButton').remove();
+	}
 	unlock(advancements.unlocks.noPrestige, advancements.challengeRun.value === 'noPrestige');
 	if (advancements.unlocks.noPrestige.value !== 'ACTIVE' && (prestigeS.value + prestigeU.value + prestigeY.value) < 9) {
 		const buttons = document.querySelectorAll('#challengeRun button');
@@ -111,7 +133,7 @@ export function finalAdvancementChecks() {
 			button.disabled = true;
 		}
 	} else {
-		if (advancements.unlocks.noPrestige.value === 'ACTIVE') {
+		if (advancements.unlocks.noPrestige.value !== 'LOCKED') {
 			getElement('#noPrestigeButton').remove();
 		}
 	}
@@ -181,10 +203,18 @@ export function startNoPrestigeRun() {
 	save();
 	reset();
 }
+
+export function startNightRun() {
+	advancements.challengeRun.value = 'night';
+	save();
+	reset();
+}
+
 export function finishRun() {
 	save();
 	reset();
 }
+
 export function unlockNoPrestigeRun() {
 	getElement('#projectsDiv').style.display = 'none';
 	unlockElement('#resetBonuses');
@@ -193,7 +223,7 @@ export function unlockNoPrestigeRun() {
 const resetBonusAssignedEl = getElement('#resetBonusAssigned');
 const resetBonusTotalEl = getElement('#resetBonusTotal');
 ObservableValue.computed([totalPrestigeBonuses, advancements.prestigeCounter], (assigned, unassigned) => assigned + unassigned)
-	.onChange(value => resetBonusTotalEl.innerText = `${value + 3}`);
+               .onChange(value => resetBonusTotalEl.innerText = `${value + 3}`);
 totalPrestigeBonuses.onChange(value => resetBonusAssignedEl.innerText = `${value + 3}`);
 
 /**

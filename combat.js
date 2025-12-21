@@ -21,7 +21,7 @@ const battleEXPLODECOLOR = "#fff";
 
 const probeCombatBaseRate = 0.15;
 const drifterCombat = 1.75;
-const warTrigger = 1_000_000;
+let warTrigger = 1_000_000;
 
 /** @type {Ship[]} */
 const aliveShips = [];
