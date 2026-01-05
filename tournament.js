@@ -126,8 +126,6 @@ function newTourney(startingData = undefined) {
 		stratV = strats[currentRound % strats.length];
 		horizStratElement.innerText = stratH.name;
 		vertStratElement.innerText = stratV.name;
-		document.querySelector('#horizScore').innerText = '';
-		if (isCompleted('showAScore') && !isCompleted('scoreboard')) stratH.element = document.querySelector('#horizScore');
 		if (currentMove === 0) {
 			prevMoves = [undefined, undefined];
 		}
@@ -138,7 +136,6 @@ function newTourney(startingData = undefined) {
 		if (currentMove >= 10) {
 			currentMove = 0;
 			currentRound++;
-			if (isCompleted('showAScore') && !isCompleted('scoreboard')) stratH.element = null;
 			setTimeout(startRound, 100);
 			return;
 		}
@@ -154,7 +151,7 @@ function newTourney(startingData = undefined) {
 	 * @param {strategy} of
 	 */
 	function updateScoreboard(...of) {
-		if (!isCompleted('showAScore')) return;
+		if (!isCompleted('scoreboard')) return;
 		for (const strat of of) {
 			if (strat.element) {
 				strat.element.innerText = formatWithCommas(strat.currentScore);
@@ -291,7 +288,6 @@ function newTourney(startingData = undefined) {
 		horizStratElement.innerText = '';
 		vertStratElement.innerText = '';
 		tournamentRound.innerHTML = '&nbsp;';
-		document.querySelector('#horizScore').innerText = '';
 		crossLabels[0][1].innerText = '';
 		crossLabels[1][0].innerText = '';
 	}

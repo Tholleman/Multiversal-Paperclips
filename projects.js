@@ -881,27 +881,16 @@ addProject('autoTourney', {
 		creativity.value -= 50000;
 	}
 });
-addProject('showAScore', {
-	title: 'Show score A',
+addProject('scoreboard', {
+	title: 'Scoreboard',
 	priceTag: '(100 processors, 100 memory)',
 	description: 'Dedicate resources to keeping track of scores',
-	trigger: () => isCompleted('autoTourney'),
+	trigger: () => isCompleted('autoTourney') && yomi.value >= 1_000_000,
 	cost: () => processors.value >= 100 && memory.value >= 100,
 	effect: () => {
 		displayMessage('Granting insider knowledge');
 		processors.value -= 100;
 		memory.value -= 100;
-	}
-})
-addProject('scoreboard', {
-	title: 'Scoreboard',
-	priceTag: '(1.000.000 yomi)',
-	description: 'Dedicate resources to keeping track of the strategies',
-	trigger: () => isCompleted('showAScore'),
-	cost: () => yomi.value >= 1_000_000,
-	effect: () => {
-		displayMessage('If you know the enemy and know yourself, you need not fear the results of a hundred battles - Sun Tzu');
-		yomi.value -= 1_000_000;
 		if (tourneyInProg.isTrue) createScoreboard(true);
 	}
 });
