@@ -100,7 +100,7 @@ if (advancements.unlocks.againstTheOdds.value === 'LOCKED') {
 manageButton(advancements.unlocks.speedRun, '#prestigiousUpgradeSpeedrun');
 manageButton(advancements.unlocks.negativeYomi, '#prestigiousNegativeYomi');
 if (advancements.unlocks.negativeYomi.value === 'LOCKED') {
-	yomi.onTrigger(yomi => yomi <= 32000, () => {
+	yomi.onTrigger(yomi => yomi <= -32000, () => {
 		if (advancements.unlocks.negativeYomi.value === 'LOCKED') {
 			advancements.unlocks.negativeYomi.value = 'UNLOCKED';
 		}
