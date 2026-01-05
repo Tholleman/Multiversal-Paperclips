@@ -373,7 +373,7 @@ function updateGrid() {
 }
 
 function createScoreboard(force = false) {
-	if (!isCompleted('scoreboard') || force) return;
+	if (!isCompleted('scoreboard') && !force) return;
 	for (let i = 0; i < strats.length; i++) {
 		const strat = allStrats[i];
 		const elId=`strategy${i}`;
