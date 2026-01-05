@@ -72,7 +72,7 @@
 		</button>
 	</div>
 </div>
-<div popover id="settings">
+<div popover="auto" id="settings">
 	<div class="buttonBar">
 		<button class="satisfying small settingButton silent" onclick="settings.mute.value = !settings.mute.value" id="mute">
 			<span class="shadow"></span>
@@ -103,6 +103,32 @@
 			<option value="accent_brick">Brick</option>
 			<option value="accent_amaranth">Amaranth</option>
 		</select>
+		<button class="satisfying small settingButton" popovertarget="reset">
+			<span class="shadow"></span>
+			<span class="edge"></span>
+			<span class="front">
+				reset
+			</span>
+		</button>
+	</div>
+</div>
+<div popover="auto" id="reset">
+	<p>Are you sure that you want to reset your run? Prestige will still be saved</p>
+	<div class="buttonBar">
+		<button class="satisfying" popovertarget="reset" popovertargetaction="hide">
+			<span class="shadow"></span>
+			<span class="edge"></span>
+			<span class="front">
+			Never mind
+		</span>
+		</button>
+		<button class="satisfying" onclick="reset()">
+			<span class="shadow"></span>
+			<span class="edge"></span>
+			<span class="front">
+			Yes, reset
+		</span>
+		</button>
 	</div>
 </div>
 <div class="fullHeight">

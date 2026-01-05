@@ -172,6 +172,13 @@ main {
 	right: anchor(right);
 }
 
+#reset {
+	&::backdrop {
+		backdrop-filter: blur(5px);
+		pointer-events: none;
+	}
+}
+
 details {
 	&::details-content {
 		block-size: 0;
